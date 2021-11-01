@@ -11,7 +11,7 @@ import  HomeScreen  from './HomeScreen';
 export function MainScreen(props: any) {
     const Tab = createMaterialBottomTabNavigator();
     return (
-        <Tab.Navigator>
+        <Tab.Navigator barStyle={{ backgroundColor: '#3e89bc' }}>
             <Tab.Screen name='Home' component={HomeScreen} options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => (
