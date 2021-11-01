@@ -1,33 +1,32 @@
 import React from "react";
 import { NavigationContainer, StackActions } from "@react-navigation/native";
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import ProfileScreen from "./components/ProfileScreen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import HomeScreen from './components/HomeScreen'
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { StyleSheet, Text, View, Button, TouchableOpacity} from "react-native";
-import MyTabs from "./components/NavBar";
-import { MainStackNavigator } from "./components/StackNavigator";
-import { BottomTabNavigator } from "./components/TabNavigator";
+import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
+import { MainScreen } from './components/MainScreen';
 
-const Tab = createMaterialBottomTabNavigator()
+const Drawer = createDrawerNavigator();
 
-const App = () =>{
-return(
+export default function App() {
+	return (
+    <SafeAreaProvider>
+		<NavigationContainer>
+			<Drawer.Navigator initialRouteName="Home">
+				<Drawer.Screen name="Home" component={MainScreen} />
+				<Drawer.Screen name="User Profile" component={ProfileScreen} />
+			</Drawer.Navigator>
+		</NavigationContainer>
+    </SafeAreaProvider>
 
-  <NavigationContainer>
-
- {/* <MainStackNavigator /> */}
-<BottomTabNavigator />
-
-  </NavigationContainer>
-
-)
-
+	);
 }
-export default App
 
 const styles = StyleSheet.create({
-
-  //styling stuff
-})
+	container: {
+		flex: 1,
+		backgroundColor: '#fff',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+});
