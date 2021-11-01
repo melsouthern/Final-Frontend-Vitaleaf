@@ -7,6 +7,7 @@ function HomeScreen() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Home!</Text>
+        <Text> User home page with plants</Text>
       </View>
     );
   }
