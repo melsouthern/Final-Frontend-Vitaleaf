@@ -8,6 +8,7 @@ function LightMeterScreen() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Light Meter</Text>
+        <Text>Lux meter, requires `sensors` functionality</Text>
       </View>
     );
   }
