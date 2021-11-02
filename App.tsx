@@ -4,6 +4,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import ProfileScreen from "./components/ProfileScreen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
+import MainStackNavigator from "./components/MainStackNavigator";
 import { MainScreen } from './components/MainScreen';
 
 import CameraScreen from "./components/CameraScreen";
@@ -17,15 +18,7 @@ export default function App() {
 	return (
     <SafeAreaProvider>
 		<NavigationContainer>
-			<Drawer.Navigator initialRouteName="Home" >
-				<Drawer.Screen name="Home" component={MainScreen} />
-				<Drawer.Screen name="User Profile" component={ProfileScreen} />
-        <Drawer.Screen name="Camera" component={CameraScreen} />
-      <Drawer.Screen name="Light Meter" component={LightMeterScreen} />
-      <Drawer.Screen name="Search" component={SearchScreen} />
-      <Drawer.Screen name="App Info" component={NewUserGreetingScreen} />
-      <Drawer.Screen name="Profile" component={ProfileScreen} />
-			</Drawer.Navigator>
+		<MainStackNavigator />
 		</NavigationContainer>
     </SafeAreaProvider>
 
