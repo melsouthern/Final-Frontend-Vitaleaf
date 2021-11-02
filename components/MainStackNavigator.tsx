@@ -8,27 +8,38 @@ import SearchScreen from './SearchScreen';
 import CameraScreen from './CameraScreen';
 import LightMeterScreen from './LightMeterScreen';
 import SingleLookedUpPlantScreen from './SingleLookedUpPlantScreen';
+import {
+      getFocusedRouteNameFromRoute,
+  } from '@react-navigation/native';
 
 const Stack = createStackNavigator()
+
+function getHeaderTitle(route:object) {
+    // In case the focused route is not found, assume it's the first screen
+    return getFocusedRouteNameFromRoute(route) ?? 'Home';
+  }
 
 function MainStackNavigator() {
   return (
     
       <Stack.Navigator screenOptions={{
         gestureEnabled: true,
+        gestureDirection: "horizontal",
         headerStyle: {
-          backgroundColor: '#101010'
+          backgroundColor: '#3564c8'
         },
         headerTitleStyle: {
           fontWeight: 'bold'
         },
-        headerTintColor: '#ffd700'
+        headerTintColor: '#ffffff'
       }}>
-        <Stack.Screen name='Home' component={MainTabNavigator} options={{headerShown:false}}  />
-        <Stack.Screen name='Calendar' component={CalendarScreen} />
+        <Stack.Screen name='Home' component={MainTabNavigator} options={({route}) => ({
+          title: getHeaderTitle(route),
+        })}  />
+        {/* <Stack.Screen name='Calendar' component={CalendarScreen} />
         <Stack.Screen name='Search' component={SearchScreen} />
         <Stack.Screen name='Camera' component={CameraScreen} />
-        <Stack.Screen name='Light Meter' component={LightMeterScreen} />
+        <Stack.Screen name='Light Meter' component={LightMeterScreen} /> */}
         <Stack.Screen name="Single Looked Up Plant" component={SingleLookedUpPlantScreen}  />
       </Stack.Navigator>
     

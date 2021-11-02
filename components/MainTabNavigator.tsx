@@ -6,6 +6,7 @@ import CalendarScreen from './CalendarScreen';
 import SearchScreen from './SearchScreen';
 import LightMeterScreen from './LightMeterScreen';
 import CameraScreen from './CameraScreen';
+import ProfileScreen from './ProfileScreen';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -41,7 +42,17 @@ function MainTabNavigator() {
     tabBarIcon: ({ color }) => (
       <MaterialCommunityIcons name="lightbulb-on-outline" color={color} size={26} />
     ),
-  }} />   
+    
+    
+  }} />  
+  <Tab.Screen name='User Profile' component={ProfileScreen} options={{
+    tabBarLabel: 'Profile',
+    tabBarIcon: ({ color }) => (
+      <MaterialCommunityIcons name="account" color={color} size={26} />
+    ),
+    
+    
+  }} />  
   </Tab.Navigator>
         
     )
