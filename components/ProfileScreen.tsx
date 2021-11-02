@@ -11,24 +11,7 @@ function ProfileScreen(props: any) {
         <Text>Profile Page</Text>
         <Text>User Profile Here</Text>
 
-        <Stack.Navigator screenOptions={{
-        gestureEnabled: true,
-        gestureDirection: "horizontal",
-        headerStyle: {
-          backgroundColor: '#3564c8'
-        },
-        headerTitleStyle: {
-          fontWeight: 'bold'
-        },
-        headerTintColor: '#ffffff'
-      }}>
         
-        {/* <Stack.Screen name='Calendar' component={CalendarScreen} />
-        <Stack.Screen name='Search' component={SearchScreen} />
-        <Stack.Screen name='Camera' component={CameraScreen} />
-        <Stack.Screen name='Light Meter' component={LightMeterScreen} /> */}
-        <Stack.Screen name="Single Looked Up Plant" component={SingleLookedUpPlantScreen}  />
-      </Stack.Navigator>
       </View>
     );
   }
