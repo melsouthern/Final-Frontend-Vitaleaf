@@ -6,3 +6,5 @@ Installs:
 expo
 react-naviagtaion
 react-navigation/drawer
+material ui
+tab navigator

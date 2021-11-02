@@ -6,6 +6,11 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
 import { MainScreen } from './components/MainScreen';
 
+import CameraScreen from "./components/CameraScreen";
+import LightMeterScreen from "./components/LightMeterScreen";
+import SearchScreen from "./components/SearchScreen";
+import NewUserGreetingScreen from "./components/NewUserGreetingScreen";
+
 const Drawer = createDrawerNavigator();
 
 export default function App() {
@@ -15,6 +20,11 @@ export default function App() {
 			<Drawer.Navigator initialRouteName="Home" >
 				<Drawer.Screen name="Home" component={MainScreen} />
 				<Drawer.Screen name="User Profile" component={ProfileScreen} />
+        <Drawer.Screen name="Camera" component={CameraScreen} />
+      <Drawer.Screen name="Light Meter" component={LightMeterScreen} />
+      <Drawer.Screen name="Search" component={SearchScreen} />
+      <Drawer.Screen name="App Info" component={NewUserGreetingScreen} />
+      <Drawer.Screen name="Profile" component={ProfileScreen} />
 			</Drawer.Navigator>
 		</NavigationContainer>
     </SafeAreaProvider>

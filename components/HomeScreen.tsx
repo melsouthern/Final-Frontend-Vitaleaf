@@ -11,7 +11,7 @@ function HomeScreen(props: any) {
         <Text> User home page with plants</Text>
         <TouchableOpacity
         style={styles.buttonContainer}
-        onPress={() => navigation.navigate('Calendar')}>
+        onPress={() => navigation.navigate('Single Looked Up Plant')}>
         <Text style={styles.buttonText}>Test Button</Text>
       </TouchableOpacity>
         
