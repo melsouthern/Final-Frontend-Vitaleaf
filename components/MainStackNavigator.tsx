@@ -7,6 +7,7 @@ import MainTabNavigator from './MainTabNavigator';
 import SearchScreen from './SearchScreen';
 import CameraScreen from './CameraScreen';
 import LightMeterScreen from './LightMeterScreen';
+import SingleLookedUpPlantScreen from './SingleLookedUpPlantScreen';
 
 const Stack = createStackNavigator()
 
@@ -28,6 +29,7 @@ function MainStackNavigator() {
         <Stack.Screen name='Search' component={SearchScreen} />
         <Stack.Screen name='Camera' component={CameraScreen} />
         <Stack.Screen name='Light Meter' component={LightMeterScreen} />
+        <Stack.Screen name="Single Looked Up Plant" component={SingleLookedUpPlantScreen}  />
       </Stack.Navigator>
     
   )
