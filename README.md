@@ -8,3 +8,5 @@ react-naviagtaion
 react-navigation/drawer
 material ui
 tab navigator
+expo image picker
+expo camera
