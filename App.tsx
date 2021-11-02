@@ -12,7 +12,7 @@ export default function App() {
 	return (
     <SafeAreaProvider>
 		<NavigationContainer>
-			<Drawer.Navigator initialRouteName="Home">
+			<Drawer.Navigator initialRouteName="Home" >
 				<Drawer.Screen name="Home" component={MainScreen} />
 				<Drawer.Screen name="User Profile" component={ProfileScreen} />
 			</Drawer.Navigator>
