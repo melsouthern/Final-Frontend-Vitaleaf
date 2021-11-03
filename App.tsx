@@ -15,6 +15,7 @@ import {Authenticator} from 'aws-amplify-react-native'
 import { withAuthenticator } from "aws-amplify-react-native";
 import { UserProvider } from "./components/utils/User";
 
+
 const Drawer = createDrawerNavigator();
 Amplify.configure({
   ...config,
@@ -42,14 +43,7 @@ const signUpConfig = {
     },
   ],
 }
-
-{/* <Authenticator
-usernameAttributes="email"
-signUpConfig={signUpConfig}
-theme={AmplifyTheme}
-/> */}
-     
-
+  
 function App() {
   return (
     
@@ -57,7 +51,6 @@ function App() {
       
       <SafeAreaProvider>
         <NavigationContainer>
-      
           <MainStackNavigator />
         </NavigationContainer>
       </SafeAreaProvider>
