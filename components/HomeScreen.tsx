@@ -1,26 +1,19 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Auth } from 'aws-amplify'
 import { Text, View, Button, TouchableOpacity, StyleSheet } from "react-native";
+import { UserContext, UserProvider } from './utils/User';
 
 
 
 function HomeScreen(props: any) {
-  const [userName, setUserName] = useState('')
+  const { userName, setUserName } = useContext(UserContext)
+  console.log(userName)
 
   const { navigation } = props
 
-  const getUserName =  async () => {
-    const user = await Auth.currentAuthenticatedUser();  
-    setUserName (user.username)
-  }
-  getUserName()
-  
-
-  
-
-  
     return (
+      
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Home!</Text>
         <Text> User home page with plants</Text>
@@ -28,6 +21,7 @@ function HomeScreen(props: any) {
         
         
       </View>
+      
     );
   }
 
