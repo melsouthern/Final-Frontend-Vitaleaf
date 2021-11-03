@@ -1,25 +1,25 @@
-
 import React, { createContext, useContext, useState } from "react";
-import { Auth } from 'aws-amplify'
+import { Auth } from "aws-amplify";
 
 interface IUserContext {
-    userName: string
-    setUserName: (newUserName:string) => void
-    
-  }
+  userName: string;
+  setUserName: (newUserName: string) => void;
+}
 
-export const UserContext = createContext<IUserContext>({userName:'', setUserName: () => {}});
+export const UserContext = createContext<IUserContext>({
+  userName: "",
+  setUserName: () => {},
+});
 
 export const UserProvider = ({ children }) => {
-  const [userName, setUserName] = useState('');
+  const [userName, setUserName] = useState("");
 
-  const getUserName =  async () => {
-    const user = await Auth.currentAuthenticatedUser();  
-    setUserName (user.username)
-  }
-  getUserName()
-  
-   
+  const getUserName = async () => {
+    const user = await Auth.currentAuthenticatedUser();
+    setUserName(user.username);
+  };
+  getUserName();
+
   return (
     <UserContext.Provider value={{ userName, setUserName }}>
       {children}
