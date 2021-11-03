@@ -1,0 +1,11 @@
+{
+  "auth": {
+    "logindb2a97ea": {
+      "service": "Cognito",
+      "serviceType": "imported",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}

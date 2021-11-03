@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "TypeScript-starter-test",
-    "slug": "TypeScript-starter-test",
+    "name": "Plant-App",
+    "slug": "Plant-App",
+    "scheme": "myapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

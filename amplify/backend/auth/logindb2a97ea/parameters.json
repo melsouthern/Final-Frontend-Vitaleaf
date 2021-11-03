@@ -1,0 +1,6 @@
+{
+  "authSelections": "userPoolOnly",
+  "resourceName": "logindb2a97ea",
+  "serviceType": "imported",
+  "region": "eu-west-2"
+}
