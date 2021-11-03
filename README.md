@@ -10,3 +10,5 @@ material ui
 tab navigator
 expo image picker
 expo camera
+react-native-camera
+expo-permissions
