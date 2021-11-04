@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import * as Permissions from "expo-permissions"
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import * as ImagePicker from 'expo-image-picker'
 import {Camera} from 'expo-camera'
 
@@ -38,14 +38,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     flexDirection: 'row',
     margin: 20,
+    paddingBottom: 20
   },
   cameraButton: {
-    flex: 0.1,
+    flex: 1,
     alignSelf: 'flex-end',
     alignItems: 'center',
   },
   text: {
     fontSize: 18,
+    fontWeight: 'bold',
     color: 'white',
   },
   
@@ -54,32 +56,14 @@ const styles = StyleSheet.create({
 function CameraScreen() {
   
     const [cameraRollImage, setCameraRollImage] = useState({localUri:""})
-    const [cameraPhoto, setCameraPhoto] = useState(null) //NB not in use atm
+    const [cameraPhoto, setCameraPhoto] = useState({height:"", uri:"", width:""}) 
     const [haveCameraPermission, setHaveCameraPermission] = useState("")
     const [type, setType] = useState(Camera.Constants.Type.back);
+    const [showCamera, setShowCamera] = useState(false)
+
+    const cameraRef = useRef(null)   // Was - cameraRef = useRef(null)
   
-    function cameraFunction() {
-      console.log("Check, getting in here?")
-        // return (
-        //  <View style={styles.cameraContainer}>
-        //    <Camera style={styles.camera} type={type}>
-        //      <View style={styles.buttonContainer}>
-        //        <TouchableOpacity
-        //          style={styles.cameraButton}
-        //          onPress={() => {
-        //              setType(
-        //                  type === Camera.Constants.Type.back
-        //                    ? Camera.Constants.Type.front
-        //                    : Camera.Constants.Type.back
-        //                );
-        //              }}>
-        //              <Text style={styles.text}> Flip </Text>
-        //            </TouchableOpacity>
-        //          </View>
-        //        </Camera>
-        //      </View>
-        //    );
-         }
+    
 
 
   let openCameraAsync = async () => {
@@ -93,15 +77,15 @@ function CameraScreen() {
   
       setHaveCameraPermission("Yes")  
       
-      console.log(">>>>>>>>>Hello!")
+      // console.log(">>>>>>>>>Hello!")
 
     }
-    console.log(">>>>>>>>>Hello....2  !")
+    // console.log(">>>>>>>>>Hello....2  !")
 
     
     let openImagePickerAsync = async () => {
       let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
-      console.log(permissionResult, " IMAGE PICK RESULT")
+      // console.log(permissionResult, " IMAGE PICK RESULT")
       
       if (permissionResult.granted === false) {
         alert('Permission to access camera roll is required!')
@@ -133,12 +117,56 @@ function CameraScreen() {
       </View>
     );
   }
+
+  if (cameraPhoto.height !== ""){
+    console.log(cameraPhoto, "PHOTO CHECK")
+    console.log(cameraPhoto.uri, "URI CHECK")
+    
+    return (
+      <View style={styles.container}>
+        <Image
+        
+          source={{ uri: cameraPhoto.uri }}
+          style={styles.thumbnail}
+          />
+      <TouchableOpacity
+        onPress={() => alert('Saved!')}
+        style={styles.button}
+        >
+
+      <Text style={styles.buttonText}>Save chosen image</Text>
+      </TouchableOpacity>
+    </View>
+  ); }
+
+
+  const takePhoto = async () => {
+ if (cameraRef) {    // Was - if(cameraRef)
+   console.log("In take photo")
+  //  console.log(cameraRef)
+   try{
+     let photo = await cameraRef.current.takePictureAsync({
+       allowsEditing: true,
+       aspect: [4, 3],
+       quality: 1,
+
+     })
+    //  console.log(photo)
+     setCameraPhoto(photo)
+    //  console.log(cameraPhoto)
+     return photo
+   } catch (error) {
+     console.log(error)
+   }
+ }
+
+  }
   if (haveCameraPermission === "Yes") {
-    console.log("Are we in the render of camera?")
+    // console.log("Are we in the render of camera?")
      return (
          <View style={styles.cameraContainer}>
-           
-           <Camera style={styles.camera} type={type}>
+          
+           <Camera style={styles.camera} type={type} ref={cameraRef}>
              <View style={styles.buttonContainer}>
                <TouchableOpacity
                  style={styles.cameraButton}
@@ -151,8 +179,27 @@ function CameraScreen() {
                      }}>
                      <Text style={styles.text}> Flip </Text>
                    </TouchableOpacity>
+                   <TouchableOpacity 
+                   style={styles.cameraButton}
+                   onPress={async () => {
+                     const r = await takePhoto()
+                    // if( !r.cancelled) {setCameraPhoto({localUri:r})}
+                    // Alert.alert("DEBUG", JSON.stringify(r))
+                  }}
+                   >
+
+                   <Text style={styles.text}> Photo </Text>
+                   </TouchableOpacity>
+                   <TouchableOpacity 
+                   style={styles.cameraButton}
+                  //  onPress={}
+                   >
+
+                   <Text style={styles.text}> Cancel </Text>
+                   </TouchableOpacity>
                  </View>
-               </Camera>
+               </Camera> 
+               
              </View>
            );
 
@@ -182,39 +229,3 @@ export default CameraScreen
 
 // >>>>> Break >>>>>
 
-
-
-
-//   const [hasPermission, setHasPermission] = useState("");
-//   const [type, setType] = useState(Camera.Constants.Type.back);
-
-//   useEffect(() => {
-  //     (async () => {
-    //       const { status } = await Camera.requestCameraPermissionsAsync();
-    //       if (status === 'granted') setHasPermission("Granted");
-    //     })();
-    //   }, []);
-
-    
-    //   if (hasPermission === "false") {  // NB defunct atm
-    //     return <Text>No access to camera</Text>;
-    //   }
-    //   return (
-      //     <View style={styles.container}>
-      //       <Camera style={styles.camera} type={type}>
-//         <View style={styles.buttonContainer}>
-//           <TouchableOpacity
-//             style={styles.button}
-//             onPress={() => {
-//               setType(
-  //                 type === Camera.Constants.Type.back
-  //                   ? Camera.Constants.Type.front
-//                   : Camera.Constants.Type.back
-//               );
-//             }}>
-//             <Text style={styles.text}> Flip </Text>
-//           </TouchableOpacity>
-//         </View>
-//       </Camera>
-//     </View>
-//   );

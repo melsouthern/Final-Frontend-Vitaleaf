@@ -11,4 +11,8 @@ tab navigator
 expo image picker
 expo camera
 react-native-camera
-expo-permissions
+expo-permissions - deprecated, not to use if poss
+aws-amplify
+aws-amplify-react-native
+@react-native-async-storage/async-storage
+npm install --save @react-native-community/netinfo
