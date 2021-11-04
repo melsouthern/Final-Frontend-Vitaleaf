@@ -1,118 +1,128 @@
-import React from 'react';
-import { useState, useRef } from 'react';
-import { getPlants } from './utils/Api';
-import { TouchableOpacity, View, Text, Image, FlatList, Dimensions, StyleSheet} from 'react-native';
-import { Searchbar } from 'react-native-paper';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
-import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
+import React, {FC} from "react";
+import { useState, useRef,useContext } from "react";
+import { getPlants } from "./utils/Api";
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  Image,
+  FlatList,
+  Dimensions,
+  StyleSheet,
+} from "react-native";
+import { Searchbar } from "react-native-paper";
+import Carousel, { Pagination } from "react-native-snap-carousel";
+import { PlantCategoryContext, PlantCategoryProvider } from "./utils/Context";
+ 
 
-
-
-function SearchScreen(props:any) {
-  const { navigation } = props
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const [plantCategory, setPlantCategory] = React.useState('')
-  const onChangeSearch = (query:string) => setSearchQuery(query);
+const SearchScreen = (props:any) => {
+  const { navigation } = props;
+  const [searchQuery, setSearchQuery] = React.useState("");
+  // const {plantCategory, setPlantCategory} = props;
+  
+  // const [plantCategory, setPlantCategory] = useState<string | null>("")
+   
+  const onChangeSearch = (query: string) => setSearchQuery(query);
   const [indexSelected, setIndexSelected] = useState(0);
 
-  let [fontsLoaded] = useFonts({
-    Inter_900Black,
-  });
-
-  const onSelect = (indexSelected:number) => {
+  const onSelect = (indexSelected: number) => {
     setIndexSelected(indexSelected);
   };
-
-  const handleOnPress = (item: { id: string; image?: any; }) => {
-    console.log(item.id)
-    setPlantCategory(item.id)
-    navigation.navigate('Single Plant Category')
-  }
-  
-  const { width } = Dimensions.get('window');
+  const { width } = Dimensions.get("window");
   const SPACING = 10;
   const THUMB_SIZE = 80;
-  
+
   const IMAGES = {
-    image1: require('../assets/flowering-house-plants-1.jpg'),
-    image2: require('../assets/foliage-house-plants-1.jpg'),
-    image3: require('../assets/cacti-1.jpg'),
-    
+    image1: require("../assets/flowering-house-plants-1.jpg"),
+    image2: require("../assets/foliage-house-plants-1.jpg"),
+    image3: require("../assets/cacti-1.jpg"),
   };
 
-
   const [images, setImages] = useState([
-    { id: 'Foliage House Plants', image: IMAGES.image1 },
-    { id: 'Flowering House Plants', image: IMAGES.image2 },
-    { id: 'Cacti and Other Succulents', image: IMAGES.image3 },
-    
+    { id: "Flowering House Plants", image: IMAGES.image1 },
+    { id: "Foliage House Plants", image: IMAGES.image2 },
+    { id: "Cacti and Other Succulents", image: IMAGES.image3 },
   ]);
 
+
+  const { plantCategory, setPlantCategory } = useContext(PlantCategoryContext);
+
+  const handleOnPress = (item: { id: string; image?: any }) => {
+    
+    setPlantCategory(item.id);
+    console.log(item.id, "<----item.id")
+    
+    navigation.navigate("Single Plant Category");
+    console.log(plantCategory, '<---- plantCategory')
+  };
+
   
-    return (
-      <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
-        <Text>Search Data</Text>
-        
-        <Searchbar style={styles.searchbar}
-      placeholder="Search"
-      onChangeText={onChangeSearch}
-      value={searchQuery}
-    />
 
-<View style={{ flex: 1, alignItems: 'center' }}>
-    {/* Title JSX Remains same */}
-    {/* Carousel View */}
-    <View style={{ flex: 1, marginTop: 20 }}>
-      <Carousel
-        layout='default'
-        data={images}
-        sliderWidth={width}
-        itemWidth={width}
-        
-        renderItem={({ item, index }) => (
-          <TouchableOpacity onPress={(event) => handleOnPress(item)}>  
-           <Text style={{fontFamily:'inter', fontSize:30}} >{item.id}</Text>
-          <Image
-            key={index}
-            style={{ width: '100%', height: '100%' }}
-            resizeMode='contain'
-            source={item.image}
-            
-          />
-         
-          </TouchableOpacity>
-        )}
-        
-        onSnapToItem={index => onSelect(index)}
+  return (
+    <PlantCategoryProvider>
+    <View
+      style={{ flex: 1, justifyContent: "flex-start", alignItems: "center" }}
+    >
+
+      <Searchbar
+        style={styles.searchbar}
+        placeholder="Search"
+        onChangeText={onChangeSearch}
+        value={searchQuery}
       />
-      <View
-  style={{
-    marginTop: 20,
-    paddingHorizontal: 32,
-    alignSelf: 'flex-end'
-  }}
->
-  <Text
-    style={{
-      color: 'black',
-      fontSize: 22
-    }}
-  >
-    {/* {indexSelected + 1}/{images.length} */}
-  </Text>
-</View>
-      <Pagination
-    inactiveDotColor='gray'
-    dotColor={'orange'}
-    activeDotIndex={indexSelected}
-    dotsLength={images.length}
-    animatedDuration={150}
-    inactiveDotScale={1}
-  />
-    </View>
-  </View>
 
-    {/* <View style={styles.categoryPictureContainer}>
+      <View style={{ flex: 1, alignItems: "center" }}>
+        {/* Title JSX Remains same */}
+        {/* Carousel View */}
+        <View style={{ flex: 1, marginTop: 20 }}>
+          <Carousel
+            layout="default"
+            data={images}
+            sliderWidth={width}
+            itemWidth={width}
+            renderItem={({ item, index }) => (
+              <TouchableOpacity onPress={() => handleOnPress(item)}>
+                <Text style={{ fontSize: 30 }}>
+                  {item.id}
+                </Text>
+                <Image
+                  key={index}
+                  style={{ width: "100%", height: "100%" }}
+                  resizeMode="contain"
+                  source={item.image}
+                />
+              </TouchableOpacity>
+            )}
+            onSnapToItem={(index) => onSelect(index)}
+          />
+          <View
+            style={{
+              marginTop: 20,
+              paddingHorizontal: 32,
+              alignSelf: "flex-end",
+            }}
+          >
+            <Text
+              style={{
+                color: "black",
+                fontSize: 22,
+              }}
+            >
+              {/* {indexSelected + 1}/{images.length} */}
+            </Text>
+          </View>
+          <Pagination
+            inactiveDotColor="gray"
+            dotColor={"orange"}
+            activeDotIndex={indexSelected}
+            dotsLength={images.length}
+            animatedDuration={150}
+            inactiveDotScale={1}
+          />
+        </View>
+      </View>
+
+      {/* <View style={styles.categoryPictureContainer}>
         <TouchableOpacity  style={styles.buttonContainer} onPress={handleOnPress}>  
         <Image style={styles.categoryImage} name={'cat1'}source={require('../assets/cat1.jpg')}
            />
@@ -135,7 +145,7 @@ function SearchScreen(props:any) {
 
         </View> */}
 
-        {/* <TouchableOpacity style={styles.buttonContainer} onPress={getPlants}>  
+      {/* <TouchableOpacity style={styles.buttonContainer} onPress={getPlants}>  
         <Text style={styles.buttonText}>All The Plants</Text>
         </TouchableOpacity>
         
@@ -151,47 +161,46 @@ function SearchScreen(props:any) {
         onPress={() => navigation.navigate('Single Looked Up Plant')}>
         <Text style={styles.buttonText}>Single Plant</Text>
       </TouchableOpacity> */}
+    </View>
+    </PlantCategoryProvider>
+  );
+}
 
-     
-      </View>
-    );
-  }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "flex-start",
+    backgroundColor: "#ebebeb",
+  },
+  text: {
+    color: "#101010",
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  buttonContainer: {
+    backgroundColor: "#222",
+    borderRadius: 5,
+    padding: 10,
+    margin: 20,
+  },
+  buttonText: {
+    fontSize: 20,
+    color: "#fff",
+  },
+  searchbar: {
+    width: 300,
+    marginTop:10
+  },
+  categoryImage: {
+    width: 100,
+    height: 100,
+  },
+  categoryPictureContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+  },
+});
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'flex-start',
-      backgroundColor: '#ebebeb'
-    },
-    text: {
-      color: '#101010',
-      fontSize: 24,
-      fontWeight: 'bold'
-    },
-    buttonContainer: {
-      backgroundColor: '#222',
-      borderRadius: 5,
-      padding: 10,
-      margin: 20
-    },
-    buttonText: {
-      fontSize: 20,
-      color: '#fff'
-    },
-    searchbar: {
-      width: 300,
-    },
-    categoryImage: {
-      width: 100,
-      height: 100,
-      
-    },
-    categoryPictureContainer: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      justifyContent: 'center'
-    }
-  })
-
-  export default SearchScreen
+export default SearchScreen;

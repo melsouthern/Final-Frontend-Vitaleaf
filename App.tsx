@@ -23,7 +23,11 @@ Amplify.configure({
   },
 });
 
+
+
 function App() {
+
+  
   return (
     <UserProvider>
       <SafeAreaProvider>

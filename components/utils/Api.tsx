@@ -4,11 +4,15 @@ const listApi = axios.create({
   baseURL: `https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta`,
 });
 
-const getPlants = () => {
+const getPlants = (plantCategory:string) => {
         return listApi
-      .get(`/plants`)
+      .get(`/plants`, {
+        params: {
+          category: plantCategory
+        }
+      })
       .then(({ data }) => {
-          console.log(data)
+          //console.log(data)
         return data;
       });
   };
