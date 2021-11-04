@@ -183,8 +183,7 @@ function CameraScreen() {
                    style={styles.cameraButton}
                    onPress={async () => {
                      const r = await takePhoto()
-                    // if( !r.cancelled) {setCameraPhoto({localUri:r})}
-                    // Alert.alert("DEBUG", JSON.stringify(r))
+                    
                   }}
                    >
 
