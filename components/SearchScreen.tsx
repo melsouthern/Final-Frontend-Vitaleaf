@@ -1,16 +1,10 @@
 import React from 'react';
 import { useState, useRef } from 'react';
 import { getPlants } from './utils/Api';
-import {
-  TouchableOpacity,
-  View,
-  Text,
-  Image,
-  FlatList,
-  Dimensions, StyleSheet
-} from 'react-native';
+import { TouchableOpacity, View, Text, Image, FlatList, Dimensions, StyleSheet} from 'react-native';
 import { Searchbar } from 'react-native-paper';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
+import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 
 
 
@@ -21,44 +15,44 @@ function SearchScreen(props:any) {
   const onChangeSearch = (query:string) => setSearchQuery(query);
   const [indexSelected, setIndexSelected] = useState(0);
 
-  const onSelect = indexSelected => {
+  let [fontsLoaded] = useFonts({
+    Inter_900Black,
+  });
+
+  const onSelect = (indexSelected:number) => {
     setIndexSelected(indexSelected);
   };
 
-  // const handleOnPress = () => {
-  //   setPlantCategory
-  // }
+  const handleOnPress = (item: { id: string; image?: any; }) => {
+    console.log(item.id)
+    setPlantCategory(item.id)
+    navigation.navigate('Single Plant Category')
+  }
   
   const { width } = Dimensions.get('window');
   const SPACING = 10;
   const THUMB_SIZE = 80;
   
   const IMAGES = {
-    image1: require('../assets/cat1.jpg'),
-    image2: require('../assets/cat1.jpg'),
-    image3: require('../assets/cat1.jpg'),
-    image4: require('../assets/cat1.jpg'),
-    image5: require('../assets/cat1.jpg'),
-    image6: require('../assets/cat1.jpg'),
-    image7: require('../assets/cat1.jpg')
+    image1: require('../assets/flowering-house-plants-1.jpg'),
+    image2: require('../assets/foliage-house-plants-1.jpg'),
+    image3: require('../assets/cacti-1.jpg'),
+    
   };
 
 
   const [images, setImages] = useState([
-    { id: '1', image: IMAGES.image1 },
-    { id: '2', image: IMAGES.image2 },
-    { id: '3', image: IMAGES.image3 },
-    { id: '4', image: IMAGES.image4 },
-    { id: '5', image: IMAGES.image5 },
-    { id: '6', image: IMAGES.image6 },
-    { id: '7', image: IMAGES.image7 }
+    { id: 'Foliage House Plants', image: IMAGES.image1 },
+    { id: 'Flowering House Plants', image: IMAGES.image2 },
+    { id: 'Cacti and Other Succulents', image: IMAGES.image3 },
+    
   ]);
 
   
     return (
       <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
         <Text>Search Data</Text>
-        <Text>Look up data from categories screen</Text>
+        
         <Searchbar style={styles.searchbar}
       placeholder="Search"
       onChangeText={onChangeSearch}
@@ -68,7 +62,7 @@ function SearchScreen(props:any) {
 <View style={{ flex: 1, alignItems: 'center' }}>
     {/* Title JSX Remains same */}
     {/* Carousel View */}
-    <View style={{ flex: 1 / 2, marginTop: 20 }}>
+    <View style={{ flex: 1, marginTop: 20 }}>
       <Carousel
         layout='default'
         data={images}
@@ -76,13 +70,19 @@ function SearchScreen(props:any) {
         itemWidth={width}
         
         renderItem={({ item, index }) => (
+          <TouchableOpacity onPress={(event) => handleOnPress(item)}>  
+           <Text style={{fontFamily:'inter', fontSize:30}} >{item.id}</Text>
           <Image
             key={index}
             style={{ width: '100%', height: '100%' }}
             resizeMode='contain'
             source={item.image}
+            
           />
+         
+          </TouchableOpacity>
         )}
+        
         onSnapToItem={index => onSelect(index)}
       />
       <View
@@ -98,7 +98,7 @@ function SearchScreen(props:any) {
       fontSize: 22
     }}
   >
-    {indexSelected + 1}/{images.length}
+    {/* {indexSelected + 1}/{images.length} */}
   </Text>
 </View>
       <Pagination
