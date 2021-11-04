@@ -1,23 +1,25 @@
-import React, { createContext, useContext, useState } from "react";
-
+import React, { FC, createContext, useContext, useState } from "react";
 
 interface IPlantCategoryContext {
   plantCategory: string;
-   setPlantCategory: (newPlantCategory: string) => void;
+  setPlantCategory: (newPlantCategory: string) => void;
 }
 
 export const PlantCategoryContext = createContext<IPlantCategoryContext>({
-    plantCategory: "Flowering House Plants",
-    setPlantCategory: () => {},
-  });
+  plantCategory: "Cacti and Other Succulents",
+  setPlantCategory: () => {},
+});
 
-  export const PlantCategoryProvider = ({ children }) => {
-    const [plantCategory, setPlantCategory] = useState("");
-  
-  
-    return (
-      <PlantCategoryContext.Provider value={{ plantCategory, setPlantCategory }}>
-        {children}
-      </PlantCategoryContext.Provider>
-    );
-  };
+interface IProps {
+  children: object | null;
+}
+
+export const PlantCategoryProvider: FC<IProps> = ({ children }) => {
+  const [plantCategory, setPlantCategory] = useState("");
+
+  return (
+    <PlantCategoryContext.Provider value={{ plantCategory, setPlantCategory }}>
+      {children}
+    </PlantCategoryContext.Provider>
+  );
+};

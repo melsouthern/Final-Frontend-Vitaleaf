@@ -15,7 +15,7 @@ const SingleCategoryPlantScreen = (props: any) => {
 
   //const {route} = props
   //const {plantCategory, setPlantCategory} = props;
-  //console.log(plantCategory,'<----props?')
+  console.log(plantCategory,'<----props?')
 
   useEffect(() => {
     getPlants(plantCategory)
@@ -25,7 +25,7 @@ const SingleCategoryPlantScreen = (props: any) => {
       })
       .catch((err) => {
         console.log(err, "<-----err");
-      }, []);
+      }, [plantCategory]);
   });
 
   return (

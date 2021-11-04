@@ -1,5 +1,5 @@
-import React, {FC} from "react";
-import { useState, useRef,useContext } from "react";
+import React, { FC } from "react";
+import { useState, useRef, useContext } from "react";
 import { getPlants } from "./utils/Api";
 import {
   TouchableOpacity,
@@ -13,15 +13,14 @@ import {
 import { Searchbar } from "react-native-paper";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { PlantCategoryContext, PlantCategoryProvider } from "./utils/Context";
- 
 
-const SearchScreen = (props:any) => {
+const SearchScreen = (props: any) => {
   const { navigation } = props;
   const [searchQuery, setSearchQuery] = React.useState("");
   // const {plantCategory, setPlantCategory} = props;
-  
+
   // const [plantCategory, setPlantCategory] = useState<string | null>("")
-   
+
   const onChangeSearch = (query: string) => setSearchQuery(query);
   const [indexSelected, setIndexSelected] = useState(0);
 
@@ -44,85 +43,78 @@ const SearchScreen = (props:any) => {
     { id: "Cacti and Other Succulents", image: IMAGES.image3 },
   ]);
 
-
   const { plantCategory, setPlantCategory } = useContext(PlantCategoryContext);
 
   const handleOnPress = (item: { id: string; image?: any }) => {
-    
     setPlantCategory(item.id);
-    console.log(item.id, "<----item.id")
-    
-    navigation.navigate("Single Plant Category");
-    console.log(plantCategory, '<---- plantCategory')
-  };
+    console.log(item.id, "<----item.id");
 
-  
+    navigation.navigate("Single Plant Category");
+    console.log(plantCategory, "<---- plantCategory");
+  };
 
   return (
     <PlantCategoryProvider>
-    <View
-      style={{ flex: 1, justifyContent: "flex-start", alignItems: "center" }}
-    >
+      <View
+        style={{ flex: 1, justifyContent: "flex-start", alignItems: "center" }}
+      >
+        <Searchbar
+          style={styles.searchbar}
+          placeholder="Search"
+          onChangeText={onChangeSearch}
+          value={searchQuery}
+        />
 
-      <Searchbar
-        style={styles.searchbar}
-        placeholder="Search"
-        onChangeText={onChangeSearch}
-        value={searchQuery}
-      />
-
-      <View style={{ flex: 1, alignItems: "center" }}>
-        {/* Title JSX Remains same */}
-        {/* Carousel View */}
-        <View style={{ flex: 1, marginTop: 20 }}>
-          <Carousel
-            layout="default"
-            data={images}
-            sliderWidth={width}
-            itemWidth={width}
-            renderItem={({ item, index }) => (
-              <TouchableOpacity onPress={() => handleOnPress(item)}>
-                <Text style={{ fontSize: 30 }}>
-                  {item.id}
-                </Text>
-                <Image
-                  key={index}
-                  style={{ width: "100%", height: "100%" }}
-                  resizeMode="contain"
-                  source={item.image}
-                />
-              </TouchableOpacity>
-            )}
-            onSnapToItem={(index) => onSelect(index)}
-          />
-          <View
-            style={{
-              marginTop: 20,
-              paddingHorizontal: 32,
-              alignSelf: "flex-end",
-            }}
-          >
-            <Text
+        <View style={{ flex: 1, alignItems: "center" }}>
+          {/* Title JSX Remains same */}
+          {/* Carousel View */}
+          <View style={{ flex: 1, marginTop: 20 }}>
+            <Carousel
+              layout="default"
+              data={images}
+              sliderWidth={width}
+              itemWidth={width}
+              renderItem={({ item, index }) => (
+                <TouchableOpacity onPress={() => handleOnPress(item)}>
+                  <Text style={{ fontSize: 30 }}>{item.id}</Text>
+                  <Image
+                    key={index}
+                    style={{ width: "100%", height: "100%" }}
+                    resizeMode="contain"
+                    source={item.image}
+                  />
+                </TouchableOpacity>
+              )}
+              onSnapToItem={(index) => onSelect(index)}
+            />
+            <View
               style={{
-                color: "black",
-                fontSize: 22,
+                marginTop: 20,
+                paddingHorizontal: 32,
+                alignSelf: "flex-end",
               }}
             >
-              {/* {indexSelected + 1}/{images.length} */}
-            </Text>
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: 22,
+                }}
+              >
+                {/* {indexSelected + 1}/{images.length} */}
+              </Text>
+            </View>
+            <Pagination
+              inactiveDotColor="gray"
+              dotColor={"orange"}
+              activeDotIndex={indexSelected}
+              dotsLength={images.length}
+              animatedDuration={150}
+              inactiveDotScale={1}
+            />
           </View>
-          <Pagination
-            inactiveDotColor="gray"
-            dotColor={"orange"}
-            activeDotIndex={indexSelected}
-            dotsLength={images.length}
-            animatedDuration={150}
-            inactiveDotScale={1}
-          />
         </View>
-      </View>
 
-      {/* <View style={styles.categoryPictureContainer}>
+        {/* <View style={styles.categoryPictureContainer}>
         <TouchableOpacity  style={styles.buttonContainer} onPress={handleOnPress}>  
         <Image style={styles.categoryImage} name={'cat1'}source={require('../assets/cat1.jpg')}
            />
@@ -145,7 +137,7 @@ const SearchScreen = (props:any) => {
 
         </View> */}
 
-      {/* <TouchableOpacity style={styles.buttonContainer} onPress={getPlants}>  
+        {/* <TouchableOpacity style={styles.buttonContainer} onPress={getPlants}>  
         <Text style={styles.buttonText}>All The Plants</Text>
         </TouchableOpacity>
         
@@ -161,10 +153,10 @@ const SearchScreen = (props:any) => {
         onPress={() => navigation.navigate('Single Looked Up Plant')}>
         <Text style={styles.buttonText}>Single Plant</Text>
       </TouchableOpacity> */}
-    </View>
+      </View>
     </PlantCategoryProvider>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -190,7 +182,7 @@ const styles = StyleSheet.create({
   },
   searchbar: {
     width: 300,
-    marginTop:10
+    marginTop: 10,
   },
   categoryImage: {
     width: 100,
