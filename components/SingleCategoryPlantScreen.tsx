@@ -1,35 +1,25 @@
 import React from "react";
 import { View, Text, ScrollView, StyleSheet } from "react-native";
-import { useState, useRef, useContext, useEffect } from "react";
-import { PlantCategoryContext, PlantCategoryProvider } from "./utils/Context";
+import { useState, useEffect } from "react";
 import { getPlants } from "./utils/Api";
 import { ListItem, Avatar } from "react-native-elements";
 
 const SingleCategoryPlantScreen = (props: any) => {
-  const { plantCategory, setPlantCategory } = useContext(PlantCategoryContext);
   const [plants, setPlants] = useState([]);
-  // interface IMyPlantCategoryProps {
-  //   plantCategory: string;
-  //   setPlantCategory: (newPlantCategory: string) => void;
-  // }
-
-  //const {route} = props
-  //const {plantCategory, setPlantCategory} = props;
-  console.log(plantCategory,'<----props?')
+  const {plantCategoryId} = props.route.params
 
   useEffect(() => {
-    getPlants(plantCategory)
+    getPlants(plantCategoryId)
       .then((response) => {
         setPlants(response);
-        //console.log(response)
       })
       .catch((err) => {
         console.log(err, "<-----err");
-      }, [plantCategory]);
-  });
+      });
+  },[]);
 
   return (
-    <PlantCategoryProvider>
+    
       <View style={styles.subtitleView}>
       <ScrollView style={styles.scrollView}>
         {plants.map((plant, i) => (
@@ -44,7 +34,7 @@ const SingleCategoryPlantScreen = (props: any) => {
         </ScrollView>
       </View>
       
-    </PlantCategoryProvider>
+    
   );
 };
 

@@ -27,9 +27,10 @@ Amplify.configure({
 
 function App() {
 
-  
+  //SafeAreaProvider positions stuff around operating system elements like notches and status bars
   return (
     <UserProvider>
+      
       <SafeAreaProvider>
         <NavigationContainer>
           <MainStackNavigator />

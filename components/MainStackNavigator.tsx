@@ -22,13 +22,7 @@ function getHeaderTitle(route:object) {
   }
 
 function MainStackNavigator() {
-  // interface IMyPlantCategoryProps {
-  //   plantCategory: string;
-  //   setPlantCategory: (newPlantCategory: string) => void;
-  // }
-  // const [plantCategory, setPlantCategory] = useState<IMyPlantCategoryProps>({
-  //   plantCategory: "",
-  // setPlantCategory: () => {},})
+  
 
   const [plantCategory, setPlantCategory] = useState<string | null>("")
   
@@ -50,10 +44,7 @@ function MainStackNavigator() {
         <Stack.Screen name='Home' component={MainTabNavigator} options={({route}) => ({
           title: getHeaderTitle(route),
         })}  />
-        {/* <Stack.Screen name='Calendar' component={CalendarScreen} />
-        <Stack.Screen name='Search' component={SearchScreen} />
-        <Stack.Screen name='Camera' component={CameraScreen} />
-        <Stack.Screen name='Light Meter' component={LightMeterScreen} /> */}
+        
         <Stack.Screen name="Single Looked Up Plant" component={SingleLookedUpPlantScreen} />
         <Stack.Screen name="Single Plant Category" component={SingleCategoryPlantScreen} />
       </Stack.Navigator>
