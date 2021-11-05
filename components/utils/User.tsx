@@ -26,6 +26,8 @@ interface IProps {
 export const UserProvider: FC<IProps> = ({ children }) => {
   const [userName, setUserName] = useState("");
 
+
+  //this grabs username from Cognito
   const getUserName = async () => {
     const user = await Auth.currentAuthenticatedUser();
     setUserName(user.username);
