@@ -4,19 +4,22 @@ import { useState, useEffect } from "react";
 import { getPlants } from "./utils/Api";
 import { ListItem, Avatar } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
+import { ProgressBar, Colors } from 'react-native-paper';
 
 const SingleCategoryPlantScreen = (props: any) => {
   const {navigation} = props
   const [plants, setPlants] = useState([]);
   const {plantCategoryId} = props.route.params
   const [selectedId, setSelectedId] = useState(null);
-
+  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
+    setLoading(true)
     getPlants(plantCategoryId)
       .then((response) => {
         setPlants(response);
+        setLoading(false)
       })
       .catch((err) => {
         console.log(err, "<-----err");
@@ -39,6 +42,16 @@ const SingleCategoryPlantScreen = (props: any) => {
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#d6d6d6";
     const color = item.id === selectedId ? 'white' : 'black';
+
+    if (loading)
+    return (
+      <View>
+            <Text>loading...</Text>
+            <ProgressBar />
+     </View>
+    );
+    
+  
 
     return (
       <Item
