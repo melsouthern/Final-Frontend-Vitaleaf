@@ -10,17 +10,21 @@ TouchableOpacity,
   Dimensions,
   StyleSheet,
 } from "react-native";
-import { Searchbar } from "react-native-paper";
+import { Searchbar as Searchbox } from "react-native-paper";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-
-
 
 const SearchScreen = (props: any) => {
   const { navigation } = props;
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [plantSearch, setPlantSearch] = React.useState('')
   
   const onChangeSearch = (query: string) => setSearchQuery(query);
   const [indexSelected, setIndexSelected] = useState(0);
+
+  const handleSearch = (event: object) => {
+    console.log(searchQuery, 'searchQuery in handle search')
+    navigation.navigate("Searched For Plants", {searchQuery});
+  }
 
   const onSelect = (indexSelected: number) => {
     setIndexSelected(indexSelected);
@@ -49,16 +53,17 @@ const SearchScreen = (props: any) => {
     <View
       style={{ flex: 1, justifyContent: "flex-start", alignItems: "center" }}
     >
-      <Searchbar
+      <Searchbox
         style={styles.searchbar}
         placeholder="Search"
         onChangeText={onChangeSearch}
         value={searchQuery}
+        onSubmitEditing={(searchQuery) => handleSearch(searchQuery)}
+        
       />
 
       <View style={{ flex: 1, alignItems: "center" }}>
-        {/* Title JSX Remains same */}
-        {/* Carousel View */}
+      
         <View style={{ flex: 1, marginTop: 20 }}>
           <Carousel
             layout="default"

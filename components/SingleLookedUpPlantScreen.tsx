@@ -1,15 +1,11 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-    ScrollView,
-} from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { useState, useEffect } from "react";
 import { getSinglePlant } from "./utils/Api";
+import { getPlants } from "./utils/Api";
 import { Image } from "react-native-elements";
 import { Button } from "react-native-elements";
-import { ActivityIndicator, Colors } from 'react-native-paper';
+import { ActivityIndicator, Colors } from "react-native-paper";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 const SingleLookedUpPlantScreen = (props: any) => {

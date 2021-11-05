@@ -15,7 +15,7 @@ import { Authenticator } from "aws-amplify-react-native";
 import { withAuthenticator } from "aws-amplify-react-native";
 import { UserProvider } from "./components/utils/User";
 
-const Drawer = createDrawerNavigator();
+
 Amplify.configure({
   ...config,
   Analytics: {
