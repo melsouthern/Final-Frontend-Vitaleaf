@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   StatusBar,
+  ImageBackground
 } from "react-native";
 import { useState, useEffect } from "react";
 import { getPlants } from "./utils/Api";
@@ -21,11 +22,10 @@ const SearchedForPlants = (props: any) => {
   const [selectedId, setSelectedId] = useState(null);
   const [loading, setLoading] = useState(true);
   const { plantCategory, searchQuery } = props.route.params;
-  
 
   useEffect(() => {
     setLoading(true);
-    getPlants(plantCategory,searchQuery)
+    getPlants(plantCategory, searchQuery)
       .then((response) => {
         setSearchedPlants(response);
         setLoading(false);
@@ -41,15 +41,17 @@ const SearchedForPlants = (props: any) => {
 
   const Item = ({ item, onPress, backgroundColor, textColor }) => (
     <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+    <ImageBackground imageStyle={{opacity: 0.4}} source={{ uri: item.image_url }} style={styles.imagebackground}>
       <Text style={[styles.title, textColor]}>{item.commonName}</Text>
       <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
-      <Avatar source={{ uri: item.image_url }} />
+      {/* <Avatar source={{ uri: item.image_url }} /> */}
+      </ImageBackground>
     </TouchableOpacity>
   );
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#d6d6d6";
-    const color = item.id === selectedId ? "white" : "black";
+    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#082d0fff";
+    const color = item.id === selectedId ? "white" : "#dee5e5ff";
 
     if (loading)
       return (
@@ -91,7 +93,7 @@ const styles = StyleSheet.create({
   ratingImage: { height: 19.21, width: 100 },
   ratingText: { paddingLeft: 10, color: "grey" },
   scrollView: {
-    backgroundColor: "white",
+    backgroundColor: "#082d0fff",
     marginHorizontal: 20,
   },
   container: {
@@ -103,15 +105,22 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 8,
     marginHorizontal: 20,
-    borderRadius: 10,
+    borderRadius: 15,
   },
   title: {
-    fontSize: 20,
-    fontWeight: "bold",
+    fontSize: 25,
+    fontWeight:"900",
   },
   subtitle: {
-    fontSize: 10,
+    fontSize: 15,
   },
+  imagebackground: {
+  width: '100%', 
+  height: '100%', 
+  borderStyle: 'solid', 
+  borderColor: 'grey', 
+  borderWidth: 1,
+}
 });
 
 export default SearchedForPlants;

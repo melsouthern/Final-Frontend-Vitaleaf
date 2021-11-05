@@ -33,7 +33,7 @@ function MainStackNavigator() {
         gestureEnabled: true,
         gestureDirection: "horizontal",
         headerStyle: {
-          backgroundColor: '#3564c8'
+          backgroundColor: '#17B890'
         },
         headerTitleStyle: {
           fontWeight: 'bold'

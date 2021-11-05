@@ -14,17 +14,17 @@ const getPlants = (plantCategory:string | null, searchQuery:string) => {
         }
       })
       .then(({ data }) => {
-          //console.log(data)
+         
         return data;
       });
   };
 
   const getSinglePlant = (plantCommonName:string) => {
-    console.log(plantCommonName)
+    
     return listApi
   .get(`/plants/${plantCommonName}`, )
   .then(({ data }) => {
-      //console.log(data)
+      
     return data;
   });
 };
