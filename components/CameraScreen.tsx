@@ -3,6 +3,12 @@ import * as Permissions from "expo-permissions"
 import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import * as ImagePicker from 'expo-image-picker'
 import {Camera} from 'expo-camera'
+import axios, { Axios } from 'axios';
+import ImgToBase64 from 'react-native-image-base64'; // this should work
+import makeApiCall from './utils/makeApiCallToPlantID'
+// import imageToBase64 from 'image-to-base64/browser'
+// const imageToBase64 = require('image-tobase64') - cannot require
+
 
 
 const styles = StyleSheet.create({
@@ -56,12 +62,16 @@ const styles = StyleSheet.create({
 function CameraScreen() {
   
     const [cameraRollImage, setCameraRollImage] = useState({localUri:""})
-    const [cameraPhoto, setCameraPhoto] = useState({height:"", uri:"", width:""}) 
+    const [cameraPhoto, setCameraPhoto] = useState({height:"", uri:"", width:"", base64:""}) 
     const [haveCameraPermission, setHaveCameraPermission] = useState("")
     const [type, setType] = useState(Camera.Constants.Type.back);
-    const [showCamera, setShowCamera] = useState(false)
+    const [showCamera, setShowCamera] = useState(false) // not using
+   const [plantidReturn, setPlantidReturn] = useState({
+    botanicalName: "",
+    probability: 1, })
 
-    const cameraRef = useRef(null)   // Was - cameraRef = useRef(null)
+
+    const cameraRef = useRef(null)   
   
     
 
@@ -118,9 +128,50 @@ function CameraScreen() {
     );
   }
 
+  // Break
+
+  async function makeApiCall () {
+    let plant:any;
+    try {
+      const response = await axios.post(
+        "https://api.plant.id/v2/identify",
+        {
+          api_key: "iV7mwOKohIvJItMVxVm9EaZOuivehgHxZPYoEbYUEyWkKYtOAF",
+          images: [cameraPhoto.base64],
+          plant_language: "en",
+          plant_details: ["common_names"],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+
+      const suggestedPlants = response.data.suggestions.map((plant) => {
+        return {
+          botanicalName: plant.plant_name,
+          // commonName: plant.plant_details.common_names,
+          probability: plant.probability,
+        }
+      })
+      console.log(suggestedPlants, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      // set state. to do
+      const apiResponse = await axios.post("https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta/plants", 
+      {plantsFromPlantId: suggestedPlants}
+      )
+      console.log(apiResponse.data)
+      // const returnedPlantData = response
+      
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
   if (cameraPhoto.height !== ""){
-    // console.log(cameraPhoto, "PHOTO CHECK")
-    // console.log(cameraPhoto.uri, "URI CHECK")
+    
+    // console.log(cameraPhoto)
     
     return (
       <View style={styles.container}>
@@ -136,6 +187,18 @@ function CameraScreen() {
 
       <Text style={styles.buttonText}>Save chosen image</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        onPress={ ()=> {makeApiCall()}
+
+
+        }
+          
+        
+        style={styles.button}
+        >
+
+      <Text style={styles.buttonText}>Identify this plant</Text>
+      </TouchableOpacity>
     </View>
   ); }
 
@@ -149,6 +212,7 @@ function CameraScreen() {
        allowsEditing: true,
        aspect: [4, 3],
        quality: 1,
+       base64: true,
 
      })
     //  console.log(photo)
