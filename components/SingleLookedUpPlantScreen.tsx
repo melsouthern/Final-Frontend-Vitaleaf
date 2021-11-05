@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 import { useState, useEffect } from "react"
 import { getSinglePlant } from './utils/Api';
 import { Image } from 'react-native-elements';
@@ -13,13 +13,12 @@ const SingleLookedUpPlantScreen = (props:any) => {
   const {commonName} = props.route.params
   
   const imageSource = singlePlant.image_url
-  console.log(imageSource)
+  
 
   useEffect(() => {
     getSinglePlant(commonName)
       .then((response) => {
-        console.log(response, '<---response')
-        setSinglePlant(response);
+       setSinglePlant(response);
         
       })
       .catch((err) => {
@@ -28,6 +27,7 @@ const SingleLookedUpPlantScreen = (props:any) => {
   },[]);
 
     return (
+      <ScrollView>
         <View style={ styles.container}>
         <Image  source={ {uri:imageSource} }  style={{ width: 250, height: 250, borderRadius:100 }}  PlaceholderContent={<ActivityIndicator />}/>
         <Text style={styles.title}> {singlePlant.commonName} </Text>
@@ -35,6 +35,7 @@ const SingleLookedUpPlantScreen = (props:any) => {
         <Text style={styles.description}> {singlePlant.description} </Text>
         <Button icon={{ name: "arrow-right", size: 15, color: "white" }}  title="Add To Inventory"/>
       </View>
+      </ScrollView>
     );
 }
 
@@ -65,6 +66,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '300',
     marginHorizontal:20,
+    lineHeight: 20,
     
   }
 })

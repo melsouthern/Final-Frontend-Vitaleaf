@@ -81,13 +81,14 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
   },
   item: {
-    padding: 20,
+    flex:1,
+    padding: 10,
     marginVertical: 8,
-    marginHorizontal: 16,
+    marginHorizontal: 20,
     borderRadius:10,
   },
   title: {
-    fontSize: 15,
+    fontSize: 20,
     fontWeight:'bold',
   },
   subtitle: {
