@@ -6,6 +6,7 @@ import { ListItem, Avatar } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
 
 const SingleCategoryPlantScreen = (props: any) => {
+  const {navigation} = props
   const [plants, setPlants] = useState([]);
   const {plantCategoryId} = props.route.params
   const [selectedId, setSelectedId] = useState(null);
@@ -21,6 +22,10 @@ const SingleCategoryPlantScreen = (props: any) => {
         console.log(err, "<-----err");
       });
   },[]);
+
+  const handleOnPress = (commonName:string) => {
+        navigation.navigate("Single Looked Up Plant", commonName);
+};
 
   const Item = ({ item, onPress, backgroundColor, textColor }) => (
     <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
@@ -38,13 +43,14 @@ const SingleCategoryPlantScreen = (props: any) => {
     return (
       <Item
         item={item}
-        onPress={() => setSelectedId(item.botanicalName)}
+        onPress={() => handleOnPress(item)}
         backgroundColor={{ backgroundColor }}
         textColor={{ color }}
       />
     );
+    
   };
-  
+  console.log(selectedId)
   return (
     
       <SafeAreaView style={styles.container}>
