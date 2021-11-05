@@ -119,8 +119,8 @@ function CameraScreen() {
   }
 
   if (cameraPhoto.height !== ""){
-    console.log(cameraPhoto, "PHOTO CHECK")
-    console.log(cameraPhoto.uri, "URI CHECK")
+    // console.log(cameraPhoto, "PHOTO CHECK")
+    // console.log(cameraPhoto.uri, "URI CHECK")
     
     return (
       <View style={styles.container}>
