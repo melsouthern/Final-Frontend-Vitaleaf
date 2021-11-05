@@ -17,4 +17,14 @@ const getPlants = (plantCategory:string) => {
       });
   };
 
-  export {getPlants}
+  const getSinglePlant = (plantCommonName:string) => {
+    console.log(plantCommonName)
+    return listApi
+  .get(`/plants/${plantCommonName}`, )
+  .then(({ data }) => {
+      //console.log(data)
+    return data;
+  });
+};
+
+  export {getPlants, getSinglePlant}
