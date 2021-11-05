@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './HomeScreen';
@@ -8,6 +9,7 @@ import SearchScreen from './SearchScreen';
 import CameraScreen from './CameraScreen';
 import LightMeterScreen from './LightMeterScreen';
 import SingleLookedUpPlantScreen from './SingleLookedUpPlantScreen';
+import SingleCategoryPlantScreen from './SingleCategoryPlantScreen';
 import {
       getFocusedRouteNameFromRoute,
   } from '@react-navigation/native';
@@ -20,6 +22,16 @@ function getHeaderTitle(route:object) {
   }
 
 function MainStackNavigator() {
+  // interface IMyPlantCategoryProps {
+  //   plantCategory: string;
+  //   setPlantCategory: (newPlantCategory: string) => void;
+  // }
+  // const [plantCategory, setPlantCategory] = useState<IMyPlantCategoryProps>({
+  //   plantCategory: "",
+  // setPlantCategory: () => {},})
+
+  const [plantCategory, setPlantCategory] = useState<string | null>("")
+  
   return (
     
       <Stack.Navigator screenOptions={{
@@ -32,7 +44,9 @@ function MainStackNavigator() {
           fontWeight: 'bold'
         },
         headerTintColor: '#ffffff'
-      }}>
+      }}
+      
+      >
         <Stack.Screen name='Home' component={MainTabNavigator} options={({route}) => ({
           title: getHeaderTitle(route),
         })}  />
@@ -40,7 +54,8 @@ function MainStackNavigator() {
         <Stack.Screen name='Search' component={SearchScreen} />
         <Stack.Screen name='Camera' component={CameraScreen} />
         <Stack.Screen name='Light Meter' component={LightMeterScreen} /> */}
-        <Stack.Screen name="Single Looked Up Plant" component={SingleLookedUpPlantScreen}  />
+        <Stack.Screen name="Single Looked Up Plant" component={SingleLookedUpPlantScreen} />
+        <Stack.Screen name="Single Plant Category" component={SingleCategoryPlantScreen} />
       </Stack.Navigator>
     
   )

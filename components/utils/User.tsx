@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { FC, createContext, useContext, useState } from "react";
 import { Auth } from "aws-amplify";
 
 interface IUserContext {
@@ -19,7 +19,11 @@ export async function signOut() {
   }
 }
 
-export const UserProvider = ({ children }) => {
+interface IProps {
+  children: object | null;
+}
+
+export const UserProvider: FC<IProps> = ({ children }) => {
   const [userName, setUserName] = useState("");
 
   const getUserName = async () => {
