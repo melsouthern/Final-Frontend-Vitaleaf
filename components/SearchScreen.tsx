@@ -22,8 +22,7 @@ const SearchScreen = (props: any) => {
   const [indexSelected, setIndexSelected] = useState(0);
 
   const handleSearch = (event: object) => {
-    console.log(searchQuery, 'searchQuery in handle search')
-    navigation.navigate("Searched For Plants", {searchQuery});
+        navigation.navigate("Searched For Plants", {searchQuery});
   }
 
   const onSelect = (indexSelected: number) => {

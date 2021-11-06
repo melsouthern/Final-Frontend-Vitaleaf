@@ -3,12 +3,13 @@ import { useState, useContext } from "react";
 import { Auth } from "aws-amplify";
 import { Text, View, Button, TouchableOpacity, StyleSheet } from "react-native";
 import { UserContext, UserProvider } from "./utils/User";
+import {getUserFromDatabase, getUserPlantsFromDatabase} from "./utils/Api"
 
 function HomeScreen(props: any) {
   const { userName, setUserName } = useContext(UserContext);
-  console.log(userName);
-
   const { navigation } = props;
+
+  
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

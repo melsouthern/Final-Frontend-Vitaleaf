@@ -70,7 +70,7 @@ const SingleCategoryPlantScreen = (props: any) => {
       />
     );
   };
-  console.log(selectedId);
+  
   return (
     <SafeAreaView style={styles.container}>
       <FlatList

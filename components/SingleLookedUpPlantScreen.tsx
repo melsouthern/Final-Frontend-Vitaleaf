@@ -1,18 +1,28 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import { useState, useEffect } from "react";
-import { getSinglePlant } from "./utils/Api";
+import { useState, useEffect, useContext, useRef } from "react";
+import { getSinglePlant, postUserPlantToDatabase } from "./utils/Api";
 import { getPlants } from "./utils/Api";
 import { Image } from "react-native-elements";
 import { Button } from "react-native-elements";
 import { ActivityIndicator, Colors } from "react-native-paper";
+import { UserContext, UserProvider } from "./utils/User";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { objectLessAttributes } from "@aws-amplify/core";
 
 const SingleLookedUpPlantScreen = (props: any) => {
   const { route } = props;
   const [singlePlant, setSinglePlant] = useState({});
-  const { commonName } = props.route.params;
+  // const mounted = useRef(false);
+  const [clicked, setClicked] = useState(false)
+  const [plantToPost, setPlantToPost] = useState({
+    commonName: "",
+    nextWatering: "",
+    lastWatered: "",
+  });
 
+  const { commonName } = props.route.params;
+  const { userName } = useContext(UserContext);
   const imageSource = singlePlant.image_url;
 
   useEffect(() => {
@@ -25,6 +35,20 @@ const SingleLookedUpPlantScreen = (props: any) => {
       });
   }, []);
 
+  const handleAddToInventory = (singlePlant: object) => {
+    setClicked(true)
+    setPlantToPost({
+      commonName: singlePlant.commonName,
+      nextWatering: "",
+      lastWatered: "",
+    });
+    
+  };
+
+  useEffect(() => {
+   if( clicked ) postUserPlantToDatabase(userName, plantToPost)
+  setClicked(false)}, [plantToPost]);
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -36,9 +60,12 @@ const SingleLookedUpPlantScreen = (props: any) => {
         <Text style={styles.title}> {singlePlant.commonName} </Text>
         <Text style={styles.subtitle}> {singlePlant.botanicalName} </Text>
         <Text style={styles.description}> {singlePlant.description} </Text>
+        
         <Button
+        
           icon={{ name: "arrow-right", size: 15, color: "white" }}
           title="Add To Inventory"
+          onPress={() => handleAddToInventory(singlePlant)}
         />
       </View>
     </ScrollView>
