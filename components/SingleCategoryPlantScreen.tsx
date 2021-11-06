@@ -79,6 +79,9 @@ const SingleCategoryPlantScreen = (props: any) => {
         renderItem={renderItem}
         keyExtractor={(item) => item.botanicalName}
         extraData={selectedId}
+        initialNumToRender={5}
+        maxToRenderPerBatch={1}
+        windowSize={21}
       />
     </SafeAreaView>
   );
