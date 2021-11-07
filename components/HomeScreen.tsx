@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   title: {
-    fontSize: 15,
+    fontSize: 13,
     fontWeight: "500",
   },
   subtitle: {
