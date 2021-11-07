@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   StatusBar,
-  ImageBackground
+  ImageBackground,
 } from "react-native";
 import { useState, useEffect } from "react";
 import { getPlants } from "./utils/Api";
@@ -41,34 +41,37 @@ const SearchedForPlants = (props: any) => {
 
   const Item = ({ item, onPress, backgroundColor, textColor }) => (
     <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-    <ImageBackground imageStyle={{opacity: 0.4}} source={{ uri: item.image_url }} style={styles.imagebackground}>
-      <Text style={[styles.title, textColor]}>{item.commonName}</Text>
-      <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
-      {/* <Avatar source={{ uri: item.image_url }} /> */}
+      <ImageBackground
+        imageStyle={{ opacity: 0.4 }}
+        source={{ uri: item.image_url }}
+        style={styles.imagebackground}
+      >
+        <Text style={[styles.title, textColor]}>{item.commonName}</Text>
+        <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
+        {/* <Avatar source={{ uri: item.image_url }} /> */}
       </ImageBackground>
     </TouchableOpacity>
   );
 
-  if (searchedPlants.length === 0) {return ( 
-    <SafeAreaView style={styles.container}>
-    <Text style={styles.title}> No Results Found</Text>
-    </SafeAreaView>
-  )
+  if (loading)
+    return (
+      <View>
+        <Text style={styles.title}>loading...</Text>
+        <ProgressBar progress={0.75} color={Colors.lightGreen800} />
+      </View>
+    );
+
+  if (searchedPlants.length === 0) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.title}> No Results Found</Text>
+      </SafeAreaView>
+    );
   }
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#082d0fff";
     const color = item.id === selectedId ? "white" : "#dee5e5ff";
-
-    if (loading)
-      return (
-        <View>
-          <Text>loading...</Text>
-          <ProgressBar />
-        </View>
-      );
-
-     
 
     return (
       <Item
@@ -118,18 +121,18 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 25,
-    fontWeight:"900",
+    fontWeight: "900",
   },
   subtitle: {
     fontSize: 15,
   },
   imagebackground: {
-  width: '100%', 
-  height: '100%', 
-  borderStyle: 'solid', 
-  borderColor: 'grey', 
-  borderWidth: 1,
-}
+    width: "100%",
+    height: "100%",
+    borderStyle: "solid",
+    borderColor: "grey",
+    borderWidth: 1,
+  },
 });
 
 export default SearchedForPlants;

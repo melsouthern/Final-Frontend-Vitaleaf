@@ -54,12 +54,12 @@ const SingleCategoryPlantScreen = (props: any) => {
   );
 
   if (loading)
-    return (
-      <View>
-        <Text style={styles.title}>loading...</Text>
-        <ProgressBar />
-      </View>
-    );
+      return (
+        <View>
+          <Text style={styles.title}>loading...</Text>
+          <ProgressBar progress = {0.75} color={Colors.lightGreen800} />
+        </View>
+      )
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#082d0fff";
