@@ -25,7 +25,6 @@ const SearchedForPlants = (props: any) => {
 
   useEffect(() => {
     setLoading(true);
-    console.log(searchedPlants)
     getPlants(plantCategory, searchQuery)
       .then((response) => {
         setSearchedPlants(response);
@@ -50,6 +49,13 @@ const SearchedForPlants = (props: any) => {
     </TouchableOpacity>
   );
 
+  if (searchedPlants.length === 0) {return ( 
+    <SafeAreaView style={styles.container}>
+    <Text style={styles.title}> No Results Found</Text>
+    </SafeAreaView>
+  )
+  }
+
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#082d0fff";
     const color = item.id === selectedId ? "white" : "#dee5e5ff";
@@ -62,13 +68,7 @@ const SearchedForPlants = (props: any) => {
         </View>
       );
 
-      
-      if (searchedPlants.length === 0) {return ( 
-        <SafeAreaView style={styles.container}>
-        <Text> No Results Found</Text>
-        </SafeAreaView>
-      )
-      }
+     
 
     return (
       <Item
