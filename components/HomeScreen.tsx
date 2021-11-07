@@ -1,20 +1,32 @@
 import React from "react";
 import { useState, useContext, useEffect } from "react";
 import { Auth } from "aws-amplify";
-import { Text, View, TouchableOpacity, StyleSheet, ImageBackground, SafeAreaView,StatusBar, Image } from "react-native";
-import { Button, Card, Title, Paragraph } from 'react-native-paper';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  ImageBackground,
+  SafeAreaView,
+  StatusBar,
+  Image,
+  ScrollView,
+} from "react-native";
+import { Button, Card, Title, Paragraph } from "react-native-paper";
 import { UserContext, UserProvider } from "./utils/User";
-import {getUserFromDatabase, getUserPlantsFromDatabase} from "./utils/Api"
+import { getUserFromDatabase, getUserPlantsFromDatabase } from "./utils/Api";
 import { FlatList } from "react-native-gesture-handler";
 import { ProgressBar, Colors } from "react-native-paper";
 import { ListItem, Avatar } from "react-native-elements";
+import { useIsFocused } from "@react-navigation/native";
 
 function HomeScreen(props: any) {
   const { userName, setUserName } = useContext(UserContext);
-  const [userPlants, setUserPlants] = useState([])
+  const [userPlants, setUserPlants] = useState([]);
   const { navigation } = props;
   const [selectedId, setSelectedId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     setLoading(true);
@@ -26,30 +38,25 @@ function HomeScreen(props: any) {
       .catch((err) => {
         console.log(err, "<-----err");
       });
-  }, []);
+  }, [isFocused]);
+  
 
   const handleOnPress = (commonName: string) => {
     navigation.navigate();
   };
 
-  const EmptyListMessage = ({item}) => {
+  const EmptyListMessage = ({ item }) => {
     return (
       // Flat List Item
-      <Text
-        style={styles.emptyListStyle}
-        onPress={() => getItem(item)}>
-        No Plants Yet......
-      </Text>
+      <Text onPress={() => getItem(item)}>No Plants Yet......</Text>
     );
   };
 
   const Item = ({ item, onPress, backgroundColor, textColor }) => (
     <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-      
       <Text style={[styles.title, textColor]}>{item.commonName}</Text>
       <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
       <Avatar source={{ uri: item.image_url }} />
-      
     </TouchableOpacity>
   );
 
@@ -66,7 +73,6 @@ function HomeScreen(props: any) {
       );
 
     return (
-      
       <Item
         item={item}
         onPress={() => handleOnPress(item)}
@@ -75,36 +81,32 @@ function HomeScreen(props: any) {
       />
     );
   };
-  
+
   return (
     <SafeAreaView style={styles.container}>
-      <Image style={styles.logo} source={require('../assets/free-logo-1.jpg')} />
       <Text style={styles.titletext}>{userName}'s plants...</Text>
-      
+
       <FlatList
         contentContainerStyle={styles.userPlantView}
         numColumns={2}
         horizontal={false}
         data={userPlants}
         renderItem={renderItem}
-        keyExtractor={(item) => item.botanicalName}
+        keyExtractor={(item, index) => String(index)}
         extraData={selectedId}
         initialNumToRender={5}
         maxToRenderPerBatch={1}
         windowSize={21}
         ListEmptyComponent={EmptyListMessage}
       />
-      
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   userPlantView: {
-    
     paddingLeft: 10,
     paddingTop: 5,
-    
   },
   ratingImage: { height: 19.21, width: 100 },
   ratingText: { paddingLeft: 10, color: "grey" },
@@ -117,35 +119,23 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
   },
   item: {
-    flex: 1/2,
+    flex: 1 / 2,
     padding: 10,
     marginVertical: 8,
     marginHorizontal: 20,
     borderRadius: 10,
   },
   title: {
-    
     fontSize: 15,
-    fontWeight:"500"
+    fontWeight: "500",
   },
   subtitle: {
     fontSize: 15,
   },
-  imagebackground: {
-    width: '100%', 
-    height: '100%', 
-    borderStyle: 'solid', 
-    borderColor: 'grey', 
-    borderWidth: 1,
-  },
   titletext: {
     fontSize: 25,
   },
-  logo: {
-    
-    resizeMode: 'cover',
-  }
+  logo: {},
 });
-
 
 export default HomeScreen;

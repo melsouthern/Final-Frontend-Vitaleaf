@@ -11,7 +11,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { objectLessAttributes } from "@aws-amplify/core";
 
 const SingleLookedUpPlantScreen = (props: any) => {
-  const { route } = props;
+  const { route, navigation } = props;
   const [singlePlant, setSinglePlant] = useState({});
   // const mounted = useRef(false);
   const [clicked, setClicked] = useState(false)
@@ -42,6 +42,7 @@ const SingleLookedUpPlantScreen = (props: any) => {
       nextWatering: "",
       lastWatered: "",
     });
+    navigation.navigate("Main", {screen: 'Home'});
     
   };
 

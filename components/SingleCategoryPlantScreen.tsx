@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   StatusBar,
-  ImageBackground
+  ImageBackground,
 } from "react-native";
 import { useState, useEffect } from "react";
 import { getPlants } from "./utils/Api";
@@ -25,7 +25,7 @@ const SingleCategoryPlantScreen = (props: any) => {
 
   useEffect(() => {
     setLoading(true);
-    getPlants(plantCategoryId)
+    getPlants(plantCategoryId, 'null')
       .then((response) => {
         setPlants(response);
         setLoading(false);
@@ -39,27 +39,31 @@ const SingleCategoryPlantScreen = (props: any) => {
     navigation.navigate("Single Looked Up Plant", commonName);
   };
 
-  const Item = ({ item, onPress, backgroundColor, textColor }) => (
+  const Item = ({ item, onPress, backgroundColor, textColor }: object) => (
     <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-       <ImageBackground imageStyle={{opacity: 0.4}} source={{ uri: item.image_url }} style={styles.imagebackground}>
-      <Text style={[styles.title, textColor]}>{item.commonName}</Text>
-      <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
-      {/* <Avatar source={{ uri: item.image_url }} /> */}
+      <ImageBackground
+        imageStyle={{ opacity: 0.4 }}
+        source={{ uri: item.image_url }}
+        style={styles.imagebackground}
+      >
+        <Text style={[styles.title, textColor]}>{item.commonName}</Text>
+        <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
+        {/* <Avatar source={{ uri: item.image_url }} /> */}
       </ImageBackground>
     </TouchableOpacity>
   );
 
+  if (loading)
+    return (
+      <View>
+        <Text style={styles.title}>loading...</Text>
+        <ProgressBar />
+      </View>
+    );
+
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#082d0fff";
     const color = item.id === selectedId ? "white" : "#dee5e5ff";
-
-    if (loading)
-      return (
-        <View>
-          <Text>loading...</Text>
-          <ProgressBar />
-        </View>
-      );
 
     return (
       <Item
@@ -70,7 +74,7 @@ const SingleCategoryPlantScreen = (props: any) => {
       />
     );
   };
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -82,6 +86,7 @@ const SingleCategoryPlantScreen = (props: any) => {
         initialNumToRender={5}
         maxToRenderPerBatch={1}
         windowSize={21}
+        onEndReachedThreshold={10} // optional
       />
     </SafeAreaView>
   );
@@ -111,20 +116,19 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   title: {
-    
     fontSize: 25,
-    fontWeight:"900"
+    fontWeight: "900",
   },
   subtitle: {
     fontSize: 15,
   },
   imagebackground: {
-    width: '100%', 
-    height: '100%', 
-    borderStyle: 'solid', 
-    borderColor: 'grey', 
+    width: "100%",
+    height: "100%",
+    borderStyle: "solid",
+    borderColor: "grey",
     borderWidth: 1,
-  }
+  },
 });
 
 export default SingleCategoryPlantScreen;

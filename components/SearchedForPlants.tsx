@@ -25,6 +25,7 @@ const SearchedForPlants = (props: any) => {
 
   useEffect(() => {
     setLoading(true);
+    console.log(searchedPlants)
     getPlants(plantCategory, searchQuery)
       .then((response) => {
         setSearchedPlants(response);
@@ -61,6 +62,14 @@ const SearchedForPlants = (props: any) => {
         </View>
       );
 
+      
+      if (searchedPlants.length === 0) {return ( 
+        <SafeAreaView style={styles.container}>
+        <Text> No Results Found</Text>
+        </SafeAreaView>
+      )
+      }
+
     return (
       <Item
         item={item}
@@ -70,7 +79,7 @@ const SearchedForPlants = (props: any) => {
       />
     );
   };
-  console.log(selectedId);
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList

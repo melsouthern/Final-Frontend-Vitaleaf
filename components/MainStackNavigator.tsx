@@ -42,7 +42,7 @@ function MainStackNavigator() {
       }}
       
       >
-        <Stack.Screen name='Home' component={MainTabNavigator} options={({route}) => ({
+        <Stack.Screen name='Main' component={MainTabNavigator} options={({route}) => ({
           title: getHeaderTitle(route),
         })}  />
         

@@ -60,7 +60,7 @@ const postUserPlantToDatabase = (username:string, plantToPost:object) => {
   return listApi
   .post(`/users/${username}/plants`, plantToPost)
   .then(({data}) => {
-    console.log(data, '<----data in postUserPlantToDatabase')
+    // console.log(data, '<----data in postUserPlantToDatabase')
     return data
   })
   .catch((err) => {
