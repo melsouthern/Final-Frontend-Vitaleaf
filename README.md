@@ -19,3 +19,5 @@ npm install --save @react-native-community/netinfo
 \$ npm i react-native-sensor-manager --save
 expo-brightness
 npm i react-native-sensors
+axios
+imageto base64

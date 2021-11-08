@@ -3,6 +3,13 @@ import * as Permissions from "expo-permissions"
 import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import * as ImagePicker from 'expo-image-picker'
 import {Camera} from 'expo-camera'
+import axios, { Axios } from 'axios';
+import ImgToBase64 from 'react-native-image-base64'; // this should work
+import makeApiCall from './utils/makeApiCallToPlantID'
+import { NavigationContainer } from '@react-navigation/native';
+// import imageToBase64 from 'image-to-base64/browser'
+// const imageToBase64 = require('image-tobase64') - cannot require
+
 
 
 const styles = StyleSheet.create({
@@ -53,15 +60,27 @@ const styles = StyleSheet.create({
   
 })
 
-function CameraScreen() {
+function CameraScreen({navigation}) {
   
     const [cameraRollImage, setCameraRollImage] = useState({localUri:""})
-    const [cameraPhoto, setCameraPhoto] = useState({height:"", uri:"", width:""}) 
+    const [cameraPhoto, setCameraPhoto] = useState({height:"", uri:"", width:"", base64:""}) 
     const [haveCameraPermission, setHaveCameraPermission] = useState("")
     const [type, setType] = useState(Camera.Constants.Type.back);
-    const [showCamera, setShowCamera] = useState(false)
+    const [showCamera, setShowCamera] = useState(false) // not using
+   const [identifiedPlant1, setIdentifiedPlant1] = useState({
+    percentage: "",
+    botanicalName: "",
+  commonName:"",
+image_url:""})
+const [identifiedPlant2, setIdentifiedPlant2] = useState({
+  percentage: "",
+  botanicalName: "",
+commonName:"",
+image_url:""})
+    
 
-    const cameraRef = useRef(null)   // Was - cameraRef = useRef(null)
+
+    const cameraRef = useRef(null)   
   
     
 
@@ -118,9 +137,88 @@ function CameraScreen() {
     );
   }
 
+  // Break
+
+  async function makeApiCall () {
+    let plant:any;
+    try {
+      const response = await axios.post(
+        "https://api.plant.id/v2/identify",
+        {
+          api_key: "iV7mwOKohIvJItMVxVm9EaZOuivehgHxZPYoEbYUEyWkKYtOAF",
+          images: [cameraPhoto.base64],
+          plant_language: "en",
+          plant_details: ["common_names"],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+
+      const suggestedPlants = response.data.suggestions.map((plant) => {
+        return {
+          botanicalName: plant.plant_name,
+          // commonName: plant.plant_details.common_names,
+          probability: plant.probability,
+        }
+      })
+      
+      
+      const apiResponse = await axios.post("https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta/plants", 
+      {plantsFromPlantId: suggestedPlants}
+      )
+     
+      setIdentifiedPlant1({
+        percentage: apiResponse.data[0].probability,
+        botanicalName: apiResponse.data[0].botanicalName,
+      commonName:apiResponse.data[0].commonName,
+    image_url:apiResponse.data[0].image_url
+  })
+      
+      
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  function resetStates() {
+    setCameraPhoto({height:"", uri:"", width:"", base64:""})
+          setIdentifiedPlant1({
+            percentage: "",
+            botanicalName: "",
+          commonName:"",
+        image_url:""})
+        setHaveCameraPermission("")
+  }
+  if(identifiedPlant1.percentage !== ""){
+ 
+ return(
+    <View style={styles.container}>
+      <Text> Your plants common name is {identifiedPlant1.commonName}, latin name {identifiedPlant1.botanicalName} with a {identifiedPlant1.percentage} probability</Text>
+        <Image
+        
+          source={{uri: identifiedPlant1.image_url }}
+          style={styles.thumbnail}
+          />
+      
+      <TouchableOpacity
+        onPress={ ()=> navigation.navigate('Main', {screen: 'Home'})
+        }
+        
+        style={styles.button}
+        >
+
+      <Text style={styles.buttonText}>Go to Home</Text>
+      </TouchableOpacity>
+    </View>
+ )
+  }
+
+
   if (cameraPhoto.height !== ""){
-    // console.log(cameraPhoto, "PHOTO CHECK")
-    // console.log(cameraPhoto.uri, "URI CHECK")
+    
+    
     
     return (
       <View style={styles.container}>
@@ -136,6 +234,18 @@ function CameraScreen() {
 
       <Text style={styles.buttonText}>Save chosen image</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        onPress={ ()=> {makeApiCall()}
+
+
+        }
+          
+        
+        style={styles.button}
+        >
+
+      <Text style={styles.buttonText}>Identify this plant</Text>
+      </TouchableOpacity>
     </View>
   ); }
 
@@ -149,6 +259,7 @@ function CameraScreen() {
        allowsEditing: true,
        aspect: [4, 3],
        quality: 1,
+       base64: true,
 
      })
     //  console.log(photo)
@@ -208,7 +319,7 @@ function CameraScreen() {
     <View style={styles.container}>
 
       <Text >Add a plant to your collection!</Text>
-      {/* <Image source={} style={} /> */}
+      
       <Text>Push button to select from camera roll </Text>
 
       <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
