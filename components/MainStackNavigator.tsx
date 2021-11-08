@@ -10,6 +10,7 @@ import CameraScreen from './CameraScreen';
 import LightMeterScreen from './LightMeterScreen';
 import SingleLookedUpPlantScreen from './SingleLookedUpPlantScreen';
 import SingleCategoryPlantScreen from './SingleCategoryPlantScreen';
+import SearchedForPlants from './SearchedForPlants'
 import {
       getFocusedRouteNameFromRoute,
   } from '@react-navigation/native';
@@ -24,7 +25,7 @@ function getHeaderTitle(route:object) {
 function MainStackNavigator() {
   
 
-  const [plantCategory, setPlantCategory] = useState<string | null>("")
+  //const [plantCategory, setPlantCategory] = useState<string | null>("")
   
   return (
     
@@ -32,7 +33,7 @@ function MainStackNavigator() {
         gestureEnabled: true,
         gestureDirection: "horizontal",
         headerStyle: {
-          backgroundColor: '#3564c8'
+          backgroundColor: '#17B890'
         },
         headerTitleStyle: {
           fontWeight: 'bold'
@@ -41,12 +42,13 @@ function MainStackNavigator() {
       }}
       
       >
-        <Stack.Screen name='Home' component={MainTabNavigator} options={({route}) => ({
+        <Stack.Screen name='Main' component={MainTabNavigator} options={({route}) => ({
           title: getHeaderTitle(route),
         })}  />
         
         <Stack.Screen name="Single Looked Up Plant" component={SingleLookedUpPlantScreen} />
         <Stack.Screen name="Single Plant Category" component={SingleCategoryPlantScreen} />
+        <Stack.Screen name="Searched For Plants" component={SearchedForPlants} />
       </Stack.Navigator>
     
   )

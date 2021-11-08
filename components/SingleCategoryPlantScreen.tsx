@@ -1,57 +1,69 @@
 import React from "react";
-import { View, Text, ScrollView, StyleSheet, List, SafeAreaView,TouchableOpacity, StatusBar } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  List,
+  SafeAreaView,
+  TouchableOpacity,
+  StatusBar,
+  ImageBackground,
+} from "react-native";
 import { useState, useEffect } from "react";
 import { getPlants } from "./utils/Api";
 import { ListItem, Avatar } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
-import { ProgressBar, Colors } from 'react-native-paper';
+import { ProgressBar, Colors } from "react-native-paper";
 
 const SingleCategoryPlantScreen = (props: any) => {
-  const {navigation} = props
+  const { navigation } = props;
   const [plants, setPlants] = useState([]);
-  const {plantCategoryId} = props.route.params
+  const { plantCategoryId } = props.route.params;
   const [selectedId, setSelectedId] = useState(null);
   const [loading, setLoading] = useState(true);
 
-
   useEffect(() => {
-    setLoading(true)
-    getPlants(plantCategoryId)
+    setLoading(true);
+    getPlants(plantCategoryId, 'null')
       .then((response) => {
         setPlants(response);
-        setLoading(false)
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err, "<-----err");
       });
-  },[]);
+  }, []);
 
-  const handleOnPress = (commonName:string) => {
-        navigation.navigate("Single Looked Up Plant", commonName);
-};
+  const handleOnPress = (commonName: string) => {
+    navigation.navigate("Single Looked Up Plant", commonName);
+  };
 
-  const Item = ({ item, onPress, backgroundColor, textColor }) => (
+  const Item = ({ item, onPress, backgroundColor, textColor }: object) => (
     <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-      <Text style={[styles.title, textColor]}>{item.commonName}</Text>
-      <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
-      <Avatar source={{uri: item.image_url}} />
-
+      <ImageBackground
+        imageStyle={{ opacity: 0.4 }}
+        source={{ uri: item.image_url }}
+        style={styles.imagebackground}
+      >
+        <Text style={[styles.title, textColor]}>{item.commonName}</Text>
+        <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
+        {/* <Avatar source={{ uri: item.image_url }} /> */}
+      </ImageBackground>
     </TouchableOpacity>
   );
 
-  const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#d6d6d6";
-    const color = item.id === selectedId ? 'white' : 'black';
+  if (loading)
+      return (
+        <View>
+          <Text style={styles.title}>loading...</Text>
+          <ProgressBar progress = {0.75} color={Colors.lightGreen800} />
+        </View>
+      )
 
-    if (loading)
-    return (
-      <View>
-            <Text>loading...</Text>
-            <ProgressBar />
-     </View>
-    );
-    
-  
+  const renderItem = ({ item }) => {
+    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#082d0fff";
+    const color = item.id === selectedId ? "white" : "#dee5e5ff";
 
     return (
       <Item
@@ -61,32 +73,35 @@ const SingleCategoryPlantScreen = (props: any) => {
         textColor={{ color }}
       />
     );
-    
   };
-  console.log(selectedId)
+
   return (
-    
-      <SafeAreaView style={styles.container}>
-      <FlatList contentContainerStyle={styles.subtitleView}
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        contentContainerStyle={styles.subtitleView}
         data={plants}
         renderItem={renderItem}
         keyExtractor={(item) => item.botanicalName}
         extraData={selectedId}
+        initialNumToRender={5}
+        maxToRenderPerBatch={1}
+        windowSize={21}
+        onEndReachedThreshold={10} // optional
       />
     </SafeAreaView>
-      
-    
   );
 };
 
 const styles = StyleSheet.create({
   subtitleView: {
-    
-    flexDirection: "column", paddingLeft: 10, paddingTop: 5 },
+    flexDirection: "column",
+    paddingLeft: 10,
+    paddingTop: 5,
+  },
   ratingImage: { height: 19.21, width: 100 },
   ratingText: { paddingLeft: 10, color: "grey" },
   scrollView: {
-    backgroundColor: 'white',
+    backgroundColor: "#082d0fff",
     marginHorizontal: 20,
   },
   container: {
@@ -94,21 +109,26 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
   },
   item: {
-    flex:1,
+    flex: 1,
     padding: 10,
     marginVertical: 8,
     marginHorizontal: 20,
-    borderRadius:10,
+    borderRadius: 10,
   },
   title: {
-    fontSize: 20,
-    fontWeight:'bold',
+    fontSize: 25,
+    fontWeight: "900",
   },
   subtitle: {
-    fontSize: 10,
-    
+    fontSize: 15,
+  },
+  imagebackground: {
+    width: "100%",
+    height: "100%",
+    borderStyle: "solid",
+    borderColor: "grey",
+    borderWidth: 1,
   },
 });
 
 export default SingleCategoryPlantScreen;
-

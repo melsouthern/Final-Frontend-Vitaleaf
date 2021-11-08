@@ -12,7 +12,7 @@ const Tab = createMaterialBottomTabNavigator();
 
 function MainTabNavigator() {
     return (
-      <Tab.Navigator barStyle={{ backgroundColor: '#3e89bc' }}>
+      <Tab.Navigator barStyle={{ backgroundColor: '#5E807F' }}>
       <Tab.Screen name='Home' component={HomeScreen} options={{
     tabBarLabel: 'Home',
     tabBarIcon: ({ color }) => (
