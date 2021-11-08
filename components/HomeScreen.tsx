@@ -1,46 +1,141 @@
 import React from "react";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Auth } from "aws-amplify";
-import { Text, View, Button, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  ImageBackground,
+  SafeAreaView,
+  StatusBar,
+  Image,
+  ScrollView,
+} from "react-native";
+import { Button, Card, Title, Paragraph } from "react-native-paper";
 import { UserContext, UserProvider } from "./utils/User";
+import { getUserFromDatabase, getUserPlantsFromDatabase } from "./utils/Api";
+import { FlatList } from "react-native-gesture-handler";
+import { ProgressBar, Colors } from "react-native-paper";
+import { ListItem, Avatar } from "react-native-elements";
+import { useIsFocused } from "@react-navigation/native";
 
 function HomeScreen(props: any) {
   const { userName, setUserName } = useContext(UserContext);
-  console.log(userName);
-
+  const [userPlants, setUserPlants] = useState([]);
   const { navigation } = props;
+  const [selectedId, setSelectedId] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    setLoading(true);
+    getUserPlantsFromDatabase(userName)
+      .then((response) => {
+        setUserPlants(response);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err, "<-----err");
+      });
+  }, [isFocused]);
+  
+
+  const handleOnPress = (commonName: string) => {
+    navigation.navigate();
+  };
+
+  const EmptyListMessage = ({ item }) => {
+    return (
+      // Flat List Item
+      <Text onPress={() => getItem(item)}>No Plants Yet......</Text>
+    );
+  };
+
+  const Item = ({ item, onPress, backgroundColor, textColor }) => (
+    <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+      <Text style={[styles.title, textColor]}>{item.commonName}</Text>
+      <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
+      <Avatar source={{ uri: item.image_url }} />
+    </TouchableOpacity>
+  );
+
+  const renderItem = ({ item }) => {
+    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#dee5e5";
+    const color = item.id === selectedId ? "black" : "black";
+
+    if (loading)
+      return (
+        <View>
+          <Text>loading...</Text>
+          <ProgressBar />
+        </View>
+      );
+
+    return (
+      <Item
+        item={item}
+        onPress={() => handleOnPress(item)}
+        backgroundColor={{ backgroundColor }}
+        textColor={{ color }}
+      />
+    );
+  };
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Home!</Text>
-      <Text> User home page with plants</Text>
-      <Text> Hello {userName} </Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.titletext}>{userName}'s plants...</Text>
+
+      <FlatList
+        contentContainerStyle={styles.userPlantView}
+        numColumns={2}
+        horizontal={false}
+        data={userPlants}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => String(index)}
+        extraData={selectedId}
+        initialNumToRender={5}
+        maxToRenderPerBatch={1}
+        windowSize={21}
+        ListEmptyComponent={EmptyListMessage}
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  userPlantView: {
+    paddingLeft: 10,
+    paddingTop: 5,
+  },
+  ratingImage: { height: 19.21, width: 100 },
+  ratingText: { paddingLeft: 10, color: "grey" },
+  scrollView: {
+    backgroundColor: "#082d0fff",
+    marginHorizontal: 20,
+  },
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#ebebeb",
+    marginTop: StatusBar.currentHeight || 0,
   },
-  text: {
-    color: "#101010",
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  buttonContainer: {
-    backgroundColor: "#222",
-    borderRadius: 5,
+  item: {
+    flex: 1 / 2,
     padding: 10,
-    margin: 20,
+    marginVertical: 8,
+    marginHorizontal: 20,
+    borderRadius: 10,
   },
-  buttonText: {
-    fontSize: 20,
-    color: "#fff",
+  title: {
+    fontSize: 13,
+    fontWeight: "500",
   },
+  subtitle: {
+    fontSize: 15,
+  },
+  titletext: {
+    fontSize: 25,
+  },
+  logo: {},
 });
 
 export default HomeScreen;
