@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
 import { useState, useEffect, useContext, useRef } from "react";
 import { getSinglePlant, postUserPlantToDatabase } from "./utils/Api";
 import { getPlants } from "./utils/Api";
@@ -13,10 +13,13 @@ import { objectLessAttributes } from "@aws-amplify/core";
 const SingleLookedUpPlantScreen = (props: any) => {
   const { route, navigation } = props;
   const [singlePlant, setSinglePlant] = useState({});
+  const [nickname, setNickName] = useState("")
   // const mounted = useRef(false);
   const [clicked, setClicked] = useState(false)
   const [plantToPost, setPlantToPost] = useState({
     commonName: "",
+    nickName: "",
+    image: "",
     nextWatering: "",
     lastWatered: "",
   });
@@ -36,14 +39,16 @@ const SingleLookedUpPlantScreen = (props: any) => {
   }, []);
 
   const handleAddToInventory = (singlePlant: object) => {
-    setClicked(true)
+    Alert.prompt("Add Plant My Plants", "Please insert plant nickname", text => setNickName(text))
     setPlantToPost({
       commonName: singlePlant.commonName,
+      nickName: "Helloo1",
+      image: imageSource,
       nextWatering: "",
       lastWatered: "",
     });
-    navigation.navigate("Main", {screen: 'Home'});
-    
+    setClicked(true)
+    // navigation.navigate("Main", {screen: 'Home'});
   };
 
   useEffect(() => {

@@ -68,4 +68,27 @@ const postUserPlantToDatabase = (username:string, plantToPost:object) => {
   });
 }
 
-  export {getPlants, getSinglePlant, getUserFromDatabase, getUserPlantsFromDatabase, postUserPlantToDatabase}
+const getSingleUserPlantFromDatabase = (username: string, nickName: string) => {
+  return listApi
+  .get(`/users/${username}/plants/${nickName}`)
+  .then(({data}) => {
+    return data[0]
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+}
+
+const deleteSinglePlantFromDatabase = (username: string, plant_id: string) => {
+  return listApi
+  .delete(`/users/${username}/plants/${plant_id}`)
+  .then(({data}) => {
+    console.log(data)
+    return data
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+}
+
+  export {getPlants, getSinglePlant, getUserFromDatabase, getUserPlantsFromDatabase, postUserPlantToDatabase, getSingleUserPlantFromDatabase, deleteSinglePlantFromDatabase}
