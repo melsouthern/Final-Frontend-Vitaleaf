@@ -48,7 +48,6 @@ const getUserPlantsFromDatabase = (username:string) => {
   return listApi
   .get(`/users/${username}/plants`)
   .then(({data}) => {
-    //console.log(data, '<----data in getUSerPlantsFromDatabase')
     return data
   })
   .catch((err) => {
@@ -60,7 +59,6 @@ const postUserPlantToDatabase = (username:string, plantToPost:object) => {
   return listApi
   .post(`/users/${username}/plants`, plantToPost)
   .then(({data}) => {
-    // console.log(data, '<----data in postUserPlantToDatabase')
     return data
   })
   .catch((err) => {
@@ -83,6 +81,17 @@ const deleteSinglePlantFromDatabase = (username: string, plant_id: string) => {
   return listApi
   .delete(`/users/${username}/plants/${plant_id}`)
   .then(({data}) => {
+    return data
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+}
+
+const patchUserPlant = (username: string, plant_id: string, newPlantData: object) => {
+  return listApi
+  .patch(`/users/${username}/plants/${plant_id}`, newPlantData)
+  .then(({data}) => {
     console.log(data)
     return data
   })
@@ -91,4 +100,4 @@ const deleteSinglePlantFromDatabase = (username: string, plant_id: string) => {
   });
 }
 
-  export {getPlants, getSinglePlant, getUserFromDatabase, getUserPlantsFromDatabase, postUserPlantToDatabase, getSingleUserPlantFromDatabase, deleteSinglePlantFromDatabase}
+  export {getPlants, getSinglePlant, getUserFromDatabase, getUserPlantsFromDatabase, postUserPlantToDatabase, getSingleUserPlantFromDatabase, deleteSinglePlantFromDatabase, patchUserPlant}

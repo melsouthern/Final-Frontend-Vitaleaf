@@ -1,11 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
 import { useState, useEffect, useContext, useRef } from "react";
-import { getSingleUserPlantFromDatabase, deleteSinglePlantFromDatabase } from "./utils/Api";
+import { getSingleUserPlantFromDatabase, deleteSinglePlantFromDatabase, patchUserPlant } from "./utils/Api";
 import { getPlants } from "./utils/Api";
-import { Image } from "react-native-elements";
-import { Button } from "react-native-elements";
-import { ActivityIndicator, Colors } from "react-native-paper";
+import { Image, Button } from "react-native-elements";
+import { ActivityIndicator, Colors, Switch } from "react-native-paper";
 import { UserContext, UserProvider } from "./utils/User";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { objectLessAttributes } from "@aws-amplify/core";
@@ -13,6 +12,8 @@ import { objectLessAttributes } from "@aws-amplify/core";
 const SingleUserPlant = (props: any) => {
   const { route, navigation } = props;
   const [singlePlant, setSinglePlant] = useState({});
+  const [isWatered, setIsWatered] = useState(false)
+  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
 //   const [nickname, setNickName] = useState("")
   const { plant_id, nickName } = props.route.params;
   const { userName } = useContext(UserContext);
@@ -27,7 +28,7 @@ const SingleUserPlant = (props: any) => {
       .catch((err) => {
         console.log(err, "<-----err");
       });
-  }, []);
+  }, [isWatered]);
 
   function handleRemovePlant() {
     deleteSinglePlantFromDatabase(userName, plant_id)
@@ -36,6 +37,20 @@ const SingleUserPlant = (props: any) => {
     })
   }
 
+  let bodyToSend = {};
+
+  function handleLastWatered() {
+      bodyToSend = {
+        lastWatered: Date.now()
+      }
+      setIsWatered(true)
+  }
+
+  useEffect(() => {
+    if (isWatered) patchUserPlant(userName, plant_id, bodyToSend)
+  })
+
+  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -50,6 +65,14 @@ const SingleUserPlant = (props: any) => {
         <Text style={styles.subtitle}> {singlePlant.commonName} </Text>
         <Text style={styles.description}> Last watered: {singlePlant.lastWatered} </Text>
         <Text style={styles.description}> Next watering: {singlePlant.nextWatering} </Text>
+        <Text>Turn on notifications: </Text>
+        <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
+
+        <Button
+        icon={{ name: "arrow-right", size: 15, color: "white" }}
+        title="Watered"
+        onPress={handleLastWatered}
+        />
         <Button
           icon={{ name: "arrow-right", size: 15, color: "white" }}
           title="Delete Plant"
