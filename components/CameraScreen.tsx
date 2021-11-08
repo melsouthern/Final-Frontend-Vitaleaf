@@ -6,6 +6,7 @@ import {Camera} from 'expo-camera'
 import axios, { Axios } from 'axios';
 import ImgToBase64 from 'react-native-image-base64'; // this should work
 import makeApiCall from './utils/makeApiCallToPlantID'
+import { NavigationContainer } from '@react-navigation/native';
 // import imageToBase64 from 'image-to-base64/browser'
 // const imageToBase64 = require('image-tobase64') - cannot require
 
@@ -59,16 +60,24 @@ const styles = StyleSheet.create({
   
 })
 
-function CameraScreen() {
+function CameraScreen({navigation}) {
   
     const [cameraRollImage, setCameraRollImage] = useState({localUri:""})
     const [cameraPhoto, setCameraPhoto] = useState({height:"", uri:"", width:"", base64:""}) 
     const [haveCameraPermission, setHaveCameraPermission] = useState("")
     const [type, setType] = useState(Camera.Constants.Type.back);
     const [showCamera, setShowCamera] = useState(false) // not using
-   const [plantidReturn, setPlantidReturn] = useState({
+   const [identifiedPlant1, setIdentifiedPlant1] = useState({
+    percentage: "",
     botanicalName: "",
-    probability: 1, })
+  commonName:"",
+image_url:""})
+const [identifiedPlant2, setIdentifiedPlant2] = useState({
+  percentage: "",
+  botanicalName: "",
+commonName:"",
+image_url:""})
+    
 
 
     const cameraRef = useRef(null)   
@@ -155,23 +164,61 @@ function CameraScreen() {
           probability: plant.probability,
         }
       })
-      console.log(suggestedPlants, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-      // set state. to do
+      
+      
       const apiResponse = await axios.post("https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta/plants", 
       {plantsFromPlantId: suggestedPlants}
       )
-      console.log(apiResponse.data)
-      // const returnedPlantData = response
+     
+      setIdentifiedPlant1({
+        percentage: apiResponse.data[0].probability,
+        botanicalName: apiResponse.data[0].botanicalName,
+      commonName:apiResponse.data[0].commonName,
+    image_url:apiResponse.data[0].image_url
+  })
+      
       
     } catch (err) {
       console.log(err);
     }
   }
+  function resetStates() {
+    setCameraPhoto({height:"", uri:"", width:"", base64:""})
+          setIdentifiedPlant1({
+            percentage: "",
+            botanicalName: "",
+          commonName:"",
+        image_url:""})
+        setHaveCameraPermission("")
+  }
+  if(identifiedPlant1.percentage !== ""){
+ 
+ return(
+    <View style={styles.container}>
+      <Text> Your plants common name is {identifiedPlant1.commonName}, latin name {identifiedPlant1.botanicalName} with a {identifiedPlant1.percentage} probability</Text>
+        <Image
+        
+          source={{uri: identifiedPlant1.image_url }}
+          style={styles.thumbnail}
+          />
+      
+      <TouchableOpacity
+        onPress={ ()=> navigation.navigate('Main', {screen: 'Home'})
+        }
+        
+        style={styles.button}
+        >
+
+      <Text style={styles.buttonText}>Go to Home</Text>
+      </TouchableOpacity>
+    </View>
+ )
+  }
 
 
   if (cameraPhoto.height !== ""){
     
-    // console.log(cameraPhoto)
+    
     
     return (
       <View style={styles.container}>
@@ -272,7 +319,7 @@ function CameraScreen() {
     <View style={styles.container}>
 
       <Text >Add a plant to your collection!</Text>
-      {/* <Image source={} style={} /> */}
+      
       <Text>Push button to select from camera roll </Text>
 
       <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
