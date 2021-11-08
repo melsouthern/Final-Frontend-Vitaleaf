@@ -68,9 +68,9 @@ const postUserPlantToDatabase = (username:string, plantToPost:object) => {
   });
 }
 
-const getSingleUserPlantFromDatabase = (username: string, nickName: string) => {
+const getSingleUserPlantFromDatabase = (username: string, plant_id: string) => {
   return listApi
-  .get(`/users/${username}/plants/${nickName}`)
+  .get(`/users/${username}/plants/${plant_id}`)
   .then(({data}) => {
     return data[0]
   })

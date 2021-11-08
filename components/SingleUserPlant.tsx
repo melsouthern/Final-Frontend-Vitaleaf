@@ -17,9 +17,10 @@ const SingleUserPlant = (props: any) => {
   const { plant_id, nickName } = props.route.params;
   const { userName } = useContext(UserContext);
   const imageSource = singlePlant.image;
+  console.log(singlePlant)
 
   useEffect(() => {
-    getSingleUserPlantFromDatabase(userName, nickName)
+    getSingleUserPlantFromDatabase(userName, plant_id)
       .then((response) => {
         setSinglePlant(response);
       })
@@ -28,12 +29,11 @@ const SingleUserPlant = (props: any) => {
       });
   }, []);
 
-  function handleRemovePlant(singlePlant: object) {
+  function handleRemovePlant() {
     deleteSinglePlantFromDatabase(userName, plant_id)
     .then((response) => {
         navigation.navigate("Main", {screen: 'Home'});
     })
-    return;
   }
 
   return (
@@ -53,7 +53,7 @@ const SingleUserPlant = (props: any) => {
         <Button
           icon={{ name: "arrow-right", size: 15, color: "white" }}
           title="Delete Plant"
-          onPress={() => handleRemovePlant(singlePlant)}
+          onPress={() => handleRemovePlant()}
         />
       </View>
     </ScrollView>
