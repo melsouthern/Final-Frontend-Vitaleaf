@@ -92,7 +92,6 @@ const patchUserPlant = (username: string, plant_id: string, newPlantData: object
   return listApi
   .patch(`/users/${username}/plants/${plant_id}`, newPlantData)
   .then(({data}) => {
-    console.log(data)
     return data
   })
   .catch((err) => {
@@ -100,4 +99,17 @@ const patchUserPlant = (username: string, plant_id: string, newPlantData: object
   });
 }
 
-  export {getPlants, getSinglePlant, getUserFromDatabase, getUserPlantsFromDatabase, postUserPlantToDatabase, getSingleUserPlantFromDatabase, deleteSinglePlantFromDatabase, patchUserPlant}
+const patchUserPlantWatering = (username: string, plant_id: string) => {
+  return listApi
+  .patch(`/users/${username}/plants/${plant_id}/watering`)
+  .then(({data}) => {
+    console.log("made it here")
+    console.log(data)
+    return data
+  })
+  .catch((err) => {
+    console.log(err, "ERR HERE <-----------");
+  });
+}
+
+  export {getPlants, getSinglePlant, getUserFromDatabase, getUserPlantsFromDatabase, postUserPlantToDatabase, getSingleUserPlantFromDatabase, deleteSinglePlantFromDatabase, patchUserPlant, patchUserPlantWatering}
