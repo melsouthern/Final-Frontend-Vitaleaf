@@ -33,7 +33,8 @@ function MainStackNavigator() {
           backgroundColor: "#508991",
         },
         headerTitleStyle: {
-          fontWeight: "bold",
+          // fontWeight: "bold",
+          fontFamily: "Futura",
         },
         headerTintColor: "#ffffff",
       }}

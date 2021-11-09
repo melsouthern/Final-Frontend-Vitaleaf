@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import HomeScreen from "./HomeScreen";
@@ -7,10 +7,13 @@ import SearchScreen from "./SearchScreen";
 import LightMeterScreen from "./LightMeterScreen";
 import CameraScreen from "./CameraScreen";
 import ProfileScreen from "./ProfileScreen";
+import { UserContext } from "./utils/User";
 
 const Tab = createMaterialBottomTabNavigator();
 
 function MainTabNavigator() {
+  const { userName } = useContext(UserContext);
+
   return (
     <Tab.Navigator barStyle={{ backgroundColor: "#172a3a" }}>
       <Tab.Screen
@@ -24,7 +27,7 @@ function MainTabNavigator() {
         }}
       />
       <Tab.Screen
-        name="Inventory"
+        name={`${userName}'s Inventory`}
         component={InventoryScreen}
         options={{
           tabBarLabel: "Inventory",
