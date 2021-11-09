@@ -4,7 +4,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import CameraScreen from './CameraScreen';
 import LightMeterScreen from './LightMeterScreen';
-import CalendarScreen from './CalendarScreen';
+import CalendarScreen from './InventoryScreen';
 import SearchScreen from './SearchScreen';
 import  HomeScreen  from './HomeScreen';
 import MainStackNavigator from './MainStackNavigator';

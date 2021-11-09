@@ -2,7 +2,7 @@ import React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import HomeScreen from './HomeScreen';
-import CalendarScreen from './CalendarScreen';
+import InventoryScreen from './InventoryScreen';
 import SearchScreen from './SearchScreen';
 import LightMeterScreen from './LightMeterScreen';
 import CameraScreen from './CameraScreen';
@@ -19,8 +19,8 @@ function MainTabNavigator() {
       <MaterialCommunityIcons name="home" color={color} size={26} />
     ),
   }}/>
-      <Tab.Screen name='Calendar' component={CalendarScreen} options={{
-    tabBarLabel: 'Calendar',
+      <Tab.Screen name='Inventory' component={InventoryScreen} options={{
+    tabBarLabel: 'Inventory',
     tabBarIcon: ({ color }) => (
       <MaterialCommunityIcons name="calendar" color={color} size={26} />
     ),
@@ -37,14 +37,14 @@ function MainTabNavigator() {
       <MaterialCommunityIcons name="camera" color={color} size={26} />
     ),
   }} />
-      <Tab.Screen name='Light Meter' component={LightMeterScreen} options={{
+      {/* <Tab.Screen name='Light Meter' component={LightMeterScreen} options={{
     tabBarLabel: 'Light Meter',
     tabBarIcon: ({ color }) => (
       <MaterialCommunityIcons name="lightbulb-on-outline" color={color} size={26} />
     ),
     
     
-  }} />  
+  }} />   */}
   <Tab.Screen name='User Profile' component={ProfileScreen} options={{
     tabBarLabel: 'Profile',
     tabBarIcon: ({ color }) => (
