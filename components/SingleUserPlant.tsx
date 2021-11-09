@@ -43,7 +43,7 @@ const SingleUserPlant = (props: any) => {
         navigation.navigate("Main", {screen: 'Home'});
     })
   }
-
+  // console.log(databasePlant)
   function handleLastWatered() {
     patchUserPlantWatering(userName, plant_id, databasePlant)
     setIsWatered(true)
@@ -53,7 +53,7 @@ const SingleUserPlant = (props: any) => {
   const lastWateredDateToString = lastWateredDate.toLocaleDateString('en-GB') 
   const nextWateringDate = new Date (singlePlant.nextWatering)
   const nextWateringDateToString = nextWateringDate.toLocaleDateString('en-GB')
-    
+   
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
   return (
     <ScrollView>
@@ -68,8 +68,8 @@ const SingleUserPlant = (props: any) => {
           </View>
         <Text style={styles.subtitle}> {singlePlant.commonName} </Text>
         <Text style={styles.subtitle}> {databasePlant.category} </Text>
-        <Text style={styles.description}> Last watered: {singlePlant.lastWatered === null ? 'Not watered yet' : lastWateredDateToString} </Text>
-        <Text style={styles.description}> Next watering: {singlePlant.nextWatering === null ? 'Not watered yet' : nextWateringDateToString} </Text>
+        <Text style={styles.description}> Last watered: {singlePlant.lastWatered === null ? 'Plant has not been watered yet' : lastWateredDateToString} </Text>
+        <Text style={styles.description}> Next watering: {singlePlant.nextWatering === null ? 'Please water your plant first' : nextWateringDateToString} </Text>
         <Text>Turn on notifications: </Text>
         <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
 
