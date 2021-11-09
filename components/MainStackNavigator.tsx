@@ -13,6 +13,15 @@ import SingleCategoryPlantScreen from './SingleCategoryPlantScreen';
 import SearchedForPlants from './SearchedForPlants'
 import SingleUserPlant from './SingleUserPlant';
 import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native'
+import vitaleafNarrow from '../assets/vitaleafNarrow3.png'
+
+
+import {
       getFocusedRouteNameFromRoute,
   } from '@react-navigation/native';
 
@@ -25,6 +34,7 @@ function getHeaderTitle(route:object) {
 
 function MainStackNavigator() {
   
+  
 
   //const [plantCategory, setPlantCategory] = useState<string | null>("")
   
@@ -33,9 +43,16 @@ function MainStackNavigator() {
       <Stack.Navigator screenOptions={{
         gestureEnabled: true,
         gestureDirection: "horizontal",
-        headerStyle: {
-          backgroundColor: '#17B890'
-        },
+        // headerStyle: {
+         // backgroundColor: '#17B890'
+          
+        // },
+        headerBackground: () => (<Image
+          style={{flex:1, 
+            height: 25, width:380 
+          }}
+          source={vitaleafNarrow}
+        />),
         headerTitleStyle: {
           fontWeight: 'bold'
         },
