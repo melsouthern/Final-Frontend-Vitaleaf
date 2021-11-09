@@ -28,6 +28,7 @@ const SingleUserPlant = (props: any) => {
         getSinglePlant(commonName)
         .then((response) => {
           setDatabasePlant(response)
+          // setIsWatered(false)
         })
       })
       .catch((err) => {
@@ -43,12 +44,15 @@ const SingleUserPlant = (props: any) => {
   }
 
   function handleLastWatered() {
-    patchUserPlantWatering(userName, plant_id)
-      setIsWatered(true)
+    patchUserPlantWatering(userName, plant_id, databasePlant)
+    setIsWatered(true)
   }
 
   const lastWateredDate = new Date (singlePlant.lastWatered)
   const lastWateredDateToString = lastWateredDate.toLocaleDateString('en-GB') 
+  const nextWateringDate = new Date (singlePlant.nextWatering)
+  const nextWateringDateToString = nextWateringDate.toLocaleDateString('en-GB')
+  console.log(typeof lastWateredDate)
 
   // useEffect(() => {
   //   if (isWatered) patchUserPlant(userName, plant_id, bodyToSend)

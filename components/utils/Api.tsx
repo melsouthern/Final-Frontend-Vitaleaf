@@ -99,9 +99,9 @@ const patchUserPlant = (username: string, plant_id: string, newPlantData: object
   });
 }
 
-const patchUserPlantWatering = (username: string, plant_id: string) => {
+const patchUserPlantWatering = (username: string, plant_id: string, databasePlant: object) => {
   return listApi
-  .patch(`/users/${username}/plants/${plant_id}/watering`)
+  .patch(`/users/${username}/plants/${plant_id}/watering`, databasePlant)
   .then(({data}) => {
     console.log(data, '<-----in patchuserplantapi')
     return data
