@@ -103,8 +103,7 @@ const patchUserPlantWatering = (username: string, plant_id: string) => {
   return listApi
   .patch(`/users/${username}/plants/${plant_id}/watering`)
   .then(({data}) => {
-    console.log("made it here")
-    console.log(data)
+    console.log(data, '<-----in patchuserplantapi')
     return data
   })
   .catch((err) => {
