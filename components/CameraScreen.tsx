@@ -124,10 +124,11 @@ image_url:""})
     }
     
     async function saveCameraRollFunction() {
-      // const apiResponse = await axios.patch("PATCH /users/hello/plants/hello-1636374872607/image "), {pickerResult.base64}
-      // console.log(apiResponse)
-      // saveNotifier()
-  
+      const apiResponse = await axios.patch
+      ("https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta/users/hello/plants/hello-1636374684637/image",
+       {img: cameraRollImage.base64} )
+      
+      if (apiResponse.status === 200) saveNotifier()
     }
     
     
@@ -230,9 +231,10 @@ image_url:""})
 
   async function saveCameraPhotoFunction() {
     // console.log(cameraPhoto)
-    const apiResponse = await axios.patch("https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta/users/hello/plants/hello-1636374684637/image", {commonName: "Jade", img: cameraPhoto.base64})
-    console.log(apiResponse)
-    saveNotifier()
+    const apiResponse = await axios.patch
+    ("https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta/users/hello/plants/hello-1636374684637/image",
+     { img: cameraPhoto.base64 })
+    if (apiResponse.status === 200) saveNotifier()
 
   }
 
@@ -335,6 +337,7 @@ image_url:""})
   }
   
   return (
+    
     <View style={styles.container}>
 
       <Text >Add a plant to your collection!</Text>
@@ -350,7 +353,7 @@ image_url:""})
       </TouchableOpacity>
     </View>
   )
-
+ 
 }
 
 
