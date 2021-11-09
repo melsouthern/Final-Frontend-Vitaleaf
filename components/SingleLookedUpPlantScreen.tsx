@@ -1,11 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
 import { useState, useEffect, useContext, useRef } from "react";
 import { getSinglePlant, postUserPlantToDatabase } from "./utils/Api";
 import { getPlants } from "./utils/Api";
 import { Image } from "react-native-elements";
 import { Button } from "react-native-elements";
-import { ActivityIndicator, Colors } from "react-native-paper";
+import { ActivityIndicator, Colors, TextInput } from "react-native-paper";
 import { UserContext, UserProvider } from "./utils/User";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { objectLessAttributes } from "@aws-amplify/core";
@@ -13,10 +13,13 @@ import { objectLessAttributes } from "@aws-amplify/core";
 const SingleLookedUpPlantScreen = (props: any) => {
   const { route, navigation } = props;
   const [singlePlant, setSinglePlant] = useState({});
+  const [text, setText] = useState("")
   // const mounted = useRef(false);
   const [clicked, setClicked] = useState(false)
   const [plantToPost, setPlantToPost] = useState({
     commonName: "",
+    nickName: "",
+    image: "",
     nextWatering: "",
     lastWatered: "",
   });
@@ -35,19 +38,23 @@ const SingleLookedUpPlantScreen = (props: any) => {
       });
   }, []);
 
-  const handleAddToInventory = (singlePlant: object) => {
-    setClicked(true)
+  function handleAddToInventory (singlePlant: object) {
+    
     setPlantToPost({
       commonName: singlePlant.commonName,
+      nickName: text,
+      image: imageSource,
       nextWatering: "",
       lastWatered: "",
-    });
-    navigation.navigate("Main", {screen: 'Home'});
-    
-  };
-
+    })
+    setClicked(true)
+  }
+  
   useEffect(() => {
-   if( clicked ) postUserPlantToDatabase(userName, plantToPost)
+    if( clicked ) postUserPlantToDatabase(userName, plantToPost)
+    .then((response) => {
+      navigation.navigate("Main", {screen: 'Home'});
+    })
   setClicked(false)}, [plantToPost]);
 
   return (
@@ -62,8 +69,13 @@ const SingleLookedUpPlantScreen = (props: any) => {
         <Text style={styles.subtitle}> {singlePlant.botanicalName} </Text>
         <Text style={styles.description}> {singlePlant.description} </Text>
         
+        <TextInput
+        style={styles.textInput}
+        onChangeText={setText}
+        value={text}
+        placeholder={"Please insert nickname"}
+      />
         <Button
-        
           icon={{ name: "arrow-right", size: 15, color: "white" }}
           title="Add To Inventory"
           onPress={() => handleAddToInventory(singlePlant)}
@@ -77,6 +89,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+  },
+  textInput: {
+    width: 200,
   },
   header: {
     flex: 1,

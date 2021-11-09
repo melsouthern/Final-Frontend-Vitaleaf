@@ -41,8 +41,8 @@ function HomeScreen(props: any) {
   }, [isFocused]);
   
 
-  const handleOnPress = (commonName: string) => {
-    navigation.navigate();
+  const handleOnPress = (plant_id: string) => {
+    navigation.navigate("Single User Plant", plant_id);
   };
 
   const EmptyListMessage = ({ item }) => {
@@ -56,7 +56,8 @@ function HomeScreen(props: any) {
     <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
       <Text style={[styles.title, textColor]}>{item.commonName}</Text>
       <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
-      <Avatar source={{ uri: item.image_url }} />
+      <Text style={[styles.title, textColor]}>{item.nickName}</Text>
+      <Avatar source={{ uri: item.image }} />
     </TouchableOpacity>
   );
 
@@ -67,7 +68,7 @@ function HomeScreen(props: any) {
     if (loading)
       return (
         <View>
-          <Text>loading...</Text>
+          <Text>loading profile...</Text>
           <ProgressBar />
         </View>
       );

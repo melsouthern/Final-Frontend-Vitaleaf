@@ -11,6 +11,7 @@ import LightMeterScreen from './LightMeterScreen';
 import SingleLookedUpPlantScreen from './SingleLookedUpPlantScreen';
 import SingleCategoryPlantScreen from './SingleCategoryPlantScreen';
 import SearchedForPlants from './SearchedForPlants'
+import SingleUserPlant from './SingleUserPlant';
 import {
       getFocusedRouteNameFromRoute,
   } from '@react-navigation/native';
@@ -49,6 +50,7 @@ function MainStackNavigator() {
         <Stack.Screen name="Single Looked Up Plant" component={SingleLookedUpPlantScreen} />
         <Stack.Screen name="Single Plant Category" component={SingleCategoryPlantScreen} />
         <Stack.Screen name="Searched For Plants" component={SearchedForPlants} />
+        <Stack.Screen name="Single User Plant" component={SingleUserPlant} />
       </Stack.Navigator>
     
   )
