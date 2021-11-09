@@ -14,7 +14,8 @@ const SingleUserPlant = (props: any) => {
   const [singlePlant, setSinglePlant] = useState({});
   const [databasePlant, setDatabasePlant] = useState({})
   const [isWatered, setIsWatered] = useState(false)
-  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+  const [wateringState, setWateringState] = useState(singlePlant.lastWatered)
+  const [isSwitchOn, setIsSwitchOn] = useState(false);
 //   const [nickname, setNickName] = useState("")
   const { plant_id, nickName, commonName } = props.route.params;
   const { userName } = useContext(UserContext);
@@ -28,7 +29,7 @@ const SingleUserPlant = (props: any) => {
         getSinglePlant(commonName)
         .then((response) => {
           setDatabasePlant(response)
-          // setIsWatered(false)
+          setIsWatered(false)
         })
       })
       .catch((err) => {
@@ -52,12 +53,7 @@ const SingleUserPlant = (props: any) => {
   const lastWateredDateToString = lastWateredDate.toLocaleDateString('en-GB') 
   const nextWateringDate = new Date (singlePlant.nextWatering)
   const nextWateringDateToString = nextWateringDate.toLocaleDateString('en-GB')
-  console.log(typeof lastWateredDate)
-
-  // useEffect(() => {
-  //   if (isWatered) patchUserPlant(userName, plant_id, bodyToSend)
-  // })
-  
+    
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
   return (
     <ScrollView>
@@ -72,8 +68,8 @@ const SingleUserPlant = (props: any) => {
           </View>
         <Text style={styles.subtitle}> {singlePlant.commonName} </Text>
         <Text style={styles.subtitle}> {databasePlant.category} </Text>
-        <Text style={styles.description}> Last watered: {lastWateredDateToString} </Text>
-        <Text style={styles.description}> Next watering: {singlePlant.nextWatering} </Text>
+        <Text style={styles.description}> Last watered: {singlePlant.lastWatered === null ? 'Not watered yet' : lastWateredDateToString} </Text>
+        <Text style={styles.description}> Next watering: {singlePlant.nextWatering === null ? 'Not watered yet' : nextWateringDateToString} </Text>
         <Text>Turn on notifications: </Text>
         <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
 
