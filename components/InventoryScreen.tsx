@@ -39,7 +39,6 @@ function InventoryScreen(props: any) {
         console.log(err, "<-----err");
       });
   }, [isFocused]);
-  
 
   const handleOnPress = (plant_id: string) => {
     navigation.navigate("Single User Plant", plant_id);
@@ -54,15 +53,20 @@ function InventoryScreen(props: any) {
 
   const Item = ({ item, onPress, backgroundColor, textColor }) => (
     <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-      <Text style={[styles.title, textColor]}>{item.commonName}</Text>
-      <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
-      <Text style={[styles.title, textColor]}>{item.nickName}</Text>
-      <Avatar source={{ uri: item.image }} />
+      <ImageBackground
+        imageStyle={{ opacity: 0.4 }}
+        style={styles.imagebackground}
+        source={{ uri: item.image }}
+      >
+        <Text style={[styles.title, textColor]}>{item.commonName}</Text>
+        <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
+        <Text style={[styles.title, textColor]}>{item.nickName}</Text>
+      </ImageBackground>
     </TouchableOpacity>
   );
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#dee5e5";
+    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#004346";
     const color = item.id === selectedId ? "black" : "black";
 
     if (loading)
@@ -85,11 +89,9 @@ function InventoryScreen(props: any) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.titletext}>{userName}'s plants...</Text>
-
       <FlatList
         contentContainerStyle={styles.userPlantView}
-        numColumns={2}
+        numColumns={1}
         horizontal={false}
         data={userPlants}
         renderItem={renderItem}
@@ -117,14 +119,17 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
+    // marginTop: StatusBar.currentHeight || 0,
+    // backgroundColor: "#004346",
   },
   item: {
-    flex: 1 / 2,
-    padding: 10,
+    flex: 2,
+    // padding: 10,
     marginVertical: 8,
     marginHorizontal: 20,
     borderRadius: 10,
+    backgroundColor: "#004346",
+    height: 200,
   },
   title: {
     fontSize: 13,
@@ -136,7 +141,15 @@ const styles = StyleSheet.create({
   titletext: {
     fontSize: 25,
   },
-  logo: {},
+  imagebackground: {
+    // width: "100%",
+    // height: "100%",
+    borderStyle: "solid",
+    borderColor: "grey",
+    borderWidth: 0,
+    // resizeMode: "center",
+    borderRadius: 10,
+  },
 });
 
 export default InventoryScreen;
