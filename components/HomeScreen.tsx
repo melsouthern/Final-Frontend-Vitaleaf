@@ -22,84 +22,17 @@ import { useIsFocused } from "@react-navigation/native";
 
 function HomeScreen(props: any) {
   const { userName, setUserName } = useContext(UserContext);
-  const [userPlants, setUserPlants] = useState([]);
-  const { navigation } = props;
-  const [selectedId, setSelectedId] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const isFocused = useIsFocused();
-
-  useEffect(() => {
-    setLoading(true);
-    getUserPlantsFromDatabase(userName)
-      .then((response) => {
-        setUserPlants(response);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err, "<-----err");
-      });
-  }, [isFocused]);
   
 
-  const handleOnPress = (plant_id: string) => {
-    navigation.navigate("Single User Plant", plant_id);
-  };
+  
 
-  const EmptyListMessage = ({ item }) => {
-    return (
-      // Flat List Item
-      <Text onPress={() => getItem(item)}>No Plants Yet......</Text>
-    );
-  };
-
-  const Item = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-      <Text style={[styles.title, textColor]}>{item.commonName}</Text>
-      <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
-      <Text style={[styles.title, textColor]}>{item.nickName}</Text>
-      <Avatar source={{ uri: item.image }} />
-    </TouchableOpacity>
-  );
-
-  const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#dee5e5";
-    const color = item.id === selectedId ? "black" : "black";
-
-    if (loading)
-      return (
-        <View>
-          <Text>loading profile...</Text>
-          <ProgressBar />
-        </View>
-      );
-
-    return (
-      <Item
-        item={item}
-        onPress={() => handleOnPress(item)}
-        backgroundColor={{ backgroundColor }}
-        textColor={{ color }}
-      />
-    );
-  };
+  
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.titletext}>{userName}'s plants...</Text>
+      <Text style={styles.titletext}>vitaleaf</Text>
 
-      <FlatList
-        contentContainerStyle={styles.userPlantView}
-        numColumns={2}
-        horizontal={false}
-        data={userPlants}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => String(index)}
-        extraData={selectedId}
-        initialNumToRender={5}
-        maxToRenderPerBatch={1}
-        windowSize={21}
-        ListEmptyComponent={EmptyListMessage}
-      />
+      
     </SafeAreaView>
   );
 }

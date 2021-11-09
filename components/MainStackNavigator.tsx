@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './HomeScreen';
-import CalendarScreen from './CalendarScreen';
+import CalendarScreen from './InventoryScreen';
 import MainTabNavigator from './MainTabNavigator';
 import SearchScreen from './SearchScreen';
 import CameraScreen from './CameraScreen';

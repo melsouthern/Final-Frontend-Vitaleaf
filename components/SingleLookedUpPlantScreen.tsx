@@ -53,7 +53,7 @@ const SingleLookedUpPlantScreen = (props: any) => {
   useEffect(() => {
     if( clicked ) postUserPlantToDatabase(userName, plantToPost)
     .then((response) => {
-      navigation.navigate("Main", {screen: 'Home'});
+      navigation.navigate("Main", {screen: 'Inventory'});
     })
   setClicked(false)}, [plantToPost]);
 
