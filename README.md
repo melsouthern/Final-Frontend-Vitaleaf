@@ -20,4 +20,5 @@ npm install --save @react-native-community/netinfo
 expo-brightness
 npm i react-native-sensors
 axios
-imageto base64
+imageto base64 // not using?
+npm install base64-arraybuffer
