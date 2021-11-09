@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
 import { useState, useEffect, useContext, useRef } from "react";
-import { getSingleUserPlantFromDatabase, deleteSinglePlantFromDatabase, patchUserPlant } from "./utils/Api";
+import { getSingleUserPlantFromDatabase, deleteSinglePlantFromDatabase, patchUserPlant, patchUserPlantWatering } from "./utils/Api";
 import { getPlants } from "./utils/Api";
 import { Image, Button } from "react-native-elements";
 import { ActivityIndicator, Colors, Switch } from "react-native-paper";
@@ -18,7 +18,6 @@ const SingleUserPlant = (props: any) => {
   const { plant_id, nickName } = props.route.params;
   const { userName } = useContext(UserContext);
   const imageSource = singlePlant.image;
-  console.log(singlePlant)
 
   useEffect(() => {
     getSingleUserPlantFromDatabase(userName, plant_id)
@@ -37,19 +36,16 @@ const SingleUserPlant = (props: any) => {
     })
   }
 
-  let bodyToSend = {};
-
   function handleLastWatered() {
-      bodyToSend = {
-        lastWatered: Date.now()
-      }
-      setIsWatered(true)
+    console.log(userName, plant_id)
+    patchUserPlantWatering(userName, plant_id)
+      // setIsWatered(true)
   }
 
-  useEffect(() => {
-    if (isWatered) patchUserPlant(userName, plant_id, bodyToSend)
-  })
-
+  // useEffect(() => {
+  //   if (isWatered) patchUserPlant(userName, plant_id, bodyToSend)
+  // })
+  const today = new Date().toLocaleDateString('en-GB')
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
   return (
     <ScrollView>
@@ -63,7 +59,7 @@ const SingleUserPlant = (props: any) => {
         <Text style={styles.title}> {singlePlant.nickName} </Text>
           </View>
         <Text style={styles.subtitle}> {singlePlant.commonName} </Text>
-        <Text style={styles.description}> Last watered: {singlePlant.lastWatered} </Text>
+        <Text style={styles.description}> Last watered: {singlePlant.lastWatered.toLocaleDateString('en-GB')} </Text>
         <Text style={styles.description}> Next watering: {singlePlant.nextWatering} </Text>
         <Text>Turn on notifications: </Text>
         <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
