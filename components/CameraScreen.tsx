@@ -4,13 +4,13 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from "react-na
 import * as ImagePicker from 'expo-image-picker'
 import {Camera} from 'expo-camera'
 import axios, { Axios } from 'axios';
-import ImgToBase64 from 'react-native-image-base64'; // this should work
-import makeApiCall from './utils/makeApiCallToPlantID'
+
+
 import { NavigationContainer } from '@react-navigation/native';
-// import imageToBase64 from 'image-to-base64/browser'
-// const imageToBase64 = require('image-tobase64') - cannot require
+import * as AWS from 'aws-sdk'
 
-
+import S3 from 'aws-sdk/clients/s3';
+// var AWS = require('aws-sdk/dist/aws-sdk-react-native')
 
 const styles = StyleSheet.create({
   button: {
@@ -59,10 +59,10 @@ const styles = StyleSheet.create({
   },
   
 })
-
-function CameraScreen({navigation}) {
+type cameraScreenProps = {navigation: any}
+function CameraScreen({navigation}: cameraScreenProps) {
   
-    const [cameraRollImage, setCameraRollImage] = useState({localUri:""})
+    const [cameraRollImage, setCameraRollImage] = useState({localUri:"", base64:""})
     const [cameraPhoto, setCameraPhoto] = useState({height:"", uri:"", width:"", base64:""}) 
     const [haveCameraPermission, setHaveCameraPermission] = useState("")
     const [type, setType] = useState(Camera.Constants.Type.back);
@@ -82,7 +82,11 @@ image_url:""})
 
     const cameraRef = useRef(null)   
   
-    
+  function saveNotifier() {
+     alert("Saved!")
+  }  
+
+  
 
 
   let openCameraAsync = async () => {
@@ -111,15 +115,24 @@ image_url:""})
         return
       }
       
-      let pickerResult = await ImagePicker.launchImageLibraryAsync()
+      let pickerResult = await ImagePicker.launchImageLibraryAsync({base64: true})
       if (pickerResult.cancelled === true) {
         return
       }
-      setCameraRollImage({ localUri: pickerResult.uri })
+      setCameraRollImage({localUri: pickerResult.uri, base64: pickerResult.base64}) 
       
     }
     
+    async function saveCameraRollFunction() {
+      // const apiResponse = await axios.patch("PATCH /users/hello/plants/hello-1636374872607/image "), {pickerResult.base64}
+      // console.log(apiResponse)
+      // saveNotifier()
+  
+    }
+    
+    
     if (cameraRollImage.localUri !== ""){
+      
       return (
         <View style={styles.container}>
           <Image
@@ -127,7 +140,7 @@ image_url:""})
             style={styles.thumbnail}
             />
         <TouchableOpacity
-          onPress={() => alert('Saved!')}
+          onPress={() => saveCameraRollFunction()}
           style={styles.button}
           >
 
@@ -215,11 +228,16 @@ image_url:""})
  )
   }
 
+  async function saveCameraPhotoFunction() {
+    // console.log(cameraPhoto)
+    const apiResponse = await axios.patch("https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta/users/hello/plants/hello-1636374684637/image", {commonName: "Jade", img: cameraPhoto.base64})
+    console.log(apiResponse)
+    saveNotifier()
+
+  }
+
 
   if (cameraPhoto.height !== ""){
-    
-    
-    
     return (
       <View style={styles.container}>
         <Image
@@ -228,7 +246,8 @@ image_url:""})
           style={styles.thumbnail}
           />
       <TouchableOpacity
-        onPress={() => alert('Saved!')}
+        onPress={() => {saveCameraPhotoFunction()}}
+        
         style={styles.button}
         >
 
