@@ -37,15 +37,25 @@ const SingleUserPlant = (props: any) => {
   }
 
   function handleLastWatered() {
-    console.log(userName, plant_id)
     patchUserPlantWatering(userName, plant_id)
       // setIsWatered(true)
   }
 
+  function toLocaleDateString() {
+    try {
+      new Date().toLocaleDateString('en-GB');
+    } catch (e) {
+      return e.name === 'RangeError';
+    }
+    return false;
+  }
+  const lastWateredDate = new Date (singlePlant.lastWatered)
+  const lastWateredDateToString = lastWateredDate.toLocaleDateString('en-GB') 
+
   // useEffect(() => {
   //   if (isWatered) patchUserPlant(userName, plant_id, bodyToSend)
   // })
-  const today = new Date().toLocaleDateString('en-GB')
+  
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
   return (
     <ScrollView>
@@ -59,7 +69,7 @@ const SingleUserPlant = (props: any) => {
         <Text style={styles.title}> {singlePlant.nickName} </Text>
           </View>
         <Text style={styles.subtitle}> {singlePlant.commonName} </Text>
-        <Text style={styles.description}> Last watered: {singlePlant.lastWatered.toLocaleDateString('en-GB')} </Text>
+        <Text style={styles.description}> Last watered: {lastWateredDateToString} </Text>
         <Text style={styles.description}> Next watering: {singlePlant.nextWatering} </Text>
         <Text>Turn on notifications: </Text>
         <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
