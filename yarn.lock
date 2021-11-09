@@ -6014,6 +6014,11 @@
   dependencies:
     "yallist" "^4.0.0"
 
+"luxon@^2.1.1":
+  "integrity" "sha512-6VQVNw7+kQu3hL1ZH5GyOhnk8uZm21xS7XJ/6vDZaFNcb62dpFDKcH8TI5NkoZOdMRxr7af7aYGrJlE/Wv0i1w=="
+  "resolved" "https://registry.npmjs.org/luxon/-/luxon-2.1.1.tgz"
+  "version" "2.1.1"
+
 "make-dir@^2.0.0", "make-dir@^2.1.0":
   "integrity" "sha512-LS9X+dc8KLxXCb8dni79fLIIUA5VyZoyjSMCwTluaXA0o27cCK0bhXkpgw+sTXVpPy/lSO57ilRixqk0vDmtRA=="
   "resolved" "https://registry.npmjs.org/make-dir/-/make-dir-2.1.0.tgz"
