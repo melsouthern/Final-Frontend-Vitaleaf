@@ -1,30 +1,21 @@
-import React from 'react';
-import { useState } from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
-import HomeScreen from './HomeScreen';
-import CalendarScreen from './InventoryScreen';
-import MainTabNavigator from './MainTabNavigator';
-import SearchScreen from './SearchScreen';
-import CameraScreen from './CameraScreen';
-import LightMeterScreen from './LightMeterScreen';
-import SingleLookedUpPlantScreen from './SingleLookedUpPlantScreen';
-import SingleCategoryPlantScreen from './SingleCategoryPlantScreen';
-import SearchedForPlants from './SearchedForPlants'
-import SingleUserPlant from './SingleUserPlant';
-import {
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native'
-import vitaleafNarrow from '../assets/vitaleafNarrow3.png'
+import React from "react";
+import { useState } from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+import HomeScreen from "./HomeScreen";
+import CalendarScreen from "./InventoryScreen";
+import MainTabNavigator from "./MainTabNavigator";
+import SearchScreen from "./SearchScreen";
+import CameraScreen from "./CameraScreen";
+import LightMeterScreen from "./LightMeterScreen";
+import SingleLookedUpPlantScreen from "./SingleLookedUpPlantScreen";
+import SingleCategoryPlantScreen from "./SingleCategoryPlantScreen";
+import SearchedForPlants from "./SearchedForPlants";
+import SingleUserPlant from "./SingleUserPlant";
+import { Image, StyleSheet, Text, View } from "react-native";
+import vitaleafNarrow from "../assets/vitaleafNarrow3.png";
 
-
-import {
-      getFocusedRouteNameFromRoute,
-  } from '@react-navigation/native';
-
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
 const Stack = createStackNavigator();
 
@@ -34,9 +25,7 @@ function getHeaderTitle(route: object) {
 }
 
 function MainStackNavigator() {
-
-
-  //const [plantCategory, setPlantCategory] = useState<string | null>("")
+  
 
   return (
     <Stack.Navigator
@@ -44,19 +33,17 @@ function MainStackNavigator() {
         gestureEnabled: true,
         gestureDirection: "horizontal",
 
-        // headerStyle: {
-         // backgroundColor: '#17B890'
-          
-        // },
-        headerBackground: () => (<Image
-          style={{flex:1, 
-            height: 25, width:380 
-          }}
-          source={vitaleafNarrow}
-        />),
+        headerStyle: {
+          backgroundColor: "#17B890",
+        },
+        headerBackground: () => (
+          <Image
+            style={{ flex: 1, height: 25, width: 380 }}
+            source={vitaleafNarrow}
+          />
+        ),
 
         headerTitleStyle: {
-          // fontWeight: "bold",
           fontFamily: "Futura",
         },
         headerTintColor: "#ffffff",
@@ -66,7 +53,8 @@ function MainStackNavigator() {
         name="Main"
         component={MainTabNavigator}
         options={({ route }) => ({
-          title: getHeaderTitle(route),
+          //title: getHeaderTitle(route),
+          title: null,
         })}
       />
 

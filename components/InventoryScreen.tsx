@@ -58,24 +58,19 @@ function InventoryScreen(props: any) {
         style={styles.imagebackground}
         source={{ uri: item.image }}
       >
-        <Text style={[styles.title, textColor]}>{item.commonName}</Text>
-        <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
         <Text style={[styles.title, textColor]}>{item.nickName}</Text>
+        <Text style={[styles.subtitle, textColor]}>{item.commonName}</Text>
+        <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
+        
       </ImageBackground>
     </TouchableOpacity>
   );
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#004346";
-    const color = item.id === selectedId ? "black" : "black";
+    const color = item.id === selectedId ? "black" : "white";
 
-    if (loading)
-      return (
-        <View>
-          <Text>loading profile...</Text>
-          <ProgressBar />
-        </View>
-      );
+   
 
     return (
       <Item
@@ -87,6 +82,13 @@ function InventoryScreen(props: any) {
     );
   };
 
+  if (loading)
+  return (
+    <View>
+      <Text style={{flex: 1, fontSize: 30, justifyContent:'center'}}>loading...</Text>
+      <ProgressBar />
+    </View>
+  );
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -132,7 +134,7 @@ const styles = StyleSheet.create({
     height: 200,
   },
   title: {
-    fontSize: 13,
+    fontSize: 30,
     fontWeight: "500",
   },
   subtitle: {
@@ -142,6 +144,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   imagebackground: {
+    flex: 1,
     // width: "100%",
     // height: "100%",
     borderStyle: "solid",

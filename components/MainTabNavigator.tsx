@@ -32,7 +32,7 @@ function MainTabNavigator() {
         options={{
           tabBarLabel: "Inventory",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="calendar" color={color} size={26} />
+            <MaterialCommunityIcons name="format-list-bulleted" color={color} size={26} />
           ),
         }}
       />
