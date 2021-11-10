@@ -33,7 +33,7 @@ const SearchScreen = (props: any) => {
   // const THUMB_SIZE = 80;
 
   const IMAGES = {
-    image1: require("../assets/flowering-house-plants-1.jpg"),
+    image1: require("../assets/Indoor-Flowers.jpg"),
     image2: require("../assets/foliage-house-plants-1.jpg"),
     image3: require("../assets/cacti_2.jpg"),
   };
@@ -107,7 +107,8 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 25,
-    color: "white"
+    color: "#EFF5E7"
+    //#09BC8A
   },
   searchbar: {
     width: 300,
@@ -119,22 +120,22 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 20,
     borderRadius: 10,
-    backgroundColor: "#35520C",
+    backgroundColor: "#004346",
     height: 200,
     shadowColor: "#000",
-  shadowOffset: {
-	width: 0,
-	height: 9,
-  },
-  shadowOpacity: 0.48,
-  shadowRadius: 11.95,  
-  elevation: 18,
+    shadowOffset: {
+	    width: 0,
+	    height: 9,
+      },
+    shadowOpacity: 0.48,
+    shadowRadius: 11.95,  
+    elevation: 18,
   },
   categoryImage: {
     width: "100%", 
     height: "100%", 
     alignContent: "center",
-    borderRadius: 500
+    borderRadius: 0
   }
 });
 
