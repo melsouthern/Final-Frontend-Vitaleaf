@@ -93,9 +93,9 @@ function InventoryScreen(props: any) {
 
   if (loading)
   return (
-    <View>
-          <Text style={styles.title}>loading...</Text>
-          <ProgressBar progress = {0.75} color={Colors.lightGreen800} />
+    <View style={styles.loading}>
+          <Text style={styles.loadingText}>loading...</Text>
+          <ActivityIndicator size='large' animating={true} color={Colors.green800} />
         </View>
   );
   return (
@@ -172,6 +172,15 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderRadius: 10,
   },
+  loadingText: {
+    fontSize: 35,
+    fontWeight: "500",
+  },
+  loading: {
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center'
+  }
 });
 
 export default InventoryScreen;

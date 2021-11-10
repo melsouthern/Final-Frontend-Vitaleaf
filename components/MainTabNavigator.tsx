@@ -27,10 +27,12 @@ function MainTabNavigator() {
         }}
       />
       <Tab.Screen
-        name={`${userName}'s Plants`}
+        name="Inventory"
         component={InventoryScreen}
         options={{
+          title:'test',
           tabBarLabel: "Inventory",
+          
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="format-list-bulleted" color={color} size={26} />
           ),
