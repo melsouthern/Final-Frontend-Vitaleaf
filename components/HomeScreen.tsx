@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useContext, useEffect } from "react";
+import { configureFonts } from "react-native-paper";
 import { Auth } from "aws-amplify";
 import {
   Text,
@@ -19,115 +20,33 @@ import { FlatList } from "react-native-gesture-handler";
 import { ProgressBar, Colors } from "react-native-paper";
 import { ListItem, Avatar } from "react-native-elements";
 import { useIsFocused } from "@react-navigation/native";
+import { white } from "react-native-paper/lib/typescript/styles/colors";
 
 function HomeScreen(props: any) {
   const { userName, setUserName } = useContext(UserContext);
-  const [userPlants, setUserPlants] = useState([]);
-  const { navigation } = props;
-  const [selectedId, setSelectedId] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const isFocused = useIsFocused();
-
-  useEffect(() => {
-    setLoading(true);
-    getUserPlantsFromDatabase(userName)
-      .then((response) => {
-        setUserPlants(response);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err, "<-----err");
-      });
-  }, [isFocused]);
-  
-
-  const handleOnPress = (commonName: string) => {
-    navigation.navigate();
-  };
-
-  const EmptyListMessage = ({ item }) => {
-    return (
-      // Flat List Item
-      <Text onPress={() => getItem(item)}>No Plants Yet......</Text>
-    );
-  };
-
-  const Item = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-      <Text style={[styles.title, textColor]}>{item.commonName}</Text>
-      <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
-      <Avatar source={{ uri: item.image_url }} />
-    </TouchableOpacity>
-  );
-
-  const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#dee5e5";
-    const color = item.id === selectedId ? "black" : "black";
-
-    if (loading)
-      return (
-        <View>
-          <Text>loading...</Text>
-          <ProgressBar />
-        </View>
-      );
-
-    return (
-      <Item
-        item={item}
-        onPress={() => handleOnPress(item)}
-        backgroundColor={{ backgroundColor }}
-        textColor={{ color }}
-      />
-    );
-  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.titletext}>{userName}'s plants...</Text>
-
-      <FlatList
-        contentContainerStyle={styles.userPlantView}
-        numColumns={2}
-        horizontal={false}
-        data={userPlants}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => String(index)}
-        extraData={selectedId}
-        initialNumToRender={5}
-        maxToRenderPerBatch={1}
-        windowSize={21}
-        ListEmptyComponent={EmptyListMessage}
-      />
+      <Image source={require("../assets/IMG_0308_5.png")} style={styles.logo} />
+      <Text style={styles.title}>a plant management app</Text>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  userPlantView: {
-    paddingLeft: 10,
-    paddingTop: 5,
-  },
-  ratingImage: { height: 19.21, width: 100 },
-  ratingText: { paddingLeft: 10, color: "grey" },
-  scrollView: {
-    backgroundColor: "#082d0fff",
-    marginHorizontal: 20,
-  },
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
-  },
-  item: {
-    flex: 1 / 2,
-    padding: 10,
-    marginVertical: 8,
-    marginHorizontal: 20,
-    borderRadius: 10,
+    // marginTop: StatusBar.currentHeight || 0,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#004346",
   },
   title: {
-    fontSize: 13,
+    fontSize: 17,
     fontWeight: "500",
+    flex: 1 / 2,
+    fontFamily: "Futura",
+    color: "white",
   },
   subtitle: {
     fontSize: 15,
@@ -135,7 +54,14 @@ const styles = StyleSheet.create({
   titletext: {
     fontSize: 25,
   },
-  logo: {},
+  logo: {
+    flex: 1 / 2,
+    resizeMode: "contain",
+    flexDirection: "column",
+    // aspectRatio: 0.6,
+    height: "70%",
+    width: "80%",
+  },
 });
 
 export default HomeScreen;

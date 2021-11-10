@@ -10,7 +10,7 @@ TouchableOpacity,
   Dimensions,
   StyleSheet,
 } from "react-native";
-import { Searchbar as Searchbox } from "react-native-paper";
+import { Searchbar as Searchbox, Searchbar } from "react-native-paper";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 
 const SearchScreen = (props: any) => {
@@ -52,7 +52,7 @@ const SearchScreen = (props: any) => {
     <View
       style={{ flex: 1, justifyContent: "flex-start", alignItems: "center" }}
     >
-      <Searchbox
+      <Searchbar
         style={styles.searchbar}
         placeholder="Search"
         onChangeText={onChangeSearch}
@@ -107,47 +107,7 @@ const SearchScreen = (props: any) => {
             inactiveDotScale={1}
           />
         </View>
-      </View>
-
-      {/* <View style={styles.categoryPictureContainer}>
-        <TouchableOpacity  style={styles.buttonContainer} onPress={handleOnPress}>  
-        <Image style={styles.categoryImage} name={'cat1'}source={require('../assets/cat1.jpg')}
-           />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Single Plant Category')} >  
-        <Image style={styles.categoryImage} source={require('../assets/cat1.jpg')} />
-        </TouchableOpacity>
-
-        
-<TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Single Plant Category')} >  
-        <Image style={styles.categoryImage} source={require('../assets/cat1.jpg')} />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Single Plant Category')}>  
-        <Image style={styles.categoryImage} source={require('../assets/cat1.jpg')} />
-        </TouchableOpacity>
-
-
-
-        </View> */}
-
-      {/* <TouchableOpacity style={styles.buttonContainer} onPress={getPlants}>  
-        <Text style={styles.buttonText}>All The Plants</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity
-        style={styles.buttonContainer}
-        onPress={() => navigation.navigate('Single Plant Category')}>
-        <Text style={styles.buttonText}>Single Plant Category</Text>
-      </TouchableOpacity>
-
-        
-        <TouchableOpacity
-        style={styles.buttonContainer}
-        onPress={() => navigation.navigate('Single Looked Up Plant')}>
-        <Text style={styles.buttonText}>Single Plant</Text>
-      </TouchableOpacity> */}
+      </View>   
     </View>
   );
 };
