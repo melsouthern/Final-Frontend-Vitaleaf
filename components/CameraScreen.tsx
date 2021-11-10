@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext, useRef} from 'react';
 
 
-import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet, Alert, ImageBackground } from "react-native";
 import * as ImagePicker from 'expo-image-picker'
 import {Camera} from 'expo-camera'
 import axios, { Axios } from 'axios';
@@ -12,6 +12,9 @@ import * as AWS from 'aws-sdk'
 import SelectDropdown from 'react-native-select-dropdown'
 import S3 from 'aws-sdk/clients/s3';
 import takePicture from '../assets/take-picture-of-plant.png'
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { FlatList } from 'react-native-gesture-handler';
+import { useFocusEffect } from '@react-navigation/native';
 // var AWS = require('aws-sdk/dist/aws-sdk-react-native')
 
 const styles = StyleSheet.create({
@@ -21,6 +24,36 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     
   },
+
+  imagebackground: {
+    width: "100%",
+    height: "100%",
+    borderStyle: "solid",
+    borderColor: "grey",
+    borderWidth: 1,
+  },
+
+  item: {
+    flex: 1,
+    padding: 10,
+    marginVertical: 8,
+    marginHorizontal: 20,
+    borderRadius: 15,
+  },
+
+  title: {
+    fontSize: 25,
+    fontWeight: "900",
+  },
+  subtitle: {
+    fontSize: 15,
+  },
+  subtitleView: {
+    flexDirection: "column",
+    paddingLeft: 10,
+    paddingTop: 5,
+  },
+
   buttonText: {
     fontSize: 20,
     color: '#09BC8A',
@@ -79,11 +112,7 @@ function CameraScreen({navigation}: cameraScreenProps) {
     const [haveCameraPermission, setHaveCameraPermission] = useState("")
     const [type, setType] = useState(Camera.Constants.Type.back);
     const [showCamera, setShowCamera] = useState(false) // not using
-   const [identifiedPlant1, setIdentifiedPlant1] = useState({
-    percentage: "",
-    botanicalName: "",
-  commonName:"",
-image_url:""})
+   const [identifiedPlant1, setIdentifiedPlant1] = useState([])
 const [identifiedPlant2, setIdentifiedPlant2] = useState({
   percentage: "",
   botanicalName: "",
@@ -91,8 +120,14 @@ commonName:"",
 image_url:""})
 const { userName, setUserName } = useContext(UserContext);
 const [userPlants, setUserPlants] = useState([]);
+const [selectedId, setSelectedId] = useState(null);
+
     
     useEffect(()=> {
+      // setIdentifiedPlant1([])
+      // setCameraRollImage({localUri:"", base64:""})
+      // setHaveCameraPermission("")
+      // setCameraPhoto({height:"", uri:"", width:"", base64:""})
       getUserPlantsFromDatabase(userName)
       .then((response) => {
         setUserPlants(response.filter(plant =>{
@@ -105,11 +140,22 @@ const [userPlants, setUserPlants] = useState([]);
       });
   }, []);
     
+  useFocusEffect(
+    React.useCallback(() => {
+      setIdentifiedPlant1([])
+      setHaveCameraPermission("")
+      setCameraPhoto({height:"", uri:"", width:"", base64:""})
+      setCameraRollImage({localUri:"", base64:""})
+    }, [])
+  );
 
     const cameraRef = useRef(null)   
   
-  function saveNotifier() {
+  function saveNotifier(plant_id) {
      alert("Saved!")
+     console.log(plant_id, "<<<<<plant id");
+     
+     navigation.navigate("Single User Plant", plant_id);
   }  
 
   
@@ -147,11 +193,12 @@ const [userPlants, setUserPlants] = useState([]);
     }
     
     async function saveCameraRollFunction() {
+      const selectedPlantId = userPlants[selectedPlantIndex].plant_id;    
       const apiResponse = await axios.patch
-      (`https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta/users/${userName}/plants/${userPlants[selectedPlantIndex].plant_id}/image`,
+      (`https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta/users/${userName}/plants/${selectedPlantId}/image`,
        {img: cameraRollImage.base64} )
       
-      if (apiResponse.status === 200) saveNotifier()
+      if (apiResponse.status === 200) saveNotifier(userPlants[selectedPlantIndex])
     }
     
     const userPlantsNames = userPlants.map(plant => { 
@@ -231,49 +278,80 @@ const [userPlants, setUserPlants] = useState([]);
       {plantsFromPlantId: suggestedPlants}
       )
      
-      setIdentifiedPlant1({
-        percentage: apiResponse.data[0].probability,
-        botanicalName: apiResponse.data[0].botanicalName,
-      commonName:apiResponse.data[0].commonName,
-    image_url:apiResponse.data[0].image_url
-  })
+      setIdentifiedPlant1(apiResponse.data)
       
       
     } catch (err) {
       console.log(err);
     }
   }
-  
-  if(identifiedPlant1.percentage !== ""){
- 
- return(
-    <View style={styles.container}>
-      <Text> Your plants common name is {identifiedPlant1.commonName}, latin name {identifiedPlant1.botanicalName} with a {identifiedPlant1.percentage} probability</Text>
-        <Image
-        
-          source={{uri: identifiedPlant1.image_url }}
-          style={styles.thumbnail}
-          />
-      
-      <TouchableOpacity
-        onPress={ ()=> navigation.navigate('Main', {screen: 'Home'})
-        }
-        
-        style={styles.button}
-        >
 
-      <Text style={styles.buttonText}>Go to Home</Text>
+  if (identifiedPlant1.length > 1) {
+    const handleOnPress = (commonName: string) => {
+      navigation.navigate("Single Looked Up Plant", commonName);
+      setIdentifiedPlant1([])
+      setCameraRollImage({localUri:"", base64:""})
+    };
+
+    const Item = ({ item, onPress, backgroundColor, textColor }) => (
+      <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+        <ImageBackground
+          imageStyle={{ opacity: 0.4 }}
+          source={{ uri: item.image_url }}
+          style={styles.imagebackground}
+        >
+          <Text style={[styles.title, textColor]}>{item.commonName}</Text>
+          <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
+          <Text style={[styles.subtitle, textColor]}>Probability: {item.probability}</Text>
+          {/* <Avatar source={{ uri: item.image_url }} /> */}
+        </ImageBackground>
       </TouchableOpacity>
-    </View>
- )
+    );
+
+    const renderItem = ({ item }) => {
+      const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#082d0fff";
+      const color = item.id === selectedId ? "white" : "#dee5e5ff";
+  
+      return (
+        <Item
+          item={item}
+          onPress={() => handleOnPress(item)}
+          backgroundColor={{ backgroundColor }}
+          textColor={{ color }}
+        />
+      );
+    };
+console.log(identifiedPlant1);
+
+    return(
+        <SafeAreaView style={styles.container}>
+          <FlatList
+            contentContainerStyle={styles.subtitleView}
+            data={identifiedPlant1}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.botanicalName}
+            extraData={selectedId}
+          />
+        </SafeAreaView>
+    )
   }
 
   async function saveCameraPhotoFunction() {
+
+    const selectedPlantId = userPlants[selectedPlantIndex].plant_id;    
+    
+    try {
+      const apiResponse = await axios.patch
+      (`https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta/users/${userName}/plants/${selectedPlantId}/image`,
+       {img: cameraRollImage.base64} )
+       console.log(apiResponse);
+       
+      if (apiResponse.status === 200) saveNotifier(userPlants[selectedPlantIndex])
+    } catch (err) {
+      console.log(err);
+      
+    }
     // console.log(cameraPhoto)
-    const apiResponse = await axios.patch
-    (`https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta/users/${userName}/plants/${userPlants[selectedPlantIndex].plant_id}/image`,
-     { img: cameraPhoto.base64 })
-    if (apiResponse.status === 200) saveNotifier()
 
   }
 
@@ -380,7 +458,11 @@ const [userPlants, setUserPlants] = useState([]);
                    </TouchableOpacity>
                    <TouchableOpacity 
                    style={styles.cameraButton}
-                  //  onPress={}
+                   onPress={() => {
+                    setCameraRollImage({localUri:"", base64:""})
+                    setHaveCameraPermission("")
+                    setCameraPhoto({height:"", uri:"", width:"", base64:""})
+                   }}
                    >
 
                    <Text style={styles.text}> Cancel </Text>
