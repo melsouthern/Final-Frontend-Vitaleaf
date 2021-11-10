@@ -34,6 +34,18 @@ function MainStackNavigator() {
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: "horizontal",
+<<<<<<< HEAD
+        // headerStyle: {
+         // backgroundColor: '#17B890'
+          
+        // },
+        headerBackground: () =>(<Image
+          style={{flex:1, 
+            height: 25, width:380, alignSelf: 'center'
+          }}
+          source={vitaleafNarrow}
+        />),
+=======
 
         headerStyle: {
           backgroundColor: "#17B890",
@@ -45,11 +57,27 @@ function MainStackNavigator() {
           />
         ),
 
+>>>>>>> d340842a43f5077b85d98e48050e55df42b601c7
         headerTitleStyle: {
           fontFamily: "Futura",
         },
         headerTintColor: "#ffffff",
       }}
+<<<<<<< HEAD
+    
+      >
+        <Stack.Screen name='Main' component={MainTabNavigator} options={({route}) => ({
+          title: getHeaderTitle(route),
+        })}  />
+        
+        <Stack.Screen name="Single Looked Up Plant" component={SingleLookedUpPlantScreen} />
+        <Stack.Screen name="Single Plant Category" component={SingleCategoryPlantScreen} />
+        <Stack.Screen name="Searched For Plants" component={SearchedForPlants} />
+        <Stack.Screen name="Single User Plant" component={SingleUserPlant} />
+      </Stack.Navigator>
+    
+  )
+=======
     >
       <Stack.Screen
         name="Main"
@@ -73,6 +101,7 @@ function MainStackNavigator() {
         })}/>
     </Stack.Navigator>
   );
+>>>>>>> d340842a43f5077b85d98e48050e55df42b601c7
 }
 
 export default MainStackNavigator;

@@ -1,3 +1,15 @@
+<<<<<<< HEAD
+import React from 'react';
+
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import HomeScreen from './HomeScreen';
+import InventoryScreen from './InventoryScreen';
+import SearchScreen from './SearchScreen';
+import LightMeterScreen from './LightMeterScreen';
+import CameraScreen from './CameraScreen';
+import ProfileScreen from './ProfileScreen';
+=======
 import React, { useContext } from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -8,6 +20,7 @@ import LightMeterScreen from "./LightMeterScreen";
 import CameraScreen from "./CameraScreen";
 import ProfileScreen from "./ProfileScreen";
 import { UserContext } from "./utils/User";
+>>>>>>> d340842a43f5077b85d98e48050e55df42b601c7
 
 const Tab = createMaterialBottomTabNavigator();
 
