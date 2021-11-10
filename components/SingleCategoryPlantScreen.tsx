@@ -46,9 +46,11 @@ const SingleCategoryPlantScreen = (props: any) => {
         source={{ uri: item.image_url }}
         style={styles.imagebackground}
       >
+      <View style={styles.textContainer}>
         <Text style={[styles.title, textColor]}>{item.commonName}</Text>
         <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
         {/* <Avatar source={{ uri: item.image_url }} /> */}
+      </View>
       </ImageBackground>
     </TouchableOpacity>
   );
@@ -62,7 +64,7 @@ const SingleCategoryPlantScreen = (props: any) => {
       )
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#082d0fff";
+    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#004346";
     const color = item.id === selectedId ? "white" : "#dee5e5ff";
 
     return (
@@ -102,37 +104,32 @@ const styles = StyleSheet.create({
   ratingText: { paddingLeft: 10, color: "grey" },
   container: {
     flex: 1,
-    // marginTop: StatusBar.currentHeight || 0,
+  },
+  textContainer: {
+    flex:1,
+    alignItems:"center",
+    justifyContent:"center",
+    flexDirection: "column",
   },
   item: {
     shadowColor: "#000",
-  shadowOffset: {
-	width: 0,
-	height: 9,
-  },
-  shadowOpacity: 0.48,
-  shadowRadius: 11.95,  
-  elevation: 18,
+    shadowOffset: {
+	    width: 0,
+	    height: 9,
+      },
+    shadowOpacity: 0.48,
+    shadowRadius: 11.95,  
+    elevation: 18,
     flex: 2,
-    // padding: 10,
     marginVertical: 8,
     marginHorizontal: 20,
     borderRadius: 10,
     backgroundColor: "#004346",
     height: 200,
   },
-  // item: {
-  //   justifyContent: "center",
-  //   flex: 1,
-  //   height:100,
-  //   marginVertical: 8,
-  //   marginHorizontal: 20,
-  //   borderRadius: 10,
-  // },
   title: {
-  
     fontSize: 25,
-    fontWeight: "900",
+    fontWeight: "500",
   },
   subtitle: {
     fontSize: 15,
@@ -140,7 +137,6 @@ const styles = StyleSheet.create({
   imagebackground: {
     width: "100%",
     height: "100%",
-    // borderRadius: 10,
   },
 });
 

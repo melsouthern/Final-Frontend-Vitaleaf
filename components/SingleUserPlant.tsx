@@ -71,28 +71,37 @@ const SingleUserPlant = (props: any) => {
           <View style={styles.subContainer}>
         <Image
           source={{ uri: imageSource }}
-          style={{ width: 250, height: 250, borderRadius: 100}}
+          style={{ width: 250, height: 250, borderRadius: 70, borderWidth: 2, borderColor: "#004346", marginTop: 10, marginBottom: 10,}}
           PlaceholderContent={<ActivityIndicator />}
         />
+        </View>
+        <Text style={styles.plantDesc}>Plant's nickname:</Text>
         <Text style={styles.title}> {singlePlant.nickName} </Text>
-          </View>
+        <Text style={styles.plantDesc}>Plant's common name:</Text>
         <Text style={styles.subtitle}> {singlePlant.commonName} </Text>
-        <Text style={styles.description}> Light requirement: {databasePlant.careDetails === undefined ? null : databasePlant.careDetails.lightRequirements} </Text>
-        <Text style={styles.description}> Last watered: {singlePlant.lastWatered === null ? 'Plant has not been watered yet' : newLastWatered} </Text>
-        <Text style={styles.description}> Next watering: {singlePlant.nextWatering === null ? 'Please water your plant first' : newNextWatering} </Text>
-        <Text>Turn on notifications for {singlePlant.nickName}: </Text>
-        <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
-
+        <View style={styles.textContainer}>
+        <Text style={{marginBottom: 20, marginTop: 10}}>Light requirement: {databasePlant.careDetails === undefined ? null : databasePlant.careDetails.lightRequirements} </Text>
+        <Text >Last watered: {singlePlant.lastWatered === null ? 'Plant has not been watered yet' : newLastWatered} </Text>
+        <Text style={{marginTop: 10}}>Next watering: {singlePlant.nextWatering === null ? 'Please water your plant first' : newNextWatering} </Text>
+        </View>
+        <View style={styles.notification}>
+        <Text style={{marginTop: 10, marginLeft: "25%"}}>Turn on notifications for {singlePlant.nickName}: </Text>
+        <Switch style={{marginLeft: "45%", marginBottom: 5}} value={isSwitchOn} onValueChange={onToggleSwitch} />
+        </View>
+        <View style={styles.button}>
         <Button
+        style={{padding: 10}}
         icon={{ name: "arrow-right", size: 15, color: "white" }}
         title="Watered"
         onPress={handleLastWatered}
         />
         <Button
+        style={{padding: 10, marginLeft: 30}}
           icon={{ name: "arrow-right", size: 15, color: "white" }}
           title="Delete Plant"
           onPress={() => handleRemovePlant()}
         />
+        </View>
       </View>
     </ScrollView>
   );
@@ -100,9 +109,39 @@ const SingleUserPlant = (props: any) => {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "#EFF5E7",
     flex: 1,
+    alignItems: "center",
+  },
+  plantDesc: {
+    marginTop: 5,
+    fontSize: 15,
+    color: "grey",
+    fontStyle: "italic",
+  },
+  button: {
+    flexDirection: "row",
+    marginBottom: 20
+  },
+  textContainer: {
+    width: 340,
+  },
+  notification: {
+    width: "100%",
+    backgroundColor: "#09BC8A",
+    alignContent:"center",
+    marginTop: 10,
+    marginBottom: 10,
   },
   subContainer: {
+    shadowColor: "#000",
+    shadowOffset: {
+	    width: 0,
+	    height: 9,
+      },
+    shadowOpacity: 0.48,
+    shadowRadius: 11.95,  
+    elevation: 18,
     alignItems: "center"
   },
   header: {
@@ -112,14 +151,14 @@ const styles = StyleSheet.create({
     flex: 3,
   },
   title: {
-    fontSize: 30,
+    justifyContent: "center",
+    fontSize: 25,
     fontWeight: "700",
   },
   subtitle: {
-    marginTop: 2,
+    marginBottom: 10,
     fontSize: 20,
     fontWeight: "500",
-    fontStyle: "italic",
   },
   description: {
     marginTop: 5,
