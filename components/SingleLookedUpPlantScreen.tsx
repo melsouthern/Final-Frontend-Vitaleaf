@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Alert, KeyboardAvoidingView,Platform } from "react-native";
 import { useState, useEffect, useContext, useRef } from "react";
 import { getSinglePlant, postUserPlantToDatabase } from "./utils/Api";
 import { getPlants } from "./utils/Api";
@@ -56,10 +56,16 @@ const SingleLookedUpPlantScreen = (props: any) => {
       navigation.navigate("Main", {screen: 'Inventory'});
     })
   setClicked(false)}, [plantToPost]);
-
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
   return (
+    
+    
     <ScrollView>
-      <View style={styles.container}>
+      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset} style={styles.container}>
+    
+    
+    
+      
         <View style={styles.imgContainer}>
         <Image
           source={{ uri: imageSource }}
@@ -87,8 +93,11 @@ const SingleLookedUpPlantScreen = (props: any) => {
           title="Add To Inventory"
           onPress={() => handleAddToInventory(singlePlant)}
         />
-      </View>
+      
+      </KeyboardAvoidingView>
     </ScrollView>
+    
+    
   );
 };
 
