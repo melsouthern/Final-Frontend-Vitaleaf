@@ -41,6 +41,8 @@ function InventoryScreen(props: any) {
   }, [isFocused]);
 
   const handleOnPress = (plant_id: string) => {
+    console.log(plant_id, "<<<<inv");
+    
     navigation.navigate("Single User Plant", plant_id);
   };
 
