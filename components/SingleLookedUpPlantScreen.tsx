@@ -64,7 +64,7 @@ const SingleLookedUpPlantScreen = (props: any) => {
         <Image
           source={{ uri: imageSource }}
           style={styles.image}
-          PlaceholderContent={<ActivityIndicator />}
+          PlaceholderContent={<ActivityIndicator color={Colors.green800}/>}
         />
         </View>
         <View style={styles.textContainer}>
