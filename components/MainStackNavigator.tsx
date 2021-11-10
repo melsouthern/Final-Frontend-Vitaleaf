@@ -13,7 +13,7 @@ import SingleCategoryPlantScreen from "./SingleCategoryPlantScreen";
 import SearchedForPlants from "./SearchedForPlants";
 import SingleUserPlant from "./SingleUserPlant";
 import { Image, StyleSheet, Text, View } from "react-native";
-import vitaleafNarrow from "../assets/vitaleafNarrow3.png";
+import vitaleafNarrow from "../assets/leafOnly8.png";
 import { useContext } from "react";
 import { UserContext } from "./utils/User";
 
@@ -40,7 +40,7 @@ function MainStackNavigator() {
         },
         headerBackground: () => (
           <Image
-            style={{ flex: 1, height: 25, width: 380 }}
+            style={{ flex: 1, height: 25, width: 370 }}
             source={vitaleafNarrow}
           />
         ),
