@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { useState, useRef, useContext } from "react";
 import { getPlants } from "./utils/Api";
 import {
-TouchableOpacity,
+  TouchableOpacity,
   View,
   Text,
   Image,
@@ -16,14 +16,14 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 const SearchScreen = (props: any) => {
   const { navigation } = props;
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [plantSearch, setPlantSearch] = React.useState('')
-  
+  const [plantSearch, setPlantSearch] = React.useState("");
+
   const onChangeSearch = (query: string) => setSearchQuery(query);
   const [indexSelected, setIndexSelected] = useState(0);
 
   const handleSearch = (event: object) => {
-        navigation.navigate("Searched For Plants", {searchQuery});
-  }
+    navigation.navigate("Searched For Plants", { searchQuery });
+  };
 
   const onSelect = (indexSelected: number) => {
     setIndexSelected(indexSelected);
@@ -45,51 +45,49 @@ const SearchScreen = (props: any) => {
   ]);
 
   const handleOnPress = (plantCategoryId: string) => {
-        navigation.navigate("Single Plant Category", { plantCategoryId });
+    navigation.navigate("Single Plant Category", { plantCategoryId });
   };
 
   return (
-    <View
-      style={styles.container}
-    >
+    <View style={styles.container}>
       <Searchbar
         style={styles.searchbar}
         placeholder="Search plant..."
         onChangeText={onChangeSearch}
         value={searchQuery}
         onSubmitEditing={(searchQuery) => handleSearch(searchQuery)}
-        
       />
-        <View style={styles.carousel}>
-          <Carousel
-          
-            layout="default"
-            data={images}
-            sliderWidth={width}
-            itemWidth={width}
-            renderItem={({ item, index }) => (
-              <TouchableOpacity style={styles.touchable} onPress={() => handleOnPress(item.id)}>
-                <Text style={styles.header}>{item.id}</Text>
-                <Image
-                  key={index}
-                  style={styles.categoryImage}
-                  resizeMode="contain"
-                  source={item.image}
-                />
-              </TouchableOpacity>
-            )}
-            onSnapToItem={(index) => onSelect(index)}
-          />
-          <Pagination
-            inactiveDotColor="gray"
-            dotColor={"orange"}
-            activeDotIndex={indexSelected}
-            dotsLength={images.length}
-            animatedDuration={150}
-            inactiveDotScale={1}
-          />
-        </View>
-        
+      <View>
+        <Carousel
+          layout="default"
+          data={images}
+          sliderWidth={width}
+          itemWidth={width}
+          renderItem={({ item, index }) => (
+            <TouchableOpacity
+              style={styles.touchable}
+              onPress={() => handleOnPress(item.id)}
+            >
+              <Text style={styles.header}>{item.id}</Text>
+              <Image
+                key={index}
+                style={styles.categoryImage}
+                resizeMode="contain"
+                source={item.image}
+              />
+            </TouchableOpacity>
+          )}
+          onSnapToItem={(index) => onSelect(index)}
+        />
+        <Pagination
+          inactiveDotColor="gray"
+          dotColor={"orange"}
+          activeDotIndex={indexSelected}
+          dotsLength={images.length}
+          animatedDuration={150}
+          inactiveDotScale={1}
+        />
+      </View>
     </View>
   );
 };
@@ -100,43 +98,40 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#EFF5E7",
   },
-  carousel: {
-    flex:1,
-    alignItems: "center",
-    justifyContent:"center",
-  },
   header: {
-    fontSize: 25,
-    color: "#EFF5E7"
+    paddingTop: 15,
+    fontSize: 20,
+    color: "#EFF5E7",
+    paddingBottom: 5,
     //#09BC8A
   },
   searchbar: {
     width: 300,
-    marginTop: 10,
+    marginTop: 40,
   },
   touchable: {
-    marginTop: "30%", 
+    width: 180,
+    height: 250,
+    aspectRatio: 1 * 1.3,
+    overflow: "hidden",
+    marginTop: "20%",
     alignItems: "center",
-    marginVertical: 8,
     marginHorizontal: 20,
     borderRadius: 10,
     backgroundColor: "#004346",
-    height: 200,
     shadowColor: "#000",
     shadowOffset: {
-	    width: 0,
-	    height: 9,
-      },
+      width: 0,
+      height: 9,
+    },
     shadowOpacity: 0.48,
-    shadowRadius: 11.95,  
-    elevation: 18,
+    shadowRadius: 11.95,
   },
   categoryImage: {
-    width: "100%", 
-    height: "100%", 
-    alignContent: "center",
-    borderRadius: 0
-  }
+    width: "100%",
+    height: "100%",
+    resizeMode: "stretch",
+  },
 });
 
 export default SearchScreen;

@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#004346",
+    paddingTop: 10,
   },
   title: {
     fontSize: 17,
@@ -48,19 +49,11 @@ const styles = StyleSheet.create({
     fontFamily: "Futura",
     color: "white",
   },
-  subtitle: {
-    fontSize: 15,
-  },
-  titletext: {
-    fontSize: 25,
-  },
   logo: {
-    flex: 1 / 2,
     resizeMode: "contain",
-    flexDirection: "column",
     // aspectRatio: 0.6,
-    height: "70%",
-    width: "80%",
+    height: 90,
+    width: "70%",
   },
 });
 
