@@ -47,9 +47,9 @@ function MainStackNavigator() {
          // backgroundColor: '#17B890'
           
         // },
-        headerBackground: () => (<Image
+        headerBackground: () =>(<Image
           style={{flex:1, 
-            height: 25, width:380 
+            height: 25, width:380, alignSelf: 'center'
           }}
           source={vitaleafNarrow}
         />),
@@ -58,7 +58,7 @@ function MainStackNavigator() {
         },
         headerTintColor: '#ffffff'
       }}
-      
+    
       >
         <Stack.Screen name='Main' component={MainTabNavigator} options={({route}) => ({
           title: getHeaderTitle(route),
