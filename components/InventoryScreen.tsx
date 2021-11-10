@@ -16,7 +16,7 @@ import { Button, Card, Title, Paragraph } from "react-native-paper";
 import { UserContext, UserProvider } from "./utils/User";
 import { getUserFromDatabase, getUserPlantsFromDatabase } from "./utils/Api";
 import { FlatList } from "react-native-gesture-handler";
-import { ProgressBar, Colors } from "react-native-paper";
+import { ProgressBar, Colors, ActivityIndicator} from "react-native-paper";
 import { ListItem, Avatar } from "react-native-elements";
 import { useIsFocused } from "@react-navigation/native";
 
@@ -46,8 +46,13 @@ function InventoryScreen(props: any) {
 
   const EmptyListMessage = ({ item }) => {
     return (
-      // Flat List Item
-      <Text onPress={() => getItem(item)}>No Plants Yet......</Text>
+      <View style={{justifyContent: "center"}}>
+        <Text style={{marginLeft: "8%", marginTop: "20%", fontSize: 15}} onPress={() => navigation.navigate("Main", {screen: 'Search'})}>Click here to insert plants to your collection!</Text>
+        <Image
+          source={require('../assets/plant.png')}
+          style={{marginLeft: "15%", marginTop: "30%"}}
+        />
+      </View>
     );
   };
 
@@ -57,10 +62,12 @@ function InventoryScreen(props: any) {
         imageStyle={{ opacity: 0.4 }}
         style={styles.imagebackground}
         source={{ uri: item.image }}
-      >
+      > 
+      <View style={styles.textContainer}>
         <Text style={[styles.title, textColor]}>{item.nickName}</Text>
         <Text style={[styles.subtitle, textColor]}>{item.commonName}</Text>
         <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
+      </View>
         
       </ImageBackground>
     </TouchableOpacity>
@@ -70,15 +77,15 @@ function InventoryScreen(props: any) {
     const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#004346";
     const color = item.id === selectedId ? "black" : "white";
 
-   
-
     return (
-      <Item
-        item={item}
-        onPress={() => handleOnPress(item)}
-        backgroundColor={{ backgroundColor }}
-        textColor={{ color }}
-      />
+      <View>
+        <Item
+          item={item}
+          onPress={() => handleOnPress(item)}
+          backgroundColor={{ backgroundColor }}
+          textColor={{ color }}
+        />
+      </View>
     );
   };
 
@@ -122,16 +129,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // marginTop: StatusBar.currentHeight || 0,
-    // backgroundColor: "#004346",
+    backgroundColor: "#EFF5E7",
   },
   item: {
+    shadowColor: "#000",
+    shadowOffset: {
+	  width: 0,
+  	height: 9,
+    },
+    shadowOpacity: 0.48,
+    shadowRadius: 11.95,  
+    elevation: 18,
     flex: 2,
-    // padding: 10,
     marginVertical: 8,
     marginHorizontal: 20,
     borderRadius: 10,
     backgroundColor: "#004346",
     height: 200,
+  },
+  textContainer: {
+    flex:1,
+    alignItems:"center",
+    justifyContent:"center",
+    flexDirection: "column",
   },
   title: {
     fontSize: 30,
@@ -145,12 +165,9 @@ const styles = StyleSheet.create({
   },
   imagebackground: {
     flex: 1,
-    // width: "100%",
-    // height: "100%",
     borderStyle: "solid",
     borderColor: "grey",
     borderWidth: 0,
-    // resizeMode: "center",
     borderRadius: 10,
   },
 });
