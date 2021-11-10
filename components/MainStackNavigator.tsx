@@ -12,6 +12,11 @@ import SingleLookedUpPlantScreen from "./SingleLookedUpPlantScreen";
 import SingleCategoryPlantScreen from "./SingleCategoryPlantScreen";
 import SearchedForPlants from "./SearchedForPlants";
 import SingleUserPlant from "./SingleUserPlant";
+import { Image, StyleSheet, Text, View } from "react-native";
+import vitaleafNarrow from "../assets/vitaleafNarrow3.png";
+import { useContext } from "react";
+import { UserContext } from "./utils/User";
+
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
 const Stack = createStackNavigator();
@@ -22,22 +27,57 @@ function getHeaderTitle(route: object) {
 }
 
 function MainStackNavigator() {
-  //const [plantCategory, setPlantCategory] = useState<string | null>("")
+  const { userName } = useContext(UserContext);
 
   return (
     <Stack.Navigator
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: "horizontal",
+<<<<<<< HEAD
+        // headerStyle: {
+         // backgroundColor: '#17B890'
+          
+        // },
+        headerBackground: () =>(<Image
+          style={{flex:1, 
+            height: 25, width:380, alignSelf: 'center'
+          }}
+          source={vitaleafNarrow}
+        />),
+=======
+
         headerStyle: {
-          backgroundColor: "#508991",
+          backgroundColor: "#17B890",
         },
+        headerBackground: () => (
+          <Image
+            style={{ flex: 1, height: 25, width: 380 }}
+            source={vitaleafNarrow}
+          />
+        ),
+
+>>>>>>> d340842a43f5077b85d98e48050e55df42b601c7
         headerTitleStyle: {
-          // fontWeight: "bold",
           fontFamily: "Futura",
         },
         headerTintColor: "#ffffff",
       }}
+<<<<<<< HEAD
+    
+      >
+        <Stack.Screen name='Main' component={MainTabNavigator} options={({route}) => ({
+          title: getHeaderTitle(route),
+        })}  />
+        
+        <Stack.Screen name="Single Looked Up Plant" component={SingleLookedUpPlantScreen} />
+        <Stack.Screen name="Single Plant Category" component={SingleCategoryPlantScreen} />
+        <Stack.Screen name="Searched For Plants" component={SearchedForPlants} />
+        <Stack.Screen name="Single User Plant" component={SingleUserPlant} />
+      </Stack.Navigator>
+    
+  )
+=======
     >
       <Stack.Screen
         name="Main"
@@ -56,9 +96,12 @@ function MainStackNavigator() {
         component={SingleCategoryPlantScreen}
       />
       <Stack.Screen name="Searched For Plants" component={SearchedForPlants} />
-      <Stack.Screen name="Single User Plant" component={SingleUserPlant} />
+      <Stack.Screen name="Single User Plant" component={SingleUserPlant} options={({ route }) => ({
+          title: `${userName}'s Plant`,
+        })}/>
     </Stack.Navigator>
   );
+>>>>>>> d340842a43f5077b85d98e48050e55df42b601c7
 }
 
 export default MainStackNavigator;

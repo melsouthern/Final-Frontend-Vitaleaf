@@ -1,27 +1,39 @@
-import React, {useState, useEffect, useRef} from 'react';
-import * as Permissions from "expo-permissions"
+import React, {useState, useEffect, useContext, useRef} from 'react';
+
+
 import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import * as ImagePicker from 'expo-image-picker'
 import {Camera} from 'expo-camera'
 import axios, { Axios } from 'axios';
-
-
+import { getUserPlantsFromDatabase } from "./utils/Api";
+import { UserContext} from "./utils/User";
 import { NavigationContainer } from '@react-navigation/native';
 import * as AWS from 'aws-sdk'
-
+import SelectDropdown from 'react-native-select-dropdown'
 import S3 from 'aws-sdk/clients/s3';
+import takePicture from '../assets/take-picture-of-plant.png'
 // var AWS = require('aws-sdk/dist/aws-sdk-react-native')
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#354D2A',
+    backgroundColor: '#004346',
     padding: 20,
     borderRadius: 5,
     
   },
   buttonText: {
     fontSize: 20,
-    color: '#fff',
+    color: '#09BC8A',
+  },
+  button2: {
+    backgroundColor: '#004346',
+    padding: 5,
+    borderRadius: 5,
+    
+  },
+  buttonText2: {
+    fontSize: 19.5,
+    color: '#09BC8A',
   },
   thumbnail: {
     width: 300,
@@ -59,9 +71,9 @@ const styles = StyleSheet.create({
   },
   
 })
-type cameraScreenProps = {navigation: any}
+type cameraScreenProps = {navigation: any, props: any}
 function CameraScreen({navigation}: cameraScreenProps) {
-  
+   const [selectedPlantIndex, setSelectedPlantIndex] = useState(0)
     const [cameraRollImage, setCameraRollImage] = useState({localUri:"", base64:""})
     const [cameraPhoto, setCameraPhoto] = useState({height:"", uri:"", width:"", base64:""}) 
     const [haveCameraPermission, setHaveCameraPermission] = useState("")
@@ -77,8 +89,22 @@ const [identifiedPlant2, setIdentifiedPlant2] = useState({
   botanicalName: "",
 commonName:"",
 image_url:""})
+const { userName, setUserName } = useContext(UserContext);
+const [userPlants, setUserPlants] = useState([]);
     
-
+    useEffect(()=> {
+      getUserPlantsFromDatabase(userName)
+      .then((response) => {
+        setUserPlants(response.filter(plant =>{
+          return plant.plant_id
+        }))
+        
+      })
+      .catch((err) => {
+        console.log(err, "<-----err");
+      });
+  }, []);
+    
 
     const cameraRef = useRef(null)   
   
@@ -100,12 +126,9 @@ image_url:""})
   
       setHaveCameraPermission("Yes")  
       
-      // console.log(">>>>>>>>>Hello!")
-
-    }
-    // console.log(">>>>>>>>>Hello....2  !")
-
     
+    }
+        
     let openImagePickerAsync = async () => {
       let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
       // console.log(permissionResult, " IMAGE PICK RESULT")
@@ -125,13 +148,16 @@ image_url:""})
     
     async function saveCameraRollFunction() {
       const apiResponse = await axios.patch
-      ("https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta/users/hello/plants/hello-1636374684637/image",
+      (`https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta/users/${userName}/plants/${userPlants[selectedPlantIndex].plant_id}/image`,
        {img: cameraRollImage.base64} )
       
       if (apiResponse.status === 200) saveNotifier()
     }
     
-    
+    const userPlantsNames = userPlants.map(plant => { 
+      return plant.nickName
+    })
+    //camera roll save
     if (cameraRollImage.localUri !== ""){
       
       return (
@@ -140,6 +166,28 @@ image_url:""})
             source={{ uri: cameraRollImage.localUri }}
             style={styles.thumbnail}
             />
+
+
+             <SelectDropdown
+             buttonStyle={styles.button2}
+             buttonTextStyle={styles.buttonText2}
+	data={userPlantsNames}
+	onSelect={(selectedItem, index) => {
+		console.log(selectedItem, index)
+    setSelectedPlantIndex(index)
+	}}
+	// buttonTextAfterSelection={(selectedItem, index) => {
+	// 	// text represented after item is selected
+	// 	// if data array is an array of objects then return selectedItem.property to render after item is selected
+	// 	return selectedItem.nickName
+	// }}
+	rowTextForSelection={(item, index) => {
+		// text represented for each item in dropdown
+		// if data array is an array of objects then return item.property to represent item in dropdown
+		return item
+	}}
+  
+/>    
         <TouchableOpacity
           onPress={() => saveCameraRollFunction()}
           style={styles.button}
@@ -174,7 +222,6 @@ image_url:""})
       const suggestedPlants = response.data.suggestions.map((plant) => {
         return {
           botanicalName: plant.plant_name,
-          // commonName: plant.plant_details.common_names,
           probability: plant.probability,
         }
       })
@@ -196,15 +243,7 @@ image_url:""})
       console.log(err);
     }
   }
-  function resetStates() {
-    setCameraPhoto({height:"", uri:"", width:"", base64:""})
-          setIdentifiedPlant1({
-            percentage: "",
-            botanicalName: "",
-          commonName:"",
-        image_url:""})
-        setHaveCameraPermission("")
-  }
+  
   if(identifiedPlant1.percentage !== ""){
  
  return(
@@ -232,13 +271,16 @@ image_url:""})
   async function saveCameraPhotoFunction() {
     // console.log(cameraPhoto)
     const apiResponse = await axios.patch
-    ("https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta/users/hello/plants/hello-1636374684637/image",
+    (`https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta/users/${userName}/plants/${userPlants[selectedPlantIndex].plant_id}/image`,
      { img: cameraPhoto.base64 })
     if (apiResponse.status === 200) saveNotifier()
 
   }
 
+  // console.log(userPlants)
+  // console.log(userPlantsNames)
 
+  // after got photo, identify or save
   if (cameraPhoto.height !== ""){
     return (
       <View style={styles.container}>
@@ -247,30 +289,46 @@ image_url:""})
           source={{ uri: cameraPhoto.uri }}
           style={styles.thumbnail}
           />
+
+
+      <SelectDropdown
+      buttonStyle={styles.button2}
+      buttonTextStyle={styles.buttonText2}
+	data={userPlantsNames}
+	onSelect={(selectedItem, index) => {
+		console.log(selectedItem, index)
+    setSelectedPlantIndex(index)
+	}}
+	// buttonTextAfterSelection={(selectedItem, index) => {
+	// 	// text represented after item is selected
+	// 	// if data array is an array of objects then return selectedItem.property to render after item is selected
+	// 	return selectedItem.nickName
+	// }}
+	rowTextForSelection={(item, index) => {
+		// text represented for each item in dropdown
+		// if data array is an array of objects then return item.property to represent item in dropdown
+		return item
+	}}
+/>    
       <TouchableOpacity
         onPress={() => {saveCameraPhotoFunction()}}
         
         style={styles.button}
         >
 
-      <Text style={styles.buttonText}>Save chosen image</Text>
+      <Text style={styles.buttonText}>Save chosen image to selected plant</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={ ()=> {makeApiCall()}
-
-
         }
-          
-        
         style={styles.button}
         >
-
       <Text style={styles.buttonText}>Identify this plant</Text>
       </TouchableOpacity>
     </View>
   ); }
 
-
+ //taking photo function
   const takePhoto = async () => {
  if (cameraRef) {    // Was - if(cameraRef)
    console.log("In take photo")
@@ -283,9 +341,7 @@ image_url:""})
        base64: true,
 
      })
-    //  console.log(photo)
      setCameraPhoto(photo)
-    //  console.log(cameraPhoto)
      return photo
    } catch (error) {
      console.log(error)
@@ -293,8 +349,9 @@ image_url:""})
  }
 
   }
+  //Inside camera - taking a picture
   if (haveCameraPermission === "Yes") {
-    // console.log("Are we in the render of camera?")
+    
      return (
          <View style={styles.cameraContainer}>
           
@@ -335,19 +392,21 @@ image_url:""})
            );
 
   }
+  //1st screen displayed
   
+   
   return (
     
     <View style={styles.container}>
 
       <Text >Add a plant to your collection!</Text>
-      
-      <Text>Push button to select from camera roll </Text>
+      <Image source={takePicture} />
+      <Text>Push button to select from camera roll to add plant to your inventory</Text>
 
       <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
         <Text style={styles.buttonText}>Pick a photo</Text>
       </TouchableOpacity>
-      <Text> Push button to open camera</Text>
+      <Text> Push button to open camera, then you can add a photo to your plant or identify a new plant</Text>
       <TouchableOpacity onPress={openCameraAsync} style={styles.button}>
         <Text style={styles.buttonText}>Take a photo</Text>
       </TouchableOpacity>
