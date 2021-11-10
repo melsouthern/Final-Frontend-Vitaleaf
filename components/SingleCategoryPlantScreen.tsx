@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     borderRadius: 10,
     backgroundColor: "#004346",
-    height: 200,
+    height: 100,
   },
   title: {
     fontSize: 25,

@@ -37,6 +37,7 @@
     "luxon": "^2.1.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-icons": "^4.3.1",
     "react-native": "0.64.2",
     "react-native-anchor-carousel": "^3.1.2",
     "react-native-calendars": "^1.1268.0",

@@ -70,7 +70,9 @@ function MainStackNavigator() {
         name="Single Plant Category"
         component={SingleCategoryPlantScreen}
       />
-      <Stack.Screen name="Searched For Plants" component={SearchedForPlants} />
+      <Stack.Screen name="Searched For Plants" component={SearchedForPlants} options={({ route }) => ({
+          title: `Search results`,
+        })}/>
       <Stack.Screen name="Single User Plant" component={SingleUserPlant} options={({ route }) => ({
           title: `${userName}'s Plant`,
         })}/>

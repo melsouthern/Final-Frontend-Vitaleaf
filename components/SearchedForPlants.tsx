@@ -46,9 +46,11 @@ const SearchedForPlants = (props: any) => {
         source={{ uri: item.image_url }}
         style={styles.imagebackground}
       >
+        <View style={styles.textContainer}>
         <Text style={[styles.title, textColor]}>{item.commonName}</Text>
         <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
         {/* <Avatar source={{ uri: item.image_url }} /> */}
+        </View>
       </ImageBackground>
     </TouchableOpacity>
   );
@@ -70,7 +72,7 @@ const SearchedForPlants = (props: any) => {
   }
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#082d0fff";
+    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#004346";
     const color = item.id === selectedId ? "white" : "#dee5e5ff";
 
     return (
@@ -102,6 +104,12 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingTop: 5,
   },
+  textContainer: {
+    flex:1,
+    alignItems:"center",
+    justifyContent:"center",
+    flexDirection: "column",
+  },
   ratingImage: { height: 19.21, width: 100 },
   ratingText: { paddingLeft: 10, color: "grey" },
   scrollView: {
@@ -113,15 +121,24 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
   },
   item: {
-    flex: 1,
-    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+	    width: 0,
+	    height: 9,
+      },
+    shadowOpacity: 0.48,
+    shadowRadius: 11.95,  
+    elevation: 18,
+    flex: 2,
     marginVertical: 8,
     marginHorizontal: 20,
-    borderRadius: 15,
+    borderRadius: 10,
+    backgroundColor: "#004346",
+    height: 100,
   },
   title: {
     fontSize: 25,
-    fontWeight: "900",
+    fontWeight: "500",
   },
   subtitle: {
     fontSize: 15,

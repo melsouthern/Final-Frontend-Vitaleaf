@@ -7,6 +7,7 @@ import { Image, Button } from "react-native-elements";
 import { ActivityIndicator, Colors, Switch } from "react-native-paper";
 import { UserContext, UserProvider } from "./utils/User";
 import { DateTime } from "luxon";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { objectLessAttributes } from "@aws-amplify/core";
 
@@ -79,14 +80,15 @@ const SingleUserPlant = (props: any) => {
         <Text style={styles.title}> {singlePlant.nickName} </Text>
         <Text style={styles.plantDesc}>Plant's common name:</Text>
         <Text style={styles.subtitle}> {singlePlant.commonName} </Text>
+        <MaterialCommunityIcons name="home" size={26} />
         <View style={styles.textContainer}>
         <Text style={{marginBottom: 20, marginTop: 10}}>Light requirement: {databasePlant.careDetails === undefined ? null : databasePlant.careDetails.lightRequirements} </Text>
         <Text >Last watered: {singlePlant.lastWatered === null ? 'Plant has not been watered yet' : newLastWatered} </Text>
         <Text style={{marginTop: 10}}>Next watering: {singlePlant.nextWatering === null ? 'Please water your plant first' : newNextWatering} </Text>
         </View>
         <View style={styles.notification}>
-        <Text style={{marginTop: 10, marginLeft: "25%"}}>Turn on notifications for {singlePlant.nickName}: </Text>
-        <Switch style={{marginLeft: "45%", marginBottom: 5}} value={isSwitchOn} onValueChange={onToggleSwitch} />
+        <Text style={{marginTop: 10, marginLeft: "25%", color: "white"}}>Turn on notifications for {singlePlant.nickName}: </Text>
+        <Switch style={{marginLeft: "45%", marginBottom: 5, marginTop: 5}} value={isSwitchOn} onValueChange={onToggleSwitch} />
         </View>
         <View style={styles.button}>
         <Button
@@ -128,7 +130,7 @@ const styles = StyleSheet.create({
   },
   notification: {
     width: "100%",
-    backgroundColor: "#09BC8A",
+    backgroundColor: "#004346",
     alignContent:"center",
     marginTop: 10,
     marginBottom: 10,

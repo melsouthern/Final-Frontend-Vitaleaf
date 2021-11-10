@@ -54,7 +54,7 @@ const SearchScreen = (props: any) => {
     >
       <Searchbar
         style={styles.searchbar}
-        placeholder="Search"
+        placeholder="Search plant..."
         onChangeText={onChangeSearch}
         value={searchQuery}
         onSubmitEditing={(searchQuery) => handleSearch(searchQuery)}
