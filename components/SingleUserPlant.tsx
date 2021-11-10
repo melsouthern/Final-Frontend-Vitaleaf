@@ -50,7 +50,7 @@ const SingleUserPlant = (props: any) => {
   }
 
   function handleLastWatered() {
-    Alert.alert("Water Plant", `Have you watered ${singlePlant.nickName}?`, [
+    Alert.alert("Water Plant", `Have you watered ${singlePlant.nickName} on time?`, [
         {text: "Yes", onPress: () => patchUserPlantWatering(userName, plant_id, databasePlant).then(() => {
           setIsWatered(true);
         })},
@@ -80,7 +80,7 @@ const SingleUserPlant = (props: any) => {
         <Text style={styles.description}> Light requirement: {databasePlant.careDetails === undefined ? null : databasePlant.careDetails.lightRequirements} </Text>
         <Text style={styles.description}> Last watered: {singlePlant.lastWatered === null ? 'Plant has not been watered yet' : newLastWatered} </Text>
         <Text style={styles.description}> Next watering: {singlePlant.nextWatering === null ? 'Please water your plant first' : newNextWatering} </Text>
-        <Text>Turn on notifications: </Text>
+        <Text>Turn on notifications for {singlePlant.nickName}: </Text>
         <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
 
         <Button
