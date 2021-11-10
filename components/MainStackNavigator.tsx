@@ -35,6 +35,7 @@ function MainStackNavigator() {
         gestureEnabled: true,
         gestureDirection: "horizontal",
 
+
         headerStyle: {
           backgroundColor: "#17B890",
         },
@@ -45,11 +46,13 @@ function MainStackNavigator() {
           />
         ),
 
+
         headerTitleStyle: {
           fontFamily: "Futura",
         },
         headerTintColor: "#ffffff",
       }}
+
     >
       <Stack.Screen
         name="Main"
@@ -74,5 +77,6 @@ function MainStackNavigator() {
     </Stack.Navigator>
   );
 }
+
 
 export default MainStackNavigator;
