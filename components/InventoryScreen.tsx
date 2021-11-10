@@ -94,9 +94,9 @@ function InventoryScreen(props: any) {
   if (loading)
   return (
     <View>
-      <Text style={{flex: 1, fontSize: 30, justifyContent:'center'}}>loading...</Text>
-      <ProgressBar />
-    </View>
+          <Text style={styles.title}>loading...</Text>
+          <ProgressBar progress = {0.75} color={Colors.lightGreen800} />
+        </View>
   );
   return (
     <SafeAreaView style={styles.container}>

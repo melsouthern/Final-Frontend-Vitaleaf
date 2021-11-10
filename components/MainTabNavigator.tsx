@@ -65,7 +65,7 @@ function MainTabNavigator() {
     
   }} />   */}
       <Tab.Screen
-        name="User Profile"
+        name="User's Profile"
         component={ProfileScreen}
         options={{
           tabBarLabel: "Profile",
