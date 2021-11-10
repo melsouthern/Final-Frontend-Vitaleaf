@@ -57,10 +57,12 @@ function InventoryScreen(props: any) {
         imageStyle={{ opacity: 0.4 }}
         style={styles.imagebackground}
         source={{ uri: item.image }}
-      >
+      > 
+      <View style={styles.textContainer}>
         <Text style={[styles.title, textColor]}>{item.nickName}</Text>
         <Text style={[styles.subtitle, textColor]}>{item.commonName}</Text>
         <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
+      </View>
         
       </ImageBackground>
     </TouchableOpacity>
@@ -73,12 +75,15 @@ function InventoryScreen(props: any) {
    
 
     return (
-      <Item
-        item={item}
-        onPress={() => handleOnPress(item)}
-        backgroundColor={{ backgroundColor }}
-        textColor={{ color }}
-      />
+      <View>
+        {/* <Text style={styles.title}>Plants</Text> */}
+        <Item
+          item={item}
+          onPress={() => handleOnPress(item)}
+          backgroundColor={{ backgroundColor }}
+          textColor={{ color }}
+        />
+      </View>
     );
   };
 
@@ -122,9 +127,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // marginTop: StatusBar.currentHeight || 0,
-    // backgroundColor: "#004346",
+    backgroundColor: "#EFF5E7",
   },
   item: {
+    shadowColor: "#000",
+  shadowOffset: {
+	width: 0,
+	height: 9,
+  },
+  shadowOpacity: 0.48,
+  shadowRadius: 11.95,  
+  elevation: 18,
     flex: 2,
     // padding: 10,
     marginVertical: 8,
@@ -132,6 +145,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#004346",
     height: 200,
+  },
+  textContainer: {
+    flex:1,
+    alignItems:"center",
+    justifyContent:"center",
+    flexDirection: "column",
   },
   title: {
     fontSize: 30,

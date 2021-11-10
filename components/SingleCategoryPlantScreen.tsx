@@ -100,22 +100,37 @@ const styles = StyleSheet.create({
   },
   ratingImage: { height: 19.21, width: 100 },
   ratingText: { paddingLeft: 10, color: "grey" },
-  scrollView: {
-    backgroundColor: "#082d0fff",
-    marginHorizontal: 20,
-  },
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
+    // marginTop: StatusBar.currentHeight || 0,
   },
   item: {
-    flex: 1,
-    padding: 10,
+    shadowColor: "#000",
+  shadowOffset: {
+	width: 0,
+	height: 9,
+  },
+  shadowOpacity: 0.48,
+  shadowRadius: 11.95,  
+  elevation: 18,
+    flex: 2,
+    // padding: 10,
     marginVertical: 8,
     marginHorizontal: 20,
     borderRadius: 10,
+    backgroundColor: "#004346",
+    height: 200,
   },
+  // item: {
+  //   justifyContent: "center",
+  //   flex: 1,
+  //   height:100,
+  //   marginVertical: 8,
+  //   marginHorizontal: 20,
+  //   borderRadius: 10,
+  // },
   title: {
+  
     fontSize: 25,
     fontWeight: "900",
   },
@@ -125,9 +140,7 @@ const styles = StyleSheet.create({
   imagebackground: {
     width: "100%",
     height: "100%",
-    borderStyle: "solid",
-    borderColor: "grey",
-    borderWidth: 1,
+    // borderRadius: 10,
   },
 });
 

@@ -27,7 +27,7 @@ function MainTabNavigator() {
         }}
       />
       <Tab.Screen
-        name={`${userName}'s Inventory`}
+        name={`${userName}'s Plants`}
         component={InventoryScreen}
         options={{
           tabBarLabel: "Inventory",

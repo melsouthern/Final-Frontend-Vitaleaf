@@ -29,13 +29,13 @@ const SearchScreen = (props: any) => {
     setIndexSelected(indexSelected);
   };
   const { width } = Dimensions.get("window");
-  const SPACING = 10;
-  const THUMB_SIZE = 80;
+  // const SPACING = 10;
+  // const THUMB_SIZE = 80;
 
   const IMAGES = {
     image1: require("../assets/flowering-house-plants-1.jpg"),
     image2: require("../assets/foliage-house-plants-1.jpg"),
-    image3: require("../assets/cacti-1.jpg"),
+    image3: require("../assets/cacti_2.jpg"),
   };
 
   const [images, setImages] = useState([
@@ -50,7 +50,7 @@ const SearchScreen = (props: any) => {
 
   return (
     <View
-      style={{ flex: 1, justifyContent: "flex-start", alignItems: "center" }}
+      style={styles.container}
     >
       <Searchbar
         style={styles.searchbar}
@@ -60,21 +60,19 @@ const SearchScreen = (props: any) => {
         onSubmitEditing={(searchQuery) => handleSearch(searchQuery)}
         
       />
-
-      <View style={{ flex: 1, alignItems: "center" }}>
-      
-        <View style={{ flex: 1, marginTop: 20 }}>
+        <View style={styles.carousel}>
           <Carousel
+          
             layout="default"
             data={images}
             sliderWidth={width}
             itemWidth={width}
             renderItem={({ item, index }) => (
-              <TouchableOpacity onPress={() => handleOnPress(item.id)}>
-                <Text style={{ fontSize: 30 }}>{item.id}</Text>
+              <TouchableOpacity style={styles.touchable} onPress={() => handleOnPress(item.id)}>
+                <Text style={styles.header}>{item.id}</Text>
                 <Image
                   key={index}
-                  style={{ width: "100%", height: "100%" }}
+                  style={styles.categoryImage}
                   resizeMode="contain"
                   source={item.image}
                 />
@@ -82,22 +80,6 @@ const SearchScreen = (props: any) => {
             )}
             onSnapToItem={(index) => onSelect(index)}
           />
-          <View
-            style={{
-              marginTop: 20,
-              paddingHorizontal: 32,
-              alignSelf: "flex-end",
-            }}
-          >
-            <Text
-              style={{
-                color: "black",
-                fontSize: 22,
-              }}
-            >
-              {/* {indexSelected + 1}/{images.length} */}
-            </Text>
-          </View>
           <Pagination
             inactiveDotColor="gray"
             dotColor={"orange"}
@@ -107,7 +89,7 @@ const SearchScreen = (props: any) => {
             inactiveDotScale={1}
           />
         </View>
-      </View>   
+        
     </View>
   );
 };
@@ -115,38 +97,45 @@ const SearchScreen = (props: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "flex-start",
-    backgroundColor: "#ebebeb",
+    alignItems: "center",
+    backgroundColor: "#EFF5E7",
   },
-  text: {
-    color: "#101010",
-    fontSize: 24,
-    fontWeight: "bold",
+  carousel: {
+    flex:1,
+    alignItems: "center",
+    justifyContent:"center",
   },
-  buttonContainer: {
-    backgroundColor: "#222",
-    borderRadius: 5,
-    padding: 10,
-    margin: 20,
-  },
-  buttonText: {
-    fontSize: 20,
-    color: "#fff",
+  header: {
+    fontSize: 25,
+    color: "white"
   },
   searchbar: {
     width: 300,
     marginTop: 10,
   },
+  touchable: {
+    marginTop: "30%", 
+    alignItems: "center",
+    marginVertical: 8,
+    marginHorizontal: 20,
+    borderRadius: 10,
+    backgroundColor: "#35520C",
+    height: 200,
+    shadowColor: "#000",
+  shadowOffset: {
+	width: 0,
+	height: 9,
+  },
+  shadowOpacity: 0.48,
+  shadowRadius: 11.95,  
+  elevation: 18,
+  },
   categoryImage: {
-    width: 100,
-    height: 100,
-  },
-  categoryPictureContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-  },
+    width: "100%", 
+    height: "100%", 
+    alignContent: "center",
+    borderRadius: 500
+  }
 });
 
 export default SearchScreen;

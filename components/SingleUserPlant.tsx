@@ -50,7 +50,7 @@ const SingleUserPlant = (props: any) => {
   }
 
   function handleLastWatered() {
-    Alert.alert("Water Plant", `Have you watered ${singlePlant.nickName} on time?`, [
+    Alert.alert("Water Plant", `Have you watered ${singlePlant.nickName}?`, [
         {text: "Yes", onPress: () => patchUserPlantWatering(userName, plant_id, databasePlant).then(() => {
           setIsWatered(true);
         })},
