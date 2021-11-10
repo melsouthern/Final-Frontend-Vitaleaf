@@ -36,12 +36,10 @@ function MainStackNavigator() {
         gestureDirection: "horizontal",
 
 
-        headerStyle: {
-          backgroundColor: "#17B890",
-        },
+        
         headerBackground: () => (
           <Image
-            style={{ flex: 1, height: 25, width: 370 }}
+            style={{ flex:1, width:'130%', resizeMode: 'contain', backgroundColor:'#004346'}}
             source={vitaleafNarrow}
           />
         ),
@@ -59,6 +57,7 @@ function MainStackNavigator() {
         component={MainTabNavigator}
         options={({ route }) => ({
           title: getHeaderTitle(route),
+          orientation:'all',
         })}
       />
 
@@ -70,9 +69,7 @@ function MainStackNavigator() {
         name="Single Plant Category"
         component={SingleCategoryPlantScreen}
       />
-      <Stack.Screen name="Searched For Plants" component={SearchedForPlants} options={({ route }) => ({
-          title: `Search results`,
-        })}/>
+      <Stack.Screen name="Searched For Plants" component={SearchedForPlants} />
       <Stack.Screen name="Single User Plant" component={SingleUserPlant} options={({ route }) => ({
           title: `${userName}'s Plant`,
         })}/>
