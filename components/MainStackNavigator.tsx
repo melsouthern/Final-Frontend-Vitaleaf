@@ -14,6 +14,8 @@ import SearchedForPlants from "./SearchedForPlants";
 import SingleUserPlant from "./SingleUserPlant";
 import { Image, StyleSheet, Text, View } from "react-native";
 import vitaleafNarrow from "../assets/vitaleafNarrow3.png";
+import { useContext } from "react";
+import { UserContext } from "./utils/User";
 
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
@@ -25,7 +27,7 @@ function getHeaderTitle(route: object) {
 }
 
 function MainStackNavigator() {
-  
+  const { userName } = useContext(UserContext);
 
   return (
     <Stack.Navigator
@@ -53,8 +55,7 @@ function MainStackNavigator() {
         name="Main"
         component={MainTabNavigator}
         options={({ route }) => ({
-          //title: getHeaderTitle(route),
-          title: null,
+          title: getHeaderTitle(route),
         })}
       />
 
@@ -67,7 +68,9 @@ function MainStackNavigator() {
         component={SingleCategoryPlantScreen}
       />
       <Stack.Screen name="Searched For Plants" component={SearchedForPlants} />
-      <Stack.Screen name="Single User Plant" component={SingleUserPlant} />
+      <Stack.Screen name="Single User Plant" component={SingleUserPlant} options={({ route }) => ({
+          title: `${userName}'s Plant`,
+        })}/>
     </Stack.Navigator>
   );
 }
