@@ -6,6 +6,7 @@ import { getPlants } from "./utils/Api";
 import { Image, Button } from "react-native-elements";
 import { ActivityIndicator, Colors, Switch } from "react-native-paper";
 import { UserContext, UserProvider } from "./utils/User";
+import { DateTime } from "luxon";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { objectLessAttributes } from "@aws-amplify/core";
 
@@ -14,7 +15,7 @@ const SingleUserPlant = (props: any) => {
   const [singlePlant, setSinglePlant] = useState({});
   const [databasePlant, setDatabasePlant] = useState({})
   const [isWatered, setIsWatered] = useState(false)
-  const [wateringState, setWateringState] = useState(singlePlant.lastWatered)
+  // const [wateringState, setWateringState] = useState(singlePlant.lastWatered)
   const [isSwitchOn, setIsSwitchOn] = useState(false);
 //   const [nickname, setNickName] = useState("")
   const { plant_id, nickName, commonName } = props.route.params;
@@ -22,6 +23,7 @@ const SingleUserPlant = (props: any) => {
   const imageSource = singlePlant.image;
 
   useEffect(() => {
+    setIsWatered(false)
     getSingleUserPlantFromDatabase(userName, plant_id)
       .then((response) => {
         setSinglePlant(response)
@@ -29,32 +31,40 @@ const SingleUserPlant = (props: any) => {
         getSinglePlant(commonName)
         .then((response) => {
           setDatabasePlant(response)
-          setIsWatered(false)
         })
       })
       .catch((err) => {
         console.log(err, "<-----err");
       });
-  }, [isWatered]);
+  }, [isWatered, plant_id, userName]);
   
   function handleRemovePlant() {
-    deleteSinglePlantFromDatabase(userName, plant_id)
-    .then((response) => {
-        navigation.navigate("Main", {screen: 'Home'});
-    })
+    Alert.alert("Delete Plant", `Are you sure you want to Delete ${singlePlant.nickName}?`, [
+      {text: "Yes", onPress: () => deleteSinglePlantFromDatabase(userName, plant_id)
+      .then((response) => {
+          navigation.navigate("Main", {screen: 'Inventory'});
+      })},
+      {text: "No", onPress: () => {}},
+    ])
+    
   }
-  // console.log(databasePlant)
+
   function handleLastWatered() {
-    patchUserPlantWatering(userName, plant_id, databasePlant)
-    setIsWatered(true)
+    Alert.alert("Water Plant", `Have you watered ${singlePlant.nickName} on time?`, [
+        {text: "Yes", onPress: () => patchUserPlantWatering(userName, plant_id, databasePlant).then(() => {
+          setIsWatered(true);
+        })},
+        {text: "No", onPress: () => {}},
+      ])
   }
 
   const lastWateredDate = new Date (singlePlant.lastWatered)
-  const lastWateredDateToString = lastWateredDate.toLocaleDateString('en-GB') 
+  const newLastWatered = lastWateredDate.toLocaleDateString('en-GB') 
   const nextWateringDate = new Date (singlePlant.nextWatering)
-  const nextWateringDateToString = nextWateringDate.toLocaleDateString('en-GB')
-   
+  const newNextWatering = nextWateringDate.toLocaleDateString('en-GB')
+
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -67,10 +77,10 @@ const SingleUserPlant = (props: any) => {
         <Text style={styles.title}> {singlePlant.nickName} </Text>
           </View>
         <Text style={styles.subtitle}> {singlePlant.commonName} </Text>
-        <Text style={styles.subtitle}> {databasePlant.category} </Text>
-        <Text style={styles.description}> Last watered: {singlePlant.lastWatered === null ? 'Plant has not been watered yet' : lastWateredDateToString} </Text>
-        <Text style={styles.description}> Next watering: {singlePlant.nextWatering === null ? 'Please water your plant first' : nextWateringDateToString} </Text>
-        <Text>Turn on notifications: </Text>
+        <Text style={styles.description}> Light requirement: {databasePlant.careDetails === undefined ? null : databasePlant.careDetails.lightRequirements} </Text>
+        <Text style={styles.description}> Last watered: {singlePlant.lastWatered === null ? 'Plant has not been watered yet' : newLastWatered} </Text>
+        <Text style={styles.description}> Next watering: {singlePlant.nextWatering === null ? 'Please water your plant first' : newNextWatering} </Text>
+        <Text>Turn on notifications for {singlePlant.nickName}: </Text>
         <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
 
         <Button
