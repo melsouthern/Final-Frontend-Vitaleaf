@@ -35,6 +35,7 @@ function MainStackNavigator() {
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: "horizontal",
+
         headerStyle: {
           backgroundColor: 'red',
         },
@@ -50,12 +51,13 @@ function MainStackNavigator() {
           </View>
         ),
 
-
         headerTitleStyle: {
           fontFamily: "Futura",
         },
         headerTintColor: "#ffffff",
+
               }}
+
 
     >
       <Stack.Screen
@@ -74,13 +76,24 @@ function MainStackNavigator() {
         name="Single Plant Category"
         component={SingleCategoryPlantScreen}
       />
-      <Stack.Screen name="Searched For Plants" component={SearchedForPlants} />
-      <Stack.Screen name="Single User Plant" component={SingleUserPlant} options={({ route }) => ({
+
+      
+      <Stack.Screen
+        name="Searched For Plants"
+        component={SearchedForPlants}
+        options={({ route }) => ({
+          title: `Search results`,
+        })}
+      />
+      <Stack.Screen
+        name="Single User Plant"
+        component={SingleUserPlant}
+        options={({ route }) => ({
           title: `${userName}'s Plant`,
-        })}/>
+        })}
+      />
     </Stack.Navigator>
   );
 }
-
 
 export default MainStackNavigator;
