@@ -5,7 +5,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, Alert, ImageBackground
 import * as ImagePicker from 'expo-image-picker'
 import {Camera} from 'expo-camera'
 import axios, { Axios } from 'axios';
-import { getUserPlantsFromDatabase } from "./utils/Api";
+import { getSingleUserPlantFromDatabase, getUserPlantsFromDatabase } from "./utils/Api";
 import { UserContext} from "./utils/User";
 import { NavigationContainer } from '@react-navigation/native';
 import * as AWS from 'aws-sdk'
@@ -15,6 +15,10 @@ import takePicture from '../assets/take-picture-of-plant.png'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlatList } from 'react-native-gesture-handler';
 import { useFocusEffect } from '@react-navigation/native';
+import { ProgressBar } from 'react-native-paper';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 // var AWS = require('aws-sdk/dist/aws-sdk-react-native')
 
 const styles = StyleSheet.create({
@@ -22,7 +26,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#004346',
     padding: 20,
     borderRadius: 5,
-    
+    width: "50%",
+    marginTop: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+	    width: 0,
+	    height: 9,
+      },
+    shadowOpacity: 0.48,
+    shadowRadius: 11.95,  
+    elevation: 18,
+  },
+  
+  mainImg: {
+    marginBottom: 20,
+    // width: "80%",
+    borderRadius: 15,
   },
 
   imagebackground: {
@@ -57,6 +76,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 20,
     color: '#09BC8A',
+    textAlign: "center"
   },
   button2: {
     backgroundColor: '#004346',
@@ -74,6 +94,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain', //useful line, makes the image not square if the selected image is not
   },
   container: {
+    backgroundColor: "#EFF5E7",
+
     flex: 2,
     alignItems: 'center',
     justifyContent: 'center',
@@ -89,7 +111,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
     flexDirection: 'row',
-    margin: 20,
+    // margin: 20,
     paddingBottom: 20
   },
   cameraButton: {
@@ -121,6 +143,9 @@ image_url:""})
 const { userName, setUserName } = useContext(UserContext);
 const [userPlants, setUserPlants] = useState([]);
 const [selectedId, setSelectedId] = useState(null);
+const [cameraOption, setCameraOption] = useState("");
+const [loading, setLoading] = useState(false);
+console.log(cameraOption);
 
     
     useEffect(()=> {
@@ -153,8 +178,6 @@ const [selectedId, setSelectedId] = useState(null);
   
   function saveNotifier(plant_id) {
      alert("Saved!")
-     console.log(plant_id, "<<<<<plant id");
-     
      navigation.navigate("Single User Plant", plant_id);
   }  
 
@@ -192,70 +215,74 @@ const [selectedId, setSelectedId] = useState(null);
       
     }
     
-    async function saveCameraRollFunction() {
-      const selectedPlantId = userPlants[selectedPlantIndex].plant_id;    
-      const apiResponse = await axios.patch
-      (`https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta/users/${userName}/plants/${selectedPlantId}/image`,
-       {img: cameraRollImage.base64} )
+    // async function saveCameraRollFunction() {
+    //   const selectedPlantId = userPlants[selectedPlantIndex].plant_id;    
+    //   const apiResponse = await axios.patch
+    //   (`https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta/users/${userName}/plants/${selectedPlantId}/image`,
+    //    {img: cameraRollImage.base64} )
+    //   console.log(apiResponse);
       
-      if (apiResponse.status === 200) saveNotifier(userPlants[selectedPlantIndex])
-    }
+    //   if (apiResponse.status === 200) saveNotifier(userPlants[selectedPlantIndex])
+    // }
     
-    const userPlantsNames = userPlants.map(plant => { 
-      return plant.nickName
-    })
+    // const userPlantsNames = userPlants.map(plant => { 
+    //   return plant.nickName
+    // })
     //camera roll save
-    if (cameraRollImage.localUri !== ""){
+//     if (cameraRollImage.localUri !== ""){
       
-      return (
-        <View style={styles.container}>
-          <Image
-            source={{ uri: cameraRollImage.localUri }}
-            style={styles.thumbnail}
-            />
+//       return (
+//         <View style={styles.container}>
+//           <Image
+//             source={{ uri: cameraRollImage.localUri }}
+//             style={styles.thumbnail}
+//             />
 
 
-             <SelectDropdown
-             buttonStyle={styles.button2}
-             buttonTextStyle={styles.buttonText2}
-	data={userPlantsNames}
-	onSelect={(selectedItem, index) => {
-		console.log(selectedItem, index)
-    setSelectedPlantIndex(index)
-	}}
-	// buttonTextAfterSelection={(selectedItem, index) => {
-	// 	// text represented after item is selected
-	// 	// if data array is an array of objects then return selectedItem.property to render after item is selected
-	// 	return selectedItem.nickName
-	// }}
-	rowTextForSelection={(item, index) => {
-		// text represented for each item in dropdown
-		// if data array is an array of objects then return item.property to represent item in dropdown
-		return item
-	}}
+//              <SelectDropdown
+//              buttonStyle={styles.button2}
+//              buttonTextStyle={styles.buttonText2}
+// 	data={userPlantsNames}
+// 	onSelect={(selectedItem, index) => {
+// 		console.log(selectedItem, index)
+//     setSelectedPlantIndex(index)
+// 	}}
+// 	// buttonTextAfterSelection={(selectedItem, index) => {
+// 	// 	// text represented after item is selected
+// 	// 	// if data array is an array of objects then return selectedItem.property to render after item is selected
+// 	// 	return selectedItem.nickName
+// 	// }}
+// 	rowTextForSelection={(item, index) => {
+// 		// text represented for each item in dropdown
+// 		// if data array is an array of objects then return item.property to represent item in dropdown
+// 		return item
+// 	}}
   
-/>    
-        <TouchableOpacity
-          onPress={() => saveCameraRollFunction()}
-          style={styles.button}
-          >
+// />    
+//         <TouchableOpacity
+//           onPress={() => saveCameraRollFunction()}
+//           style={styles.button}
+//           >
 
-        <Text style={styles.buttonText}>Save chosen image</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+//         <Text style={styles.buttonText}>Save chosen image</Text>
+//         </TouchableOpacity>
+//       </View>
+//     );
+//   }
 
   // Break
 
-  async function makeApiCall () {
+  async function makeApiCall (base64Img) {
+    console.log(cameraPhoto);
+    console.log(base64Img, "<<????");
+    
     let plant:any;
     try {
       const response = await axios.post(
         "https://api.plant.id/v2/identify",
         {
           api_key: "iV7mwOKohIvJItMVxVm9EaZOuivehgHxZPYoEbYUEyWkKYtOAF",
-          images: [cameraPhoto.base64],
+          images: [base64Img],
           plant_language: "en",
           plant_details: ["common_names"],
         },
@@ -265,7 +292,7 @@ const [selectedId, setSelectedId] = useState(null);
           },
         }
       )
-
+      
       const suggestedPlants = response.data.suggestions.map((plant) => {
         return {
           botanicalName: plant.plant_name,
@@ -277,6 +304,7 @@ const [selectedId, setSelectedId] = useState(null);
       const apiResponse = await axios.post("https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta/plants", 
       {plantsFromPlantId: suggestedPlants}
       )
+     console.log(apiResponse.data);
      
       setIdentifiedPlant1(apiResponse.data)
       
@@ -286,7 +314,7 @@ const [selectedId, setSelectedId] = useState(null);
     }
   }
 
-  if (identifiedPlant1.length > 1) {
+  if (identifiedPlant1.length > 0) {
     const handleOnPress = (commonName: string) => {
       navigation.navigate("Single Looked Up Plant", commonName);
       setIdentifiedPlant1([])
@@ -336,75 +364,85 @@ console.log(identifiedPlant1);
     )
   }
 
-  async function saveCameraPhotoFunction() {
 
-    const selectedPlantId = userPlants[selectedPlantIndex].plant_id;    
+  async function saveCameraPhotoFunction(selectedPlantToSave) { 
+    let patchImg = "";
+       
+    if (cameraPhoto.height) patchImg = cameraPhoto.base64;
+    else if (cameraRollImage.localUri) patchImg = cameraRollImage.base64;
+       
+    console.log(patchImg);
     
     try {
       const apiResponse = await axios.patch
-      (`https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta/users/${userName}/plants/${selectedPlantId}/image`,
-       {img: cameraRollImage.base64} )
-       console.log(apiResponse);
-       
-      if (apiResponse.status === 200) saveNotifier(userPlants[selectedPlantIndex])
+      (`https://l81eyc3fja.execute-api.eu-west-2.amazonaws.com/beta/users/${userName}/plants/${selectedPlantToSave.plant_id}/image`,
+       {img: patchImg} )
+
+       setLoading(true)
+      const waitFor = delay => new Promise(resolve => setTimeout(resolve, delay));
+      await waitFor(2000);
+      setLoading(false)
+      if (apiResponse.status === 200) saveNotifier(selectedPlantToSave)
     } catch (err) {
-      console.log(err);
+      console.log(err, "<<<<<err");
       
     }
     // console.log(cameraPhoto)
 
   }
-
+  if (loading) {
+    return (
+      <View>
+            <Text style={styles.title}>loading...</Text>
+            <ProgressBar progress = {0.75} color={Colors.lightGreen800} />
+          </View>
+    );
+  }
   // console.log(userPlants)
   // console.log(userPlantsNames)
 
   // after got photo, identify or save
-  if (cameraPhoto.height !== ""){
-    return (
-      <View style={styles.container}>
-        <Image
-        
-          source={{ uri: cameraPhoto.uri }}
-          style={styles.thumbnail}
+  if (cameraPhoto.height !== "" || cameraRollImage.localUri !== ""){
+    const Item = ({ item, onPress, backgroundColor, textColor }) => (
+      <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+        <ImageBackground
+          imageStyle={{ opacity: 0.4 }}
+          source={{ uri: item.image_url }}
+          style={styles.imagebackground}
+        >
+          <Text style={[styles.title, textColor]}>{item.nickName}</Text>
+          <Text style={[styles.subtitle, textColor]}>{item.commonName}</Text>
+          {/* <Avatar source={{ uri: item.image_url }} /> */}
+        </ImageBackground>
+      </TouchableOpacity>
+    );
+
+    const renderItem = ({ item }) => {
+      const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#082d0fff";
+      const color = item.id === selectedId ? "white" : "#dee5e5ff";
+  
+      return (
+        <Item
+          item={item}
+          onPress={() => saveCameraPhotoFunction(item)}
+          backgroundColor={{ backgroundColor }}
+          textColor={{ color }}
+        />
+      );
+    };
+console.log(identifiedPlant1);
+
+    return(
+        <SafeAreaView style={styles.container}>
+          <FlatList
+            contentContainerStyle={styles.subtitleView}
+            data={userPlants}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.plant_id}
+            extraData={selectedId}
           />
-
-
-      <SelectDropdown
-      buttonStyle={styles.button2}
-      buttonTextStyle={styles.buttonText2}
-	data={userPlantsNames}
-	onSelect={(selectedItem, index) => {
-		console.log(selectedItem, index)
-    setSelectedPlantIndex(index)
-	}}
-	// buttonTextAfterSelection={(selectedItem, index) => {
-	// 	// text represented after item is selected
-	// 	// if data array is an array of objects then return selectedItem.property to render after item is selected
-	// 	return selectedItem.nickName
-	// }}
-	rowTextForSelection={(item, index) => {
-		// text represented for each item in dropdown
-		// if data array is an array of objects then return item.property to represent item in dropdown
-		return item
-	}}
-/>    
-      <TouchableOpacity
-        onPress={() => {saveCameraPhotoFunction()}}
-        
-        style={styles.button}
-        >
-
-      <Text style={styles.buttonText}>Save chosen image to selected plant</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={ ()=> {makeApiCall()}
-        }
-        style={styles.button}
-        >
-      <Text style={styles.buttonText}>Identify this plant</Text>
-      </TouchableOpacity>
-    </View>
-  ); }
+        </SafeAreaView>
+    )}
 
  //taking photo function
   const takePhoto = async () => {
@@ -415,15 +453,20 @@ console.log(identifiedPlant1);
      let photo = await cameraRef.current.takePictureAsync({
        allowsEditing: true,
        aspect: [4, 3],
-       quality: 1,
+       quality: 0.5,
        base64: true,
 
      })
-     setCameraPhoto(photo)
-     return photo
+     if (cameraOption === "identify") {
+        makeApiCall(photo.base64)
+     } else if (cameraOption === "newPhoto") {
+      setCameraPhoto(photo)
+     }
+    //  return photo
    } catch (error) {
      console.log(error)
    }
+
  }
 
   }
@@ -444,7 +487,7 @@ console.log(identifiedPlant1);
                            : Camera.Constants.Type.back
                        );
                      }}>
-                     <Text style={styles.text}> Flip </Text>
+                    <MaterialCommunityIcons style={styles.text} name="rotate-3d-variant" size={26} />
                    </TouchableOpacity>
                    <TouchableOpacity 
                    style={styles.cameraButton}
@@ -454,7 +497,17 @@ console.log(identifiedPlant1);
                   }}
                    >
 
-                   <Text style={styles.text}> Photo </Text>
+                   <Text style={styles.text}>Take Photo   </Text>
+                   </TouchableOpacity>
+                   <TouchableOpacity 
+                   style={styles.cameraButton}
+                   onPress={async () => {
+                     const r = await openImagePickerAsync()
+                    
+                  }}
+                   >
+
+                   <Text style={styles.text}>   Camera Roll</Text>
                    </TouchableOpacity>
                    <TouchableOpacity 
                    style={styles.cameraButton}
@@ -465,7 +518,7 @@ console.log(identifiedPlant1);
                    }}
                    >
 
-                   <Text style={styles.text}> Cancel </Text>
+                    <MaterialCommunityIcons style={styles.text} name="close" size={26} />
                    </TouchableOpacity>
                  </View>
                </Camera> 
@@ -481,16 +534,26 @@ console.log(identifiedPlant1);
     
     <View style={styles.container}>
 
-      <Text >Add a plant to your collection!</Text>
-      <Image source={takePicture} />
-      <Text>Push button to select from camera roll to add plant to your inventory</Text>
+      <Image source={takePicture} style={styles.mainImg}/>
+      {/* <Text>Push button to select from camera roll to add plant to your inventory</Text> */}
 
-      <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
-        <Text style={styles.buttonText}>Pick a photo</Text>
+      <Text >Identify a plant or update an existing plant's gallery?</Text>
+      <TouchableOpacity onPress={() => {
+          setCameraOption("identify")
+          openCameraAsync()
+        }
+      } style={styles.button}>
+        <Text style={styles.buttonText}>Identify</Text>
+        <MaterialCommunityIcons style={styles.buttonText} name="magnify" size={26} />
       </TouchableOpacity>
-      <Text> Push button to open camera, then you can add a photo to your plant or identify a new plant</Text>
-      <TouchableOpacity onPress={openCameraAsync} style={styles.button}>
-        <Text style={styles.buttonText}>Take a photo</Text>
+      {/* <Text> Push button to open camera, then you can add a photo to your plant or identify a new plant</Text> */}
+      <TouchableOpacity onPress={() => {
+          setCameraOption("newPhoto")
+          openCameraAsync()
+        }
+      } style={styles.button}>
+        <Text style={styles.buttonText}>New Photo</Text>
+        <MaterialCommunityIcons style={styles.buttonText} name="image-frame" size={26} />
       </TouchableOpacity>
     </View>
   )
