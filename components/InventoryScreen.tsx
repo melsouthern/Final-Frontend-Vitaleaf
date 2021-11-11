@@ -19,11 +19,15 @@ import { FlatList } from "react-native-gesture-handler";
 import { ProgressBar, Colors, ActivityIndicator} from "react-native-paper";
 import { ListItem, Avatar } from "react-native-elements";
 import { useIsFocused } from "@react-navigation/native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-function InventoryScreen(props: any) {
+
+type cameraScreenProps = {navigation: any, props: any}
+
+function InventoryScreen({navigation}, props: any) {
   const { userName, setUserName } = useContext(UserContext);
   const [userPlants, setUserPlants] = useState([]);
-  const { navigation } = props;
+  // const { navigation } = props;
   const [selectedId, setSelectedId] = useState(null);
   const [loading, setLoading] = useState(true);
   const isFocused = useIsFocused();
@@ -49,11 +53,25 @@ function InventoryScreen(props: any) {
   const EmptyListMessage = ({ item }) => {
     return (
       <View style={{justifyContent: "center"}}>
-        <Text style={{marginLeft: "8%", marginTop: "20%", fontSize: 15}} onPress={() => navigation.navigate("Main", {screen: 'Search'})}>Click here to insert plants to your collection!</Text>
         <Image
           source={require('../assets/plant.png')}
           style={{marginLeft: "15%", marginTop: "30%"}}
         />
+        <View style={{flex:0.5, flexDirection: 'row', justifyContent: "center"}}>
+
+        <TouchableOpacity onPress={() => {navigation.navigate("Search");}}
+       style={styles.button}>
+        <Text style={styles.buttonText}>Click to search up a new plant!</Text>
+        <MaterialCommunityIcons style={styles.buttonText} name="arrow-right" size={26} />
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => {navigation.navigate("Camera");}}
+       style={styles.button}>
+        <Text style={styles.buttonText}>Click here to photograph plants!</Text>
+        <MaterialCommunityIcons style={styles.buttonText} name="arrow-right" size={26} />
+      </TouchableOpacity>
+         </View>
+
       </View>
     );
   };
@@ -180,7 +198,31 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent:'center',
     alignItems:'center'
-  }
+  },
+  buttonText: {
+    fontSize: 18,
+    color: '#09BC8A',
+    textAlign: "center"
+  },
+  button: {
+    
+    backgroundColor: '#004346',
+    padding: 20,
+    borderRadius: 5,
+    width: "50%",
+    marginTop: 10,
+    marginLeft: 2,
+    marginRight:2,
+    
+    shadowColor: "#000",
+    shadowOffset: {
+	    width: 0,
+	    height: 9,
+      },
+    shadowOpacity: 0.48,
+    shadowRadius: 11.95,  
+    elevation: 18,
+  },
 });
 
 export default InventoryScreen;
