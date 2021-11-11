@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useContext, useEffect } from "react";
+import { Platform } from "react-native";
 import { configureFonts } from "react-native-paper";
 import { Auth } from "aws-amplify";
 import {
@@ -57,7 +58,8 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "500",
     flex: 1 / 2,
-    fontFamily: "Futura",
+    // fontFamily: "Futura",
+    fontFamily: Platform.OS === 'ios' ? 'Futura' : 'Roboto',
     color: "white",
   },
   logo: {
