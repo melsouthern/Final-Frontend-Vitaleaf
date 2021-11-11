@@ -22,8 +22,8 @@ export const linkUnderlayColor = '#FFF';
 export const textInputColor = '#000000';
 export const textInputBorderColor = '#C4C4C4';
 export const placeholderColor = '#C7C7CD';
-export const buttonColor = '#014f27';
-export const disabledButtonColor = '#014f27';
+export const buttonColor = '#004346';
+export const disabledButtonColor = '#004346';
 
 // Theme
 export default StyleSheet.create({
@@ -34,7 +34,7 @@ export default StyleSheet.create({
 		justifyContent: 'space-around',
 		paddingTop: 20,
 		width: '100%',
-		backgroundColor: '#FFF',
+		backgroundColor: '#EFF5E7',
 	},
 	section: {
 		flex: 1,
@@ -54,7 +54,7 @@ export default StyleSheet.create({
 	},
 	sectionHeaderText: {
 		color: deepSquidInk,
-		fontSize: 20,
+		fontSize: 30,
 		fontWeight: '500',
 	},
 	sectionFooter: {
@@ -66,13 +66,13 @@ export default StyleSheet.create({
 		marginBottom: 20,
 	},
 	sectionFooterLink: {
-		fontSize: 14,
+		fontSize: 22,
 		color: buttonColor,
 		alignItems: 'baseline',
 		textAlign: 'center',
 	},
 	sectionFooterLinkDisabled: {
-		fontSize: 14,
+		fontSize: 20,
 		color: disabledButtonColor,
 		alignItems: 'baseline',
 		textAlign: 'center',
@@ -114,6 +114,7 @@ export default StyleSheet.create({
 		alignItems: 'center',
         borderRadius: 10,
 		padding: 16,
+		
 	},
 	buttonDisabled: {
 		backgroundColor: disabledButtonColor,
@@ -123,13 +124,14 @@ export default StyleSheet.create({
 	},
 	buttonText: {
 		color: '#fff',
-		fontSize: 14,
+		fontSize: 20,
 		fontWeight: '600',
 	},
 	formField: {
 		marginBottom: 22,
 	},
 	input: {
+		fontSize:20,
 		padding: 16,
 		borderWidth: 1,
 		borderRadius: 3,
@@ -137,6 +139,7 @@ export default StyleSheet.create({
 		color: textInputColor,
 	},
 	inputLabel: {
+		fontSize:20,
 		marginBottom: 8,
 	},
 	phoneContainer: {

@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import { getPlants } from "./utils/Api";
 import { ListItem, Avatar } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
-import { ProgressBar, Colors } from "react-native-paper";
+import { ProgressBar, Colors, ActivityIndicator } from "react-native-paper";
 
 const SingleCategoryPlantScreen = (props: any) => {
   const { navigation } = props;
@@ -57,9 +57,9 @@ const SingleCategoryPlantScreen = (props: any) => {
 
   if (loading)
       return (
-        <View>
-          <Text style={styles.title}>loading...</Text>
-          <ProgressBar progress = {0.75} color={Colors.lightGreen800} />
+        <View style={styles.loading}>
+          <Text style={styles.loadingText}>loading...</Text>
+          <ActivityIndicator size='large' animating={true} color={Colors.green800} />
         </View>
       )
 
@@ -138,6 +138,15 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
+  loadingText: {
+    fontSize: 35,
+    fontWeight: "500",
+  },
+  loading: {
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center'
+  }
 });
 
 export default SingleCategoryPlantScreen;

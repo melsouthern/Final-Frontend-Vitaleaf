@@ -13,11 +13,12 @@ import SingleCategoryPlantScreen from "./SingleCategoryPlantScreen";
 import SearchedForPlants from "./SearchedForPlants";
 import SingleUserPlant from "./SingleUserPlant";
 import { Image, StyleSheet, Text, View } from "react-native";
-import vitaleafNarrow from "../assets/leafOnly8.png";
+import vitaleafNarrow from "../assets/leaf_crop_no_bg.png";
 import { useContext } from "react";
 import { UserContext } from "./utils/User";
 
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import { BackgroundImage } from "react-native-elements/dist/config";
 
 const Stack = createStackNavigator();
 
@@ -36,20 +37,28 @@ function MainStackNavigator() {
         gestureDirection: "horizontal",
 
         headerStyle: {
-          backgroundColor: "#17B890",
+          backgroundColor: 'red',
         },
+        
+
+
         headerBackground: () => (
+          <View style={{flex:1, width:'110%', alignItems: 'flex-end', justifyContent:'flex-end', backgroundColor:'#004346'}}>
           <Image
-            style={{ flex: 1, height: 25, width: 370 }}
+            style={{ flex:1/2, resizeMode: 'contain', }}
             source={vitaleafNarrow}
           />
+          </View>
         ),
 
         headerTitleStyle: {
           fontFamily: "Futura",
         },
         headerTintColor: "#ffffff",
-      }}
+
+              }}
+
+
     >
       <Stack.Screen
         name="Main"
@@ -67,6 +76,8 @@ function MainStackNavigator() {
         name="Single Plant Category"
         component={SingleCategoryPlantScreen}
       />
+
+      
       <Stack.Screen
         name="Searched For Plants"
         component={SearchedForPlants}

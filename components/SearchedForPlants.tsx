@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import { getPlants } from "./utils/Api";
 import { ListItem, Avatar } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
-import { ProgressBar, Colors } from "react-native-paper";
+import { ProgressBar, Colors, ActivityIndicator } from "react-native-paper";
 
 const SearchedForPlants = (props: any) => {
   const { navigation } = props;
@@ -57,10 +57,10 @@ const SearchedForPlants = (props: any) => {
 
   if (loading)
     return (
-      <View>
-        <Text style={styles.title}>loading...</Text>
-        <ProgressBar progress={0.75} color={Colors.lightGreen800} />
-      </View>
+      <View style={styles.loading}>
+          <Text style={styles.loadingText}>loading...</Text>
+          <ActivityIndicator size='large' animating={true} color={Colors.green800} />
+        </View>
     );
 
   if (searchedPlants.length === 0) {
@@ -150,6 +150,15 @@ const styles = StyleSheet.create({
     borderColor: "grey",
     borderWidth: 1,
   },
+  loadingText: {
+    fontSize: 35,
+    fontWeight: "500",
+  },
+  loading: {
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center'
+  }
 });
 
 export default SearchedForPlants;
