@@ -10,6 +10,7 @@ import { DateTime } from "luxon";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { objectLessAttributes } from "@aws-amplify/core";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const SingleUserPlant = (props: any) => {
   const { route, navigation } = props;
@@ -79,7 +80,7 @@ const SingleUserPlant = (props: any) => {
         <Text style={styles.plantDesc}>Plant's nickname:</Text>
         <Text style={styles.title}> {singlePlant.nickName} </Text>
         <Text style={styles.plantDesc}>Plant's common name:</Text>
-        <Text style={styles.subtitle}> {singlePlant.commonName} </Text>
+        <Text style={styles.subtitle} onPress={() => navigation.navigate("Single Looked Up Plant", singlePlant)}> {singlePlant.commonName} </Text>
         <View style={styles.careBoxWrapper}>
         <View style={styles.careContainer}>
         <MaterialCommunityIcons style={styles.icon} name={databasePlant.careDetails === undefined ? null : databasePlant.careDetails.lightRequirements === "Low light or partial shade" ? "weather-partly-cloudy" : "white-balance-sunny"} size={40} />
@@ -91,27 +92,36 @@ const SingleUserPlant = (props: any) => {
         </View>
         </View>
         <View >
-        <Text style={{color: "#004346", fontWeight: "500"}}>Last watered: {singlePlant.lastWatered === null ? 'Plant has not been watered yet' : newLastWatered} </Text>
-        <Text style={{color: "#004346", fontWeight: "500"}}>Next watering: {singlePlant.nextWatering === null ? 'Please water your plant first' : newNextWatering} </Text>
+        <Text style={styles.calendarIcon}>
+        {/* <MaterialCommunityIcons  name="calendar-heart" size={40} /> */}
+        </Text>
+        <Text style={{color: "#004346", fontWeight: "500", margin: 4}}>Last watered: {singlePlant.lastWatered === null ? 'Plant has not been watered yet' : newLastWatered} </Text>
+        <Text style={{color: "#004346", fontWeight: "500", margin: 4}}>Next watering: {singlePlant.nextWatering === null ? 'Please water your plant first' : newNextWatering} </Text>
         </View>
-        <View style={styles.notification}>
-        <Text style={{marginTop: 10, marginLeft: "25%", color: "white"}}>Turn on notifications for {singlePlant.nickName}: </Text>
-        <Switch style={{marginLeft: "45%", marginBottom: 5, marginTop: 5}} value={isSwitchOn} onValueChange={onToggleSwitch} />
-        </View>
-        <View style={styles.button}>
-        <Button
+        <TouchableOpacity onPress={handleLastWatered} style={styles.button}>
+        <Text style={styles.buttonText}>Watered <MaterialCommunityIcons name="check-circle-outline" size={20} /></Text>
+        
+      </TouchableOpacity>
+        {/* <Button
         style={{padding: 10}}
         icon={{ name: "arrow-right", size: 15, color: "white" }}
         title="Watered"
         onPress={handleLastWatered}
-        />
-        <Button
+        /> */}
+        <View style={styles.notification}>
+        <Text style={{marginTop: 10, marginLeft: "25%", color: "white"}}>Turn on notifications for {singlePlant.nickName}: </Text>
+        <Switch style={{marginLeft: "45%", marginBottom: 5, marginTop: 5}} value={isSwitchOn} onValueChange={onToggleSwitch} />
+        </View>
+        <TouchableOpacity onPress={() => handleRemovePlant()} style={styles.deleteButton}>
+        <Text style={styles.buttonText}>Delete Plant <MaterialCommunityIcons name="close-circle-outline" size={20} /></Text>
+        
+      </TouchableOpacity>
+        {/* <Button
         style={{padding: 10, marginLeft: 30}}
           icon={{ name: "arrow-right", size: 15, color: "white" }}
           title="Delete Plant"
           onPress={() => handleRemovePlant()}
-        />
-        </View>
+        /> */}
       </View>
     </ScrollView>
   );
@@ -128,10 +138,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "grey",
     fontStyle: "italic",
-  },
-  button: {
-    flexDirection: "row",
-    marginBottom: 20
   },
   textContainer: {
     width: 340,
@@ -168,6 +174,7 @@ const styles = StyleSheet.create({
     color: "#004346",
   },
   subtitle: {
+    textDecorationLine: "underline",
     marginBottom: 10,
     fontSize: 20,
     fontWeight: "500",
@@ -187,7 +194,7 @@ const styles = StyleSheet.create({
     // justifyContent: "space-between"
   },
   careContainer: {
-    backgroundColor: "#004346",
+    backgroundColor: "#508991",
     margin: 10,
     width: "35%",
     flex: 1,
@@ -201,7 +208,7 @@ const styles = StyleSheet.create({
 	    width: 0,
 	    height: 9,
       },
-    shadowOpacity: 0.48,
+    shadowOpacity: 0.18,
     shadowRadius: 11.95,  
     elevation: 18,
   },
@@ -215,7 +222,47 @@ const styles = StyleSheet.create({
     padding: 5,
     color: "#EFF5E7",
 
-  }
+  },
+  calendarIcon: {
+    color: "#004346",
+    textAlign: "center"
+  },
+  button: {
+    backgroundColor: '#004346',
+    padding: 20,
+    borderRadius: 5,
+    width: "50%",
+    marginTop: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+	    width: 0,
+	    height: 9,
+      },
+    shadowOpacity: 0.48,
+    shadowRadius: 11.95,  
+    elevation: 18,
+  },
+  deleteButton: {
+    backgroundColor: 'grey',
+    padding: 20,
+    borderRadius: 5,
+    width: "50%",
+    marginTop: 20,
+    // shadowColor: "#000",
+    // shadowOffset: {
+	  //   width: 0,
+	  //   height: 9,
+    //   },
+    // shadowOpacity: 0.48,
+    // shadowRadius: 11.95,  
+    // elevation: 18,
+  },
+  buttonText: {
+    fontSize: 20,
+    color: "#EFF5E7",
+
+    textAlign: "center"
+  },
 });
 
 export default SingleUserPlant;
