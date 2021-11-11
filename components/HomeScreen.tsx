@@ -21,14 +21,25 @@ import { ProgressBar, Colors } from "react-native-paper";
 import { ListItem, Avatar } from "react-native-elements";
 import { useIsFocused } from "@react-navigation/native";
 import { white } from "react-native-paper/lib/typescript/styles/colors";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-function HomeScreen(props: any) {
+type cameraScreenProps = {navigation: any, props: any}
+
+function HomeScreen({navigation}, props: any) {
   const { userName, setUserName } = useContext(UserContext);
 
   return (
     <SafeAreaView style={styles.container}>
       <Image source={require("../assets/IMG_0308_5.png")} style={styles.logo} />
-      <Text style={styles.title}>a plant management app</Text>
+      <Text style={styles.title}>A plant management app</Text>
+      <TouchableOpacity onPress={() => {navigation.navigate("Inventory");
+          
+        }
+      } style={styles.button}>
+        <Text style={styles.buttonText}>Get Started</Text>
+        <MaterialCommunityIcons style={styles.buttonText} name="arrow-right" size={26} />
+      </TouchableOpacity>
+
     </SafeAreaView>
   );
 }
@@ -55,6 +66,27 @@ const styles = StyleSheet.create({
     height: 90,
     width: "70%",
   },
+  
+    button: {
+      backgroundColor: '#09BC8A',
+      padding: 20,
+      borderRadius: 5,
+      width: "50%",
+      marginTop: 20,
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 9,
+        },
+      shadowOpacity: 0.48,
+      shadowRadius: 11.95,  
+      elevation: 18,
+    },
+    buttonText: {
+      fontSize: 20,
+      color: '#004346',
+      textAlign: "center"
+    },
 });
 
 export default HomeScreen;
