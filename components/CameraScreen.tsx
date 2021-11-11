@@ -47,17 +47,23 @@ const styles = StyleSheet.create({
   imagebackground: {
     width: "100%",
     height: "100%",
-    borderStyle: "solid",
-    borderColor: "grey",
-    borderWidth: 1,
   },
 
   item: {
-    flex: 1,
-    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+	    width: 0,
+	    height: 9,
+      },
+    shadowOpacity: 0.48,
+    shadowRadius: 11.95,  
+    elevation: 18,
+    flex: 2,
     marginVertical: 8,
     marginHorizontal: 20,
-    borderRadius: 15,
+    borderRadius: 10,
+    backgroundColor: "#004346",
+    height: 100,
   },
 
   title: {
@@ -66,6 +72,10 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 15,
+  },
+  subtitleProb: {
+    fontSize: 25,
+    marginTop: 25
   },
   subtitleView: {
     flexDirection: "column",
@@ -100,6 +110,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  identifiedPlantContainer: {
+    flex: 1,
+  },
   // camera
   cameraContainer: {
     flex: 1,
@@ -124,7 +137,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
   },
-  
+  textContainer: {
+    flex:1,
+    alignItems:"center",
+    justifyContent:"center",
+    flexDirection: "column",
+  },
 })
 type cameraScreenProps = {navigation: any, props: any}
 function CameraScreen({navigation}: cameraScreenProps) {
@@ -352,7 +370,7 @@ console.log(cameraOption);
 console.log(identifiedPlant1);
 
     return(
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={styles.identifiedPlantContainer}>
           <FlatList
             contentContainerStyle={styles.subtitleView}
             data={identifiedPlant1}
