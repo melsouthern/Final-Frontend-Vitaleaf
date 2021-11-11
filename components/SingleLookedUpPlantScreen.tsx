@@ -146,11 +146,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     fontSize: 25,
     fontWeight: "700",
+    color: "#004346",
   },
   subtitle: {
     marginBottom: 10,
     fontSize: 20,
     fontWeight: "500",
+    color: "#004346",
   },
   plantDesc: {
     marginTop: 10,
@@ -164,6 +166,7 @@ const styles = StyleSheet.create({
     fontWeight: "300",
     marginHorizontal: 20,
     lineHeight: 20,
+    color: "#004346",
   },
 });
 

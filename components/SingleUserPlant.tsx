@@ -80,11 +80,19 @@ const SingleUserPlant = (props: any) => {
         <Text style={styles.title}> {singlePlant.nickName} </Text>
         <Text style={styles.plantDesc}>Plant's common name:</Text>
         <Text style={styles.subtitle}> {singlePlant.commonName} </Text>
-        <MaterialCommunityIcons name="home" size={26} />
-        <View style={styles.textContainer}>
-        <Text style={{marginBottom: 20, marginTop: 10}}>Light requirement: {databasePlant.careDetails === undefined ? null : databasePlant.careDetails.lightRequirements} </Text>
-        <Text >Last watered: {singlePlant.lastWatered === null ? 'Plant has not been watered yet' : newLastWatered} </Text>
-        <Text style={{marginTop: 10}}>Next watering: {singlePlant.nextWatering === null ? 'Please water your plant first' : newNextWatering} </Text>
+        <View style={styles.careBoxWrapper}>
+        <View style={styles.careContainer}>
+        <MaterialCommunityIcons style={styles.icon} name={databasePlant.careDetails === undefined ? null : databasePlant.careDetails.lightRequirements === "Low light or partial shade" ? "weather-partly-cloudy" : "white-balance-sunny"} size={40} />
+        <Text style={styles.careText}>{databasePlant.careDetails === undefined ? null : databasePlant.careDetails.lightRequirements} </Text>
+        </View>
+        <View style={styles.careContainer}>
+        <MaterialCommunityIcons style={styles.icon} name="water-outline" size={40} />
+        <Text style={styles.careText}>{databasePlant.category === "Cacti and Other Succulents" ? "Water every 3 - 4 weeks" : "Water every 1 - 2 weeks"} </Text>
+        </View>
+        </View>
+        <View >
+        <Text style={{color: "#004346", fontWeight: "500"}}>Last watered: {singlePlant.lastWatered === null ? 'Plant has not been watered yet' : newLastWatered} </Text>
+        <Text style={{color: "#004346", fontWeight: "500"}}>Next watering: {singlePlant.nextWatering === null ? 'Please water your plant first' : newNextWatering} </Text>
         </View>
         <View style={styles.notification}>
         <Text style={{marginTop: 10, marginLeft: "25%", color: "white"}}>Turn on notifications for {singlePlant.nickName}: </Text>
@@ -127,6 +135,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     width: 340,
+    color: "#004346",
   },
   notification: {
     width: "100%",
@@ -156,11 +165,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     fontSize: 25,
     fontWeight: "700",
+    color: "#004346",
   },
   subtitle: {
     marginBottom: 10,
     fontSize: 20,
     fontWeight: "500",
+    color: "#004346",
   },
   description: {
     marginTop: 5,
@@ -170,6 +181,41 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     alignItems: "flex-start"
   },
+  careBoxWrapper: {
+    flexDirection:'row',
+    width: "90%"
+    // justifyContent: "space-between"
+  },
+  careContainer: {
+    backgroundColor: "#004346",
+    margin: 10,
+    width: "35%",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+
+    borderRadius: 5,
+    padding: 5,
+    shadowColor: "#000",
+    shadowOffset: {
+	    width: 0,
+	    height: 9,
+      },
+    shadowOpacity: 0.48,
+    shadowRadius: 11.95,  
+    elevation: 18,
+  },
+  icon: {
+    paddingTop: 5,
+    color: "#EFF5E7",
+
+  },
+  careText: {
+    textAlign: "center",
+    padding: 5,
+    color: "#EFF5E7",
+
+  }
 });
 
 export default SingleUserPlant;
