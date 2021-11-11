@@ -57,7 +57,7 @@ function InventoryScreen({navigation}, props: any) {
           source={require('../assets/plant.png')}
           style={{marginLeft: "15%", marginTop: "30%"}}
         />
-        <View style={{flex:0.5, flexDirection: 'row', justifyContent: "center"}}>
+        <View style={{flex:0.5, flexDirection: 'row',  justifyContent: "center", marginRight:'2%', marginTop:'10%'}}>
 
         <TouchableOpacity onPress={() => {navigation.navigate("Search");}}
        style={styles.button}>

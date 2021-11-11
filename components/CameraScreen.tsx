@@ -15,8 +15,8 @@ import takePicture from '../assets/take-picture-of-plant.png'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlatList } from 'react-native-gesture-handler';
 import { useFocusEffect } from '@react-navigation/native';
-import { ActivityIndicator, ProgressBar } from 'react-native-paper';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { ActivityIndicator, ProgressBar, Colors } from 'react-native-paper';
+//import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // var AWS = require('aws-sdk/dist/aws-sdk-react-native')
@@ -180,6 +180,16 @@ const styles = StyleSheet.create({
     justifyContent:"center",
     flexDirection: "column",
   },
+  loadingText: {
+    fontSize: 35,
+    fontWeight: "500",
+  },
+  loading: {
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor: "#EFF5E7",
+  }
 })
 type cameraScreenProps = {navigation: any, props: any}
 function CameraScreen({navigation}: cameraScreenProps) {
@@ -341,8 +351,8 @@ console.log(cameraOption);
   // Break
 
   async function makeApiCall (base64Img) {
-    console.log(cameraPhoto);
-    console.log(base64Img, "<<????");
+    // console.log(cameraPhoto);
+    // console.log(base64Img, "<<????");
     
     let plant:any;
     try {
@@ -441,7 +451,7 @@ console.log(identifiedPlant1);
     if (cameraPhoto.height) patchImg = cameraPhoto.base64;
     else if (cameraRollImage.localUri) patchImg = cameraRollImage.base64;
        
-    console.log(patchImg);
+    // console.log(patchImg);
     
     try {
       const apiResponse = await axios.patch
