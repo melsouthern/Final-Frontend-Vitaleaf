@@ -61,9 +61,9 @@ const SingleLookedUpPlantScreen = (props: any) => {
     
     
     <ScrollView>
-      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset} style={styles.container}>
+      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
     
-    
+      <View style={styles.container}>
     
       
         <View style={styles.imgContainer}>
@@ -93,7 +93,7 @@ const SingleLookedUpPlantScreen = (props: any) => {
           title="Add To Inventory"
           onPress={() => handleAddToInventory(singlePlant)}
         />
-      
+      </View>
       </KeyboardAvoidingView>
     </ScrollView>
     
