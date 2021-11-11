@@ -64,8 +64,37 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#004346",
     height: 100,
+    width: "87%",
   },
-
+  choosePhoto: {
+    shadowColor: "#000",
+    shadowOffset: {
+	    width: 0,
+	    height: 9,
+      },
+    shadowOpacity: 0.48,
+    shadowRadius: 11.95,  
+    elevation: 18,
+    flex: 2,
+    marginVertical: 8,
+    marginHorizontal: 20,
+    borderRadius: 10,
+    backgroundColor: "#004346",
+    height: 100,
+    width: "87%",
+  },
+  responseText: {
+    flex:1,
+    alignItems:"center",
+    justifyContent:"center",
+    flexDirection: "column",
+  },
+  selectPhotoText: {
+    flex:1,
+    alignItems:"center",
+    justifyContent:"center",
+    flexDirection: "column",
+  },
   title: {
     fontSize: 25,
     fontWeight: "900",
@@ -110,8 +139,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  photoContainer: {
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    backgroundColor: "#EFF5E7",
+    flex: 1,
+  },
   identifiedPlantContainer: {
     flex: 1,
+    backgroundColor: "#EFF5E7",
   },
   // camera
   cameraContainer: {
@@ -133,9 +169,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: 'bold',
     color: 'white',
+
   },
   textContainer: {
     flex:1,
@@ -189,13 +226,23 @@ console.log(cameraOption);
       setHaveCameraPermission("")
       setCameraPhoto({height:"", uri:"", width:"", base64:""})
       setCameraRollImage({localUri:"", base64:""})
+      getUserPlantsFromDatabase(userName)
+      .then((response) => {
+        setUserPlants(response.filter(plant =>{
+          return plant.plant_id
+        }))
+        
+      })
+      .catch((err) => {
+        console.log(err, "<-----err");
+      });
     }, [])
   );
 
     const cameraRef = useRef(null)   
   
   function saveNotifier(plant_id) {
-     alert("Saved!")
+     alert(`Saved to ${plant_id.nickName}!`)
      navigation.navigate("Single User Plant", plant_id);
   }  
 
@@ -229,8 +276,11 @@ console.log(cameraOption);
       if (pickerResult.cancelled === true) {
         return
       }
-      setCameraRollImage({localUri: pickerResult.uri, base64: pickerResult.base64}) 
-      
+      if (cameraOption === "newPhoto") {
+        setCameraRollImage({localUri: pickerResult.uri, base64: pickerResult.base64}) 
+      } else if (cameraOption === "identify") {
+        makeApiCall(pickerResult.base64)
+      }
     }
     
     // async function saveCameraRollFunction() {
@@ -340,15 +390,17 @@ console.log(cameraOption);
     };
 
     const Item = ({ item, onPress, backgroundColor, textColor }) => (
-      <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+      <TouchableOpacity onPress={onPress} style={styles.item}>
         <ImageBackground
           imageStyle={{ opacity: 0.4 }}
           source={{ uri: item.image_url }}
           style={styles.imagebackground}
         >
+          <View style={styles.responseText}>
           <Text style={[styles.title, textColor]}>{item.commonName}</Text>
           <Text style={[styles.subtitle, textColor]}>{item.botanicalName}</Text>
           <Text style={[styles.subtitle, textColor]}>Probability: {item.probability}</Text>
+          </View>
           {/* <Avatar source={{ uri: item.image_url }} /> */}
         </ImageBackground>
       </TouchableOpacity>
@@ -422,14 +474,16 @@ console.log(identifiedPlant1);
   // after got photo, identify or save
   if (cameraPhoto.height !== "" || cameraRollImage.localUri !== ""){
     const Item = ({ item, onPress, backgroundColor, textColor }) => (
-      <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+      <TouchableOpacity onPress={onPress} style={styles.choosePhoto}>
         <ImageBackground
           imageStyle={{ opacity: 0.4 }}
-          source={{ uri: item.image_url }}
+          source={{ uri: item.image }}
           style={styles.imagebackground}
         >
+          <View style={styles.selectPhotoText}>
           <Text style={[styles.title, textColor]}>{item.nickName}</Text>
           <Text style={[styles.subtitle, textColor]}>{item.commonName}</Text>
+          </View>
           {/* <Avatar source={{ uri: item.image_url }} /> */}
         </ImageBackground>
       </TouchableOpacity>
@@ -451,7 +505,7 @@ console.log(identifiedPlant1);
 console.log(identifiedPlant1);
 
     return(
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={styles.photoContainer}>
           <FlatList
             contentContainerStyle={styles.subtitleView}
             data={userPlants}
@@ -555,7 +609,7 @@ console.log(identifiedPlant1);
       <Image source={takePicture} style={styles.mainImg}/>
       {/* <Text>Push button to select from camera roll to add plant to your inventory</Text> */}
 
-      <Text >Identify a plant or update an existing plant's gallery?</Text>
+      <Text style={{fontSize: 15, fontWeight: "500", color: "#004346"}}>Identify a plant or set a custom image to your plants!</Text>
       <TouchableOpacity onPress={() => {
           setCameraOption("identify")
           openCameraAsync()
