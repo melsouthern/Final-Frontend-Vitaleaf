@@ -103,6 +103,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 15,
+      height: 9,
+    },
+    shadowOpacity: 0.48,
+    shadowRadius: 11.95,
+    elevation: 30,
   },
   //carouselContainer has buttons - don't delete
 
@@ -111,6 +119,7 @@ const styles = StyleSheet.create({
     // flexDirection: "row",
     // alignItems: "center",
     // justifyContent: "center",
+    
   },
   container: {
     flex: 1,
@@ -119,6 +128,7 @@ const styles = StyleSheet.create({
     // alignContent: "center",
     alignItems: "center",
     backgroundColor: "#EFF5E7",
+    
   },
   header: {
     paddingTop: 15,
@@ -144,14 +154,7 @@ const styles = StyleSheet.create({
     // marginHorizontal: "5%",
     borderRadius: 10,
     backgroundColor: "#004346",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 9,
-    },
-    shadowOpacity: 0.48,
-    shadowRadius: 11.95,
-    elevation: 18,
+    
   },
   categoryImage: {
     // flex: 1,
@@ -160,6 +163,7 @@ const styles = StyleSheet.create({
     resizeMode: "stretch",
     // height: 600,
     // alignContent: "center",
+    
   },
 });
 
