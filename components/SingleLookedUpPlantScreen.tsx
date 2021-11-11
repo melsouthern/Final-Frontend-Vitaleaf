@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, Alert, KeyboardAvoidingView,Platform } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Alert, KeyboardAvoidingView,Platform, Linking } from "react-native";
 import { useState, useEffect, useContext, useRef } from "react";
 import { getSinglePlant, postUserPlantToDatabase } from "./utils/Api";
 import { getPlants } from "./utils/Api";
@@ -9,6 +9,8 @@ import { ActivityIndicator, Colors, TextInput } from "react-native-paper";
 import { UserContext, UserProvider } from "./utils/User";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { objectLessAttributes } from "@aws-amplify/core";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 
 const SingleLookedUpPlantScreen = (props: any) => {
   const { route, navigation } = props;
@@ -79,6 +81,9 @@ const SingleLookedUpPlantScreen = (props: any) => {
         <Text style={styles.plantDesc}>Plant botanical name:</Text>
         <Text style={styles.subtitle}> {singlePlant.botanicalName} </Text>
         <Text style={styles.description}> {singlePlant.description} </Text>
+        <View style={styles.wikiWrapper}>
+        <Text style={styles.wiki} onPress={() => Linking.openURL(singlePlant.wiki)}><MaterialCommunityIcons name="wikipedia" size={20} />: {singlePlant.wiki}</Text>
+        </View>
         </View>
         
         <TextInput
@@ -88,7 +93,7 @@ const SingleLookedUpPlantScreen = (props: any) => {
         placeholder={"insert plant nickname"}
       />
         <Button
-          style={{marginBottom: 20, width: 300}}
+          style={{marginBottom: 100, width: 300}}
           icon={{ name: "arrow-right", size: 15, color: "white" }}
           title="Add To Inventory"
           onPress={() => handleAddToInventory(singlePlant)}
@@ -168,6 +173,22 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     color: "#004346",
   },
+  wiki: {
+    marginTop:10,
+    fontSize: 15,
+    fontWeight: "300",
+    marginHorizontal: 20,
+    lineHeight: 20,
+    color: "#004346",
+    borderBottomWidth: 1,
+    textDecorationLine: "underline"
+  },
+  wikiWrapper: {
+
+  },
+  invButton: {
+    marginBottom: 50
+  }
 });
 
 export default SingleLookedUpPlantScreen;

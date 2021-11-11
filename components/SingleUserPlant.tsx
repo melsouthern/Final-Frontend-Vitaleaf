@@ -248,14 +248,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: "50%",
     marginTop: 20,
-    // shadowColor: "#000",
-    // shadowOffset: {
-	  //   width: 0,
-	  //   height: 9,
-    //   },
-    // shadowOpacity: 0.48,
-    // shadowRadius: 11.95,  
-    // elevation: 18,
+    marginBottom: 50,
+    shadowColor: "#000",
+    shadowOffset: {
+	    width: 0,
+	    height: 9,
+      },
+    shadowOpacity: 0.18,
+    shadowRadius: 11.95,  
+    elevation: 18,
   },
   buttonText: {
     fontSize: 20,
