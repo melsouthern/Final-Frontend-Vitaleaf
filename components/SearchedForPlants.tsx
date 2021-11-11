@@ -157,7 +157,8 @@ const styles = StyleSheet.create({
   loading: {
     flex:1,
     justifyContent:'center',
-    alignItems:'center'
+    alignItems:'center',
+    backgroundColor: "#EFF5E7",
   }
 });
 

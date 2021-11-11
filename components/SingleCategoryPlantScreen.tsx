@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
   ratingText: { paddingLeft: 10, color: "grey" },
   container: {
     flex: 1,
+    backgroundColor: "#EFF5E7",
   },
   textContainer: {
     flex:1,
@@ -145,8 +146,10 @@ const styles = StyleSheet.create({
   loading: {
     flex:1,
     justifyContent:'center',
-    alignItems:'center'
-  }
+    alignItems:'center',
+    backgroundColor: "#EFF5E7",
+  },
+  
 });
 
 export default SingleCategoryPlantScreen;
