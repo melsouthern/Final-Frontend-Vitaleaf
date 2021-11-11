@@ -15,7 +15,7 @@ import takePicture from '../assets/take-picture-of-plant.png'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlatList } from 'react-native-gesture-handler';
 import { useFocusEffect } from '@react-navigation/native';
-import { ProgressBar } from 'react-native-paper';
+import { ActivityIndicator, ProgressBar } from 'react-native-paper';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -450,7 +450,7 @@ console.log(identifiedPlant1);
 
        setLoading(true)
       const waitFor = delay => new Promise(resolve => setTimeout(resolve, delay));
-      await waitFor(2000);
+      await waitFor(4000);
       setLoading(false)
       if (apiResponse.status === 200) saveNotifier(selectedPlantToSave)
     } catch (err) {
@@ -460,12 +460,13 @@ console.log(identifiedPlant1);
     // console.log(cameraPhoto)
 
   }
+
   if (loading) {
     return (
-      <View>
-            <Text style={styles.title}>loading...</Text>
-            <ProgressBar progress = {0.75} color={Colors.lightGreen800} />
-          </View>
+      <View style={styles.loading}>
+      <Text style={styles.loadingText}>loading...</Text>
+      <ActivityIndicator size='large' animating={true} color={Colors.green800} />
+    </View>
     );
   }
   // console.log(userPlants)
