@@ -12,11 +12,11 @@ During this period, we worked really closely on every aspect of the project. Alo
 
 ## App walkthrough
 
-To view our live application demonstration, follow the below link and skip to 15 minutes 30 to view our presentation.
-
+To view our live application demonstration, click on the below video link:
 [![](http://img.youtube.com/vi/VH3ZniWAMrA/0.jpg)](https://www.youtube.com/watch?v=VH3ZniWAMrA&t=986s "View the live presentation")
 
-Alternatively,
+Alternatively, you can take a look at a short app demonstration on the below link:
+[![](http://img.youtube.com/vi/gu5F3IX5qL4/0.jpg)](https://www.youtube.com/watch?v=gu5F3IX5qL4 "View the short demo")
 
 Front end repository for the plant collector mobile app project
 
