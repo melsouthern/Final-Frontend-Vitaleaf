@@ -13,7 +13,8 @@ During this period, we worked really closely on every aspect of the project. Alo
 ## App walkthrough
 
 To view our live application demonstration, follow the below link and skip to 15 minutes 30 to view our presentation.
-[![Watch the video](https://img.youtube.com/vi/watch?v=VH3ZniWAMrA&t=986s/presentation.png)]
+
+[![](http://img.youtube.com/vi/VH3ZniWAMrA/0.jpg)](https://www.youtube.com/watch?v=VH3ZniWAMrA&t=986s "View the live presentation")
 
 Alternatively,
 
