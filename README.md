@@ -1,5 +1,7 @@
 # Vitaleaf Frontend Repo
 
+[![](https://github.com/melsouthern/Final-Frontend-Vitaleaf/blob/main/IMG_0327.JPG)]
+
 ## Project overview
 
 Working in a team of 5 people, we worked together for 2 weeks on our project, Vitaleaf, to conclude our time at Northcoders.
@@ -19,8 +21,6 @@ Alternatively, you can take a look at a short app demonstration on the below lin
 [![](http://img.youtube.com/vi/gu5F3IX5qL4/0.jpg)](https://www.youtube.com/watch?v=gu5F3IX5qL4 "View the short demo")
 
 ## Frontend tech stack
-
-[![](https://github.com/melsouthern/Final-Frontend-Vitaleaf/blob/main/IMG_0327.JPG)]
 
 Front end repository for the plant collector mobile app project
 
