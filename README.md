@@ -4,7 +4,7 @@
 
 Working in a team of 5 people, we worked together for 2 weeks on our project, Vitaleaf, to conclude our time at Northcoders.
 
-Vitaleaf is a plant management application which we developed for plant owners, like ourselves, to manage and look after their plants. The reason why we decided to develop this app is because many of us in the team owned houseplants, and we often faced the same struggled trying to keep them alive!
+Vitaleaf is a plant management application which we developed for plant owners, like ourselves, to manage and look after their plants. The reason why we decided to develop this app is because many of us in the team owned houseplants, and we often faced the same struggles trying to keep them alive!
 
 With Vitaleaf's watering system, you can keep track of your plants watering dates and find out when they are next due for a drink. The search functionality enables users to find out what types of conditions each plant they own likes to grow in. We also developed plant recognition, meaning when users took a photo of a plant, the app would identify the species of plant and provide the user with it's specific care needs.
 
@@ -13,7 +13,7 @@ During this period, we worked really closely on every aspect of the project. Alo
 ## App walkthrough
 
 To view our live application demonstration, follow the below link and skip to 15 minutes 30 to view our presentation.
-[![Watch the video](https://img.youtube.com/vi/watch?v=VH3ZniWAMrA&t=986s/maxresdefault.jpg)]
+[![Watch the video](https://img.youtube.com/vi/watch?v=VH3ZniWAMrA&t=986s/presentation.png)]
 
 Alternatively,
 
