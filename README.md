@@ -1,6 +1,6 @@
 # Vitaleaf Frontend Repo
 
-[![](https://github.com/melsouthern/Final-Frontend-Vitaleaf/blob/main/IMG_0327.JPG)]
+![](https://github.com/melsouthern/Final-Frontend-Vitaleaf/blob/main/IMG_0327.JPG)
 
 ## Project overview
 
